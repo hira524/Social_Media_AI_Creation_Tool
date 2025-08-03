@@ -49,11 +49,14 @@ const platforms = [
 
 const styleOptions = ["Realistic", "Illustration", "Abstract", "Vintage"];
 
-export default function ImageGenerator() {
+interface ImageGeneratorProps {
+  onImageGenerated?: (image: GeneratedImage) => void;
+}
+
+export default function ImageGenerator({ onImageGenerated }: ImageGeneratorProps) {
   const [prompt, setPrompt] = useState("");
   const [selectedPlatform, setSelectedPlatform] = useState<"instagram" | "linkedin" | "twitter">("instagram");
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
-  const [generatedImage, setGeneratedImage] = useState<GeneratedImage | null>(null);
   
   const { toast } = useToast();
   const { user } = useAuth();
@@ -66,7 +69,9 @@ export default function ImageGenerator() {
       return response.json();
     },
     onSuccess: (data: GeneratedImage) => {
-      setGeneratedImage(data);
+      if (onImageGenerated) {
+        onImageGenerated(data);
+      }
       toast({
         title: "Image Generated!",
         description: "Your AI-generated image is ready for download.",
@@ -99,37 +104,6 @@ export default function ImageGenerator() {
       toast({
         title: "Generation Failed",
         description: "Failed to generate image. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
-
-  const favoriteMutation = useMutation({
-    mutationFn: async ({ id, isFavorite }: { id: number; isFavorite: boolean }) => {
-      await apiRequest("PATCH", `/api/images/${id}/favorite`, { isFavorite });
-    },
-    onSuccess: () => {
-      toast({
-        title: "Updated",
-        description: "Image favorite status updated.",
-      });
-      queryClient.invalidateQueries({ queryKey: ["/api/images"] });
-    },
-    onError: (error) => {
-      if (isUnauthorizedError(error)) {
-        toast({
-          title: "Unauthorized",
-          description: "You are logged out. Logging in again...",
-          variant: "destructive",
-        });
-        setTimeout(() => {
-          window.location.href = "/api/login";
-        }, 500);
-        return;
-      }
-      toast({
-        title: "Error",
-        description: "Failed to update favorite status.",
         variant: "destructive",
       });
     },
@@ -169,62 +143,6 @@ export default function ImageGenerator() {
         ? prev.filter(s => s !== style)
         : [...prev, style]
     );
-  };
-
-  const handleDownload = async () => {
-    if (!generatedImage) return;
-    
-    try {
-      const response = await fetch(generatedImage.imageUrl);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = `ai-generated-${generatedImage.platform}-${Date.now()}.png`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-      
-      toast({
-        title: "Downloaded",
-        description: "Image downloaded successfully.",
-      });
-    } catch (error) {
-      toast({
-        title: "Download Failed",
-        description: "Failed to download image. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleCopyToClipboard = async () => {
-    if (!generatedImage) return;
-    
-    try {
-      await navigator.clipboard.writeText(generatedImage.imageUrl);
-      toast({
-        title: "Copied",
-        description: "Image URL copied to clipboard.",
-      });
-    } catch (error) {
-      toast({
-        title: "Copy Failed",
-        description: "Failed to copy image URL.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleToggleFavorite = () => {
-    if (!generatedImage) return;
-    
-    favoriteMutation.mutate({
-      id: generatedImage.id,
-      isFavorite: !generatedImage.isFavorite,
-    });
   };
 
   return (
@@ -380,115 +298,6 @@ export default function ImageGenerator() {
               <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
               <div className="w-2 h-2 bg-secondary rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
               <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Generated Image Result */}
-      {generatedImage && (
-        <Card className="bg-white/80 backdrop-blur-xl border border-white/20 shadow-medium rounded-2xl overflow-hidden">
-          <CardContent className="p-8">
-            <div className="mb-8">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center">
-                  <span className="text-white font-bold">✓</span>
-                </div>
-                <h2 className="text-2xl font-bold text-slate-900">Your Generated Image</h2>
-              </div>
-              <p className="text-slate-600 text-lg">
-                Generated for <span className="font-semibold text-primary">{generatedImage.platform}</span> • <span className="font-semibold text-secondary">{generatedImage.style}</span> style
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Generated Image Preview */}
-              <div className="relative group">
-                <img
-                  src={generatedImage.imageUrl}
-                  alt="AI-generated social media post"
-                  className="w-full rounded-2xl shadow-medium group-hover:shadow-intense transition-all duration-300"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 rounded-2xl transition-all duration-300"></div>
-              </div>
-
-              {/* Image Actions */}
-              <div className="space-y-6">
-                <div>
-                  <h3 className="font-bold text-slate-900 mb-4 text-lg flex items-center space-x-2">
-                    <Download className="w-5 h-5 text-primary" />
-                    <span>Download Options</span>
-                  </h3>
-                  <div className="space-y-3">
-                    <Button 
-                      onClick={handleDownload} 
-                      className="w-full btn-primary py-3 rounded-2xl shadow-lg hover:shadow-primary/25 transition-all duration-300"
-                    >
-                      <Download className="w-5 h-5 mr-3" />
-                      Download High Quality
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      onClick={handleCopyToClipboard} 
-                      className="w-full py-3 rounded-2xl bg-white/50 backdrop-blur-sm border-2 border-white/30 hover:bg-white/80 transition-all duration-300"
-                    >
-                      <Copy className="w-5 h-5 mr-3" />
-                      Copy to Clipboard
-                    </Button>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="font-bold text-slate-900 mb-4 text-lg flex items-center space-x-2">
-                    <Heart className="w-5 h-5 text-primary" />
-                    <span>Actions</span>
-                  </h3>
-                  <div className="space-y-3">
-                    <Button 
-                      variant="outline" 
-                      onClick={handleToggleFavorite}
-                      className="w-full py-3 rounded-2xl bg-white/50 backdrop-blur-sm border-2 border-white/30 hover:bg-white/80 transition-all duration-300"
-                      disabled={favoriteMutation.isPending}
-                    >
-                      <Heart className={`w-5 h-5 mr-3 transition-colors ${generatedImage.isFavorite ? 'fill-current text-red-500' : 'text-slate-600'}`} />
-                      {generatedImage.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      onClick={() => {
-                        setPrompt(generatedImage.prompt);
-                        setGeneratedImage(null);
-                      }}
-                      className="w-full py-3 rounded-2xl bg-white/50 backdrop-blur-sm border-2 border-white/30 hover:bg-white/80 transition-all duration-300"
-                    >
-                      <RotateCcw className="w-5 h-5 mr-3" />
-                      Generate New Image
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="mt-8 p-6 bg-gradient-to-br from-slate-50 to-indigo-50/50 rounded-2xl border border-white/30">
-                  <h4 className="font-bold text-slate-900 mb-4 text-lg flex items-center space-x-2">
-                    <span>ℹ️</span>
-                    <span>Generation Details</span>
-                  </h4>
-                  <div className="text-slate-600 space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <span className="font-medium">Platform:</span>
-                      <span className="font-semibold text-primary">{generatedImage.platform}</span>
-                      <span className="text-sm">({generatedImage.dimensions})</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="font-medium">Style:</span>
-                      <span className="font-semibold text-secondary">{generatedImage.style}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="font-medium">Generated:</span>
-                      <span>{new Date(generatedImage.createdAt).toLocaleString()}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </CardContent>
         </Card>

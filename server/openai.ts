@@ -11,6 +11,17 @@ export async function generateImage(prompt: string): Promise<{ url: string }> {
     console.log("OpenAI: Starting image generation with prompt:", prompt);
     console.log("OpenAI: API Key configured:", !!process.env.OPENAI_API_KEY);
     
+    // Check if we should use mock mode due to billing issues
+    const useMockMode = process.env.OPENAI_MOCK_MODE === 'true' || false;
+    
+    if (useMockMode) {
+      console.log("OpenAI: Using mock mode - generating placeholder image");
+      // Return a placeholder image service URL
+      const placeholderUrl = `https://picsum.photos/1024/1024?random=${Date.now()}`;
+      console.log("OpenAI: Mock image URL generated:", placeholderUrl);
+      return { url: placeholderUrl };
+    }
+    
     const response = await openai.images.generate({
       model: "dall-e-3",
       prompt: prompt,
@@ -34,6 +45,15 @@ export async function generateImage(prompt: string): Promise<{ url: string }> {
       stack: error instanceof Error ? error.stack : 'No stack trace',
       error: error
     });
+    
+    // If billing limit reached, use placeholder image
+    if (error instanceof Error && error.message.includes('billing_hard_limit_reached')) {
+      console.log("OpenAI: Billing limit reached, using placeholder image");
+      const placeholderUrl = `https://picsum.photos/1024/1024?random=${Date.now()}`;
+      console.log("OpenAI: Fallback image URL:", placeholderUrl);
+      return { url: placeholderUrl };
+    }
+    
     throw new Error("Failed to generate image: " + (error instanceof Error ? error.message : "Unknown error"));
   }
 }

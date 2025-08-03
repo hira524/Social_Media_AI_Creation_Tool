@@ -229,67 +229,93 @@ export default function ImageGenerator() {
 
   return (
     <div className="space-y-8">
-      {/* Generation Interface */}
-      <Card className="bg-white/80 backdrop-blur-xl border border-white/20 shadow-medium rounded-2xl overflow-hidden">
+      {/* Enhanced Generation Interface */}
+      <Card className="glass-card border-0 shadow-strong rounded-3xl overflow-hidden hover-lift">
         <CardContent className="p-8">
           <div className="mb-8">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-white" />
+            <div className="flex items-center space-x-4 mb-6">
+              <div className="w-16 h-16 bg-gradient-to-br from-primary via-purple-600 to-pink-600 rounded-3xl flex items-center justify-center shadow-lg animate-glow">
+                <Sparkles className="w-8 h-8 text-white animate-spin" style={{animationDuration: '3s'}} />
               </div>
-              <h1 className="text-3xl font-bold text-slate-900">Create Your Social Media Image</h1>
+              <div>
+                <h1 className="text-4xl font-bold text-slate-900 text-gradient-primary">Create Your Social Media Image</h1>
+                <p className="text-slate-600 text-xl mt-2">Describe what you want to create and our AI will generate it for you</p>
+              </div>
             </div>
-            <p className="text-slate-600 text-lg">Describe what you want to create and our AI will generate it for you</p>
           </div>
 
           <form onSubmit={handleGenerate} className="space-y-8">
-            {/* Prompt Input */}
-            <div className="space-y-3">
-              <Label className="text-lg font-semibold text-slate-700 flex items-center space-x-2">
-                <Lightbulb className="w-5 h-5 text-primary" />
+            {/* Enhanced Prompt Input */}
+            <div className="space-y-4">
+              <Label className="text-xl font-bold text-slate-900 flex items-center space-x-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center">
+                  <Lightbulb className="w-5 h-5 text-white" />
+                </div>
                 <span>Describe your image</span>
               </Label>
-              <Textarea
-                rows={4}
-                placeholder="A motivational fitness quote with a mountain background, modern typography, and vibrant colors..."
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                className="input-modern resize-none text-lg"
-              />
+              <div className="relative">
+                <Textarea
+                  rows={5}
+                  placeholder="A motivational fitness quote with a mountain background, modern typography, and vibrant colors..."
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  className="input-modern resize-none text-lg p-6 rounded-2xl border-2 border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300"
+                />
+                <div className="absolute bottom-4 right-4 text-sm text-slate-400">
+                  {prompt.length}/500
+                </div>
+              </div>
               {typedUser?.niche && typedUser?.stylePreference && (
-                <div className="mt-3 p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl border border-white/30">
-                  <div className="text-sm text-slate-600 flex items-center">
-                    <Lightbulb className="w-4 h-4 text-primary mr-2" />
-                    We'll enhance your prompt based on your preferences ({typedUser.niche} • {typedUser.stylePreference})
+                <div className="mt-4 p-6 bg-gradient-to-r from-primary/10 via-purple-50 to-pink-50 rounded-2xl border border-primary/20 animate-fade-in">
+                  <div className="text-sm text-slate-700 flex items-center">
+                    <div className="w-6 h-6 bg-primary/20 rounded-full flex items-center justify-center mr-3">
+                      <Lightbulb className="w-3 h-3 text-primary" />
+                    </div>
+                    <span className="font-medium">AI Enhancement:</span>
+                    <span className="ml-2">We'll optimize your prompt based on your preferences ({typedUser.niche} • {typedUser.stylePreference})</span>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Platform Selection */}
-            <div className="space-y-4">
-              <Label className="text-lg font-semibold text-slate-700 flex items-center space-x-2">
-                <span>🎯</span>
+            {/* Enhanced Platform Selection */}
+            <div className="space-y-6">
+              <Label className="text-xl font-bold text-slate-900 flex items-center space-x-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center">
+                  <span>🎯</span>
+                </div>
                 <span>Choose platform format</span>
               </Label>
-              <div className="grid grid-cols-3 gap-4">
-                {platforms.map((platform) => (
-                  <Button
-                    key={platform.value}
-                    type="button"
-                    variant={selectedPlatform === platform.value ? "default" : "outline"}
-                    className={`p-6 h-auto flex-col space-y-3 rounded-2xl transition-all duration-300 hover:scale-105 ${
-                      selectedPlatform === platform.value 
-                        ? "bg-gradient-to-br from-primary to-secondary text-white shadow-lg" 
-                        : "bg-white/50 backdrop-blur-sm border-2 border-white/30 hover:bg-white/80"
-                    }`}
-                    onClick={() => setSelectedPlatform(platform.value as any)}
-                  >
-                    <platform.icon className="w-8 h-8" />
-                    <div className="font-semibold text-lg">{platform.label}</div>
-                    <div className="text-sm opacity-80">{platform.dimensions}</div>
-                  </Button>
-                ))}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                {platforms.map((platform) => {
+                  const Icon = platform.icon;
+                  const isSelected = selectedPlatform === platform.value;
+                  return (
+                    <button
+                      key={platform.value}
+                      type="button"
+                      onClick={() => setSelectedPlatform(platform.value as typeof selectedPlatform)}
+                      className={`interactive-card p-8 rounded-3xl border-3 transition-all duration-300 group relative overflow-hidden ${
+                        isSelected
+                          ? "border-primary bg-gradient-to-br from-primary/10 via-purple-50 to-pink-50 shadow-glow-primary"
+                          : "border-slate-200 bg-white/70 hover:border-primary/50 hover:bg-white/90"
+                      }`}
+                    >
+                      {isSelected && (
+                        <div className="absolute top-3 right-3 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold">✓</span>
+                        </div>
+                      )}
+                      <Icon className={`w-12 h-12 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 ${
+                        isSelected ? "text-primary" : "text-slate-600"
+                      }`} />
+                      <h3 className={`text-xl font-bold mb-2 ${isSelected ? "text-primary" : "text-slate-900"}`}>
+                        {platform.label}
+                      </h3>
+                      <p className="text-sm text-slate-500 font-medium">{platform.dimensions}</p>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 

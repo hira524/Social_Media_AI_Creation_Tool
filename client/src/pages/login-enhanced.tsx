@@ -43,26 +43,24 @@ export default function Login() {
         }),
       });
       
-      const result = await response.json();
-      
       if (response.ok) {
+        const result = await response.json();
+        
         toast({
           title: "Welcome back! 🎉",
           description: "You've been successfully logged in.",
         });
         
-        // Wait for refetch to complete before navigation
-        await refetch();
+        refetch();
         
-        // Check if user needs onboarding
         if (result.user && !result.user.onboardingCompleted) {
           setLocation("/onboarding");
         } else {
           setLocation("/dashboard");
         }
       } else {
-        // Handle error response
-        throw new Error(result.message || result.error || 'Login failed');
+        const error = await response.json();
+        throw new Error(error.error || 'Login failed');
       }
     } catch (error) {
       console.error('Login error:', error);

@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "../components/ui/button";
+import { Card, CardContent } from "../components/ui/card";
 import { Sparkles, Brain, Smartphone, Zap, Palette, History, Download, ArrowRight, Check, Play } from "lucide-react";
 import { useLocation } from "wouter";
 
@@ -134,53 +134,65 @@ export default function Landing() {
         </div>
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero Section - Enhanced with modern elements */}
       <section className="relative overflow-hidden pt-20 pb-32">
-        {/* Background decorations */}
+        {/* Enhanced background decorations */}
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-          <div className="absolute top-40 right-10 w-72 h-72 bg-secondary/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse" style={{animationDelay: '2s'}}></div>
-          <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-400/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse" style={{animationDelay: '4s'}}></div>
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
+          <div className="absolute top-40 right-10 w-72 h-72 bg-secondary/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{animationDelay: '2s'}}></div>
+          <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-400/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{animationDelay: '4s'}}></div>
+          
+          {/* Animated grid pattern */}
+          <div className="absolute inset-0 bg-grid-pattern opacity-30"></div>
+          
+          {/* Floating particles */}
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary/40 rounded-full animate-bounce-gentle"></div>
+          <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-secondary/40 rounded-full animate-bounce-gentle" style={{animationDelay: '1s'}}></div>
+          <div className="absolute top-1/2 left-3/4 w-3 h-3 bg-pink-400/40 rounded-full animate-bounce-gentle" style={{animationDelay: '3s'}}></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-12 lg:gap-12 items-center">
-            <div className="lg:col-span-6 fade-in">
+            <div className="lg:col-span-6 animate-fade-in">
               <div className="text-center lg:text-left">
-                <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-white/20 shadow-soft mb-8 mx-auto lg:mx-0">
-                  <Sparkles className="w-4 h-4 text-primary mr-2" />
-                  <span className="text-sm font-medium text-slate-700">✨ Powered by Advanced AI</span>
+                <div className="inline-flex items-center px-4 py-2 glass-card mb-8 mx-auto lg:mx-0 hover-lift">
+                  <span className="relative flex h-2 w-2 mr-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                  </span>
+                  <span className="text-sm font-medium text-slate-700">✨ New: Advanced AI Image Generation</span>
                 </div>
                 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 leading-tight mb-8 mx-auto lg:mx-0 max-w-4xl lg:max-w-none">
                   Create Stunning{" "}
-                  <span className="text-gradient-primary relative">
+                  <span className="text-gradient-primary relative animate-gradient">
                     AI-Generated
-                    <div className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-primary/20 to-pink-500/20 rounded-full"></div>
+                    <div className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-primary/20 to-pink-500/20 rounded-full animate-shimmer"></div>
                   </span>{" "}
                   Social Media Posts
                 </h1>
                 
                 <p className="text-lg sm:text-xl lg:text-2xl text-slate-600 leading-relaxed mb-10 max-w-2xl mx-auto lg:mx-0">
                   Generate professional social media images tailored to your niche with our intelligent AI. 
-                  Perfect for Instagram, LinkedIn, and Twitter posts.
+                  Perfect for Instagram, LinkedIn, and Twitter posts that engage and convert.
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center lg:justify-start items-center sm:items-start">
                   <Button 
                     size="lg" 
                     onClick={handleGetStarted} 
-                    className="btn-primary text-lg px-8 sm:px-10 py-4 sm:py-6 rounded-2xl shadow-intense hover:shadow-primary/30 transform hover:scale-105 transition-all duration-300 w-full sm:w-auto"
+                    className="btn-primary text-lg px-8 sm:px-10 py-4 sm:py-6 rounded-2xl shadow-strong hover:shadow-glow-primary transform hover:scale-105 transition-all duration-300 w-full sm:w-auto group"
                   >
-                    <Sparkles className="w-5 h-5 mr-3" />
+                    <Sparkles className="w-5 h-5 mr-3 group-hover:animate-spin" />
                     Start Creating Free
+                    <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
                   </Button>
                   <Button 
                     variant="outline" 
                     size="lg" 
-                    className="text-lg px-8 sm:px-10 py-4 sm:py-6 rounded-2xl bg-white/50 backdrop-blur-sm border-2 border-white/30 hover:bg-white/80 transition-all duration-300 w-full sm:w-auto"
+                    className="glass-button text-lg px-8 sm:px-10 py-4 sm:py-6 rounded-2xl border-2 border-white/30 hover:border-primary/30 transition-all duration-300 w-full sm:w-auto group"
                   >
-                    <Play className="w-5 h-5 mr-3" />
+                    <Play className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
                     Watch Demo
                   </Button>
                 </div>

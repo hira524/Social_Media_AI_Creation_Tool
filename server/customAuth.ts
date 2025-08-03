@@ -214,7 +214,8 @@ export async function setupAuth(app: Express) {
               id: user.id,
               email: user.email,
               firstName: user.firstName,
-              lastName: user.lastName
+              lastName: user.lastName,
+              onboardingCompleted: user.onboardingCompleted || false
             },
             redirect: "/dashboard"
           });

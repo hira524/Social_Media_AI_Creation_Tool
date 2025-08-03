@@ -25,30 +25,24 @@ function Router() {
 
   return (
     <Switch>
-      {!isAuthenticated ? (
-        <>
-          <Route path="/" component={Landing} />
-          <Route path="/landing" component={Landing} />
-        </>
-      ) : (
-        <>
-          <Route path="/landing" component={Landing} />
-          <Route path="/onboarding">
-            {typedUser && !typedUser.onboardingCompleted ? (
-              <Onboarding />
-            ) : (
-              <Dashboard />
-            )}
-          </Route>
-          <Route path="/">
-            {typedUser && !typedUser.onboardingCompleted ? (
-              <Onboarding />
-            ) : (
-              <Dashboard />
-            )}
-          </Route>
-        </>
-      )}
+      <Route path="/dashboard">
+        {!isAuthenticated ? (
+          <Landing />
+        ) : typedUser && !typedUser.onboardingCompleted ? (
+          <Onboarding />
+        ) : (
+          <Dashboard />
+        )}
+      </Route>
+      <Route path="/onboarding">
+        {!isAuthenticated ? (
+          <Landing />
+        ) : (
+          <Onboarding />
+        )}
+      </Route>
+      <Route path="/landing" component={Landing} />
+      <Route path="/" component={Landing} />
       <Route component={NotFound} />
     </Switch>
   );

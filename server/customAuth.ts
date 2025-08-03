@@ -99,36 +99,67 @@ export async function setupAuth(app: Express) {
     passport.serializeUser((user: Express.User, cb) => cb(null, user));
     passport.deserializeUser((user: Express.User, cb) => cb(null, user));
 
-    // Create a default user for the application
-    const defaultUser = {
-      claims: {
-        sub: "default-user-123",
-        email: "user@example.com",
-        first_name: "Default",
-        last_name: "User"
-      },
-      access_token: "default-access-token",
-      expires_at: Math.floor(Date.now() / 1000) + 86400 // 24 hours from now
-    };
-
-    // Ensure the default user exists in the database
+    // Ensure the default user exists in the database on startup
     await storage.upsertUser({
-      id: defaultUser.claims.sub,
-      email: defaultUser.claims.email,
-      firstName: defaultUser.claims.first_name,
-      lastName: defaultUser.claims.last_name,
+      id: "default-user-123",
+      email: "user@example.com",
+      firstName: "Default",
+      lastName: "User",
       profileImageUrl: "",
     });
 
     app.get("/api/login", (req, res) => {
-      // Auto-login
+      // Manual login - create session only when explicitly requested
+      const defaultUser = {
+        claims: {
+          sub: "default-user-123",
+          email: "user@example.com",
+          first_name: "Default",
+          last_name: "User"
+        },
+        access_token: "default-access-token",
+        expires_at: Math.floor(Date.now() / 1000) + 86400 // 24 hours from now
+      };
+
       req.login(defaultUser, (err) => {
         if (err) {
           console.error("Login error:", err);
           return res.status(500).json({ message: "Login failed" });
         }
-        // Redirect to main app after successful login
-        res.redirect("/");
+        // In development, redirect to the Vite dev server
+        if (process.env.NODE_ENV === "development") {
+          res.redirect("http://localhost:3000/dashboard");
+        } else {
+          res.redirect("/dashboard");
+        }
+      });
+    });
+
+    app.get("/api/signup", (req, res) => {
+      // For now, signup does the same as login since we're using a default user
+      // In the future, this would create a new user account
+      const defaultUser = {
+        claims: {
+          sub: "default-user-123",
+          email: "user@example.com",
+          first_name: "Default",
+          last_name: "User"
+        },
+        access_token: "default-access-token",
+        expires_at: Math.floor(Date.now() / 1000) + 86400 // 24 hours from now
+      };
+
+      req.login(defaultUser, (err) => {
+        if (err) {
+          console.error("Signup error:", err);
+          return res.status(500).json({ message: "Signup failed" });
+        }
+        // In development, redirect to the Vite dev server  
+        if (process.env.NODE_ENV === "development") {
+          res.redirect("http://localhost:3000/onboarding");
+        } else {
+          res.redirect("/onboarding");
+        }
       });
     });
 
@@ -138,8 +169,12 @@ export async function setupAuth(app: Express) {
 
     app.get("/api/logout", (req, res) => {
       req.logout(() => {
-        // Redirect to landing page after logout
-        res.redirect("/landing");
+        // In development, redirect to the Vite dev server
+        if (process.env.NODE_ENV === "development") {
+          res.redirect("http://localhost:3000/");
+        } else {
+          res.redirect("/");
+        }
       });
     });
 
@@ -200,38 +235,8 @@ export async function setupAuth(app: Express) {
 }
 
 export const isAuthenticated: RequestHandler = async (req, res, next) => {
-  // For now, auto-authenticate all requests with a default user
-  // TODO: Replace with proper authentication when ready
   if (!req.isAuthenticated()) {
-    // Auto-create a session with default user
-    const defaultUser = {
-      claims: {
-        sub: "default-user-123",
-        email: "user@example.com",
-        first_name: "Default",
-        last_name: "User"
-      },
-      access_token: "default-access-token",
-      expires_at: Math.floor(Date.now() / 1000) + 86400 // 24 hours from now
-    };
-
-    // Ensure the default user exists in the database
-    await storage.upsertUser({
-      id: defaultUser.claims.sub,
-      email: defaultUser.claims.email,
-      firstName: defaultUser.claims.first_name,
-      lastName: defaultUser.claims.last_name,
-      profileImageUrl: "",
-    });
-
-    req.login(defaultUser, (err) => {
-      if (err) {
-        console.error("Auto-login error:", err);
-        return res.status(500).json({ message: "Authentication failed" });
-      }
-      return next();
-    });
-    return;
+    return res.status(401).json({ message: "Authentication required" });
   }
   return next();
 };

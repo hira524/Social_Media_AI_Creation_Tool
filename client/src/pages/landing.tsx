@@ -1,14 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles, Brain, Smartphone, Zap, Palette, History, Download, ArrowRight, Check, Play } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Landing() {
+  const { isAuthenticated } = useAuth();
+
   const handleGetStarted = () => {
-    window.location.href = "/api/login";
+    if (isAuthenticated) {
+      // If already logged in, go to dashboard
+      window.location.href = "/dashboard";
+    } else {
+      // If not logged in, signup (which will redirect to onboarding)
+      window.location.href = "/api/signup";
+    }
   };
 
-  const handleGoToDashboard = () => {
-    window.location.href = "/";
+  const handleLogin = () => {
+    window.location.href = "/api/login";
   };
 
   const features = [
@@ -108,12 +117,25 @@ export default function Landing() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" onClick={() => window.location.href = "/api/login"}>
-                Sign In
-              </Button>
-              <Button onClick={handleGetStarted}>
-                Get Started
-              </Button>
+              {isAuthenticated ? (
+                <>
+                  <Button variant="ghost" onClick={handleGetStarted}>
+                    Dashboard
+                  </Button>
+                  <Button onClick={() => window.location.href = "/api/logout"}>
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="ghost" onClick={handleLogin}>
+                    Login
+                  </Button>
+                  <Button onClick={handleGetStarted}>
+                    Get Started
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -138,11 +160,11 @@ export default function Landing() {
               
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
                 <Button size="lg" onClick={handleGetStarted} className="text-lg px-8 py-4">
-                  Start Creating Free
+                  {isAuthenticated ? "Go to Dashboard" : "Get Started - Sign Up Free"}
                 </Button>
-                <Button variant="outline" size="lg" className="text-lg px-8 py-4">
+                <Button variant="outline" size="lg" className="text-lg px-8 py-4" onClick={handleLogin}>
                   <Play className="w-4 h-4 mr-2" />
-                  Watch Demo
+                  {isAuthenticated ? "Watch Demo" : "Login"}
                 </Button>
               </div>
 
@@ -251,7 +273,7 @@ export default function Landing() {
 
           <div className="text-center mt-12">
             <Button size="lg" onClick={handleGetStarted} className="text-lg px-8 py-4">
-              Start Creating Your Images
+              {isAuthenticated ? "Go to Dashboard" : "Get Started - Sign Up Free"}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>

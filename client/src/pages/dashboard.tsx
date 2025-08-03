@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/use-toast";
 import { useLocation } from "wouter";
@@ -6,6 +6,9 @@ import { ArrowRight } from "lucide-react";
 import Navigation from "../components/ui/navigation";
 import ImageGenerator from "../components/ui/image-generator";
 import ImageHistory from "../components/ui/image-history";
+import History from "../components/ui/history";
+import Favorites from "../components/ui/favorites";
+import Settings from "../components/ui/settings";
 import FloatingActionButton from "../components/ui/floating-action-button";
 import LoadingSpinner from "../components/ui/loading-spinner";
 
@@ -13,6 +16,7 @@ export default function Dashboard() {
   const { toast } = useToast();
   const { isAuthenticated, isLoading } = useAuth();
   const [, setLocation] = useLocation();
+  const [activeView, setActiveView] = useState<'create' | 'history' | 'favorites' | 'settings'>('create');
 
   // Redirect to home if not authenticated
   useEffect(() => {
@@ -55,23 +59,58 @@ export default function Dashboard() {
           <div className="lg:col-span-3">
             <nav className="glass-card p-6 sticky top-24 animate-slide-in-left">
               <div className="space-y-2">
-                <a href="#" className="flex items-center space-x-3 px-4 py-3 text-primary bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover-glow group">
+                <button 
+                  onClick={() => setActiveView('create')}
+                  aria-label="Create new AI-generated image"
+                  className={`w-full flex items-center space-x-3 px-4 py-3 ${
+                    activeView === 'create' 
+                      ? 'text-primary bg-gradient-to-r from-primary/10 to-secondary/10' 
+                      : 'text-slate-600 hover:text-primary hover:bg-white/50'
+                  } rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover-glow group`}
+                >
                   <span className="text-2xl group-hover:animate-bounce-gentle">🎨</span>
                   <span>Create Image</span>
-                  <div className="ml-auto w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                </a>
-                <a href="#" className="interactive-card flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-primary hover:bg-white/50 rounded-xl transition-all duration-300 group">
+                  {activeView === 'create' && <div className="ml-auto w-2 h-2 bg-primary rounded-full animate-pulse"></div>}
+                </button>
+                <button 
+                  onClick={() => setActiveView('history')}
+                  aria-label="View generation history"
+                  className={`w-full interactive-card flex items-center space-x-3 px-4 py-3 ${
+                    activeView === 'history' 
+                      ? 'text-primary bg-gradient-to-r from-primary/10 to-secondary/10' 
+                      : 'text-slate-600 hover:text-primary hover:bg-white/50'
+                  } rounded-xl transition-all duration-300 group`}
+                >
                   <span className="text-2xl group-hover:scale-110 transition-transform">📜</span>
                   <span>History</span>
-                </a>
-                <a href="#" className="interactive-card flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-primary hover:bg-white/50 rounded-xl transition-all duration-300 group">
+                  {activeView === 'history' && <div className="ml-auto w-2 h-2 bg-primary rounded-full animate-pulse"></div>}
+                </button>
+                <button 
+                  onClick={() => setActiveView('favorites')}
+                  aria-label="View favorite images"
+                  className={`w-full interactive-card flex items-center space-x-3 px-4 py-3 ${
+                    activeView === 'favorites' 
+                      ? 'text-primary bg-gradient-to-r from-primary/10 to-secondary/10' 
+                      : 'text-slate-600 hover:text-primary hover:bg-white/50'
+                  } rounded-xl transition-all duration-300 group`}
+                >
                   <span className="text-2xl group-hover:scale-110 transition-transform group-hover:animate-heartbeat">❤️</span>
                   <span>Favorites</span>
-                </a>
-                <a href="#" className="interactive-card flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-primary hover:bg-white/50 rounded-xl transition-all duration-300 group">
+                  {activeView === 'favorites' && <div className="ml-auto w-2 h-2 bg-primary rounded-full animate-pulse"></div>}
+                </button>
+                <button 
+                  onClick={() => setActiveView('settings')}
+                  aria-label="Open settings"
+                  className={`w-full interactive-card flex items-center space-x-3 px-4 py-3 ${
+                    activeView === 'settings' 
+                      ? 'text-primary bg-gradient-to-r from-primary/10 to-secondary/10' 
+                      : 'text-slate-600 hover:text-primary hover:bg-white/50'
+                  } rounded-xl transition-all duration-300 group`}
+                >
                   <span className="text-2xl group-hover:scale-110 transition-transform group-hover:animate-rotate">⚙️</span>
                   <span>Settings</span>
-                </a>
+                  {activeView === 'settings' && <div className="ml-auto w-2 h-2 bg-primary rounded-full animate-pulse"></div>}
+                </button>
               </div>
               
               <div className="mt-8 p-6 bg-gradient-to-br from-primary/10 via-purple-100/50 to-pink-100/50 rounded-2xl border border-white/30 backdrop-blur-sm hover-lift">
@@ -92,12 +131,34 @@ export default function Dashboard() {
 
           {/* Enhanced Main Content Area */}
           <div className="lg:col-span-9 mt-8 lg:mt-0 space-y-8">
-            <div className="animate-fade-in-up">
-              <ImageGenerator />
-            </div>
-            <div className="animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-              <ImageHistory />
-            </div>
+            {activeView === 'create' && (
+              <>
+                <div className="animate-fade-in-up">
+                  <ImageGenerator />
+                </div>
+                <div className="animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+                  <ImageHistory />
+                </div>
+              </>
+            )}
+            
+            {activeView === 'history' && (
+              <div className="animate-fade-in-up">
+                <History />
+              </div>
+            )}
+            
+            {activeView === 'favorites' && (
+              <div className="animate-fade-in-up">
+                <Favorites />
+              </div>
+            )}
+            
+            {activeView === 'settings' && (
+              <div className="animate-fade-in-up">
+                <Settings />
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -107,7 +168,10 @@ export default function Dashboard() {
         onActionSelect={(action) => {
           // Handle different actions
           console.log('Action selected:', action);
-          // You can add navigation logic here
+          // Navigate to create view if action is selected
+          if (action && activeView !== 'create') {
+            setActiveView('create');
+          }
         }}
       />
     </div>

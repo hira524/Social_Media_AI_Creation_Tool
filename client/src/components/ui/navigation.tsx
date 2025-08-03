@@ -49,38 +49,49 @@ export default function Navigation() {
   };
 
   return (
-    <header className="bg-white border-b border-slate-200">
+    <header className="bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-soft sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-18">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-white" />
+            <div className="w-10 h-10 bg-gradient-to-br from-primary via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg pulse-glow">
+              <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-xl text-slate-900">AI Creator Studio</span>
+            <span className="font-bold text-2xl text-gradient-primary">AI Creator Studio</span>
           </div>
           
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2 text-sm text-slate-600">
-              <Zap className="w-4 h-4 text-accent" />
-              <span>{typedUser?.creditsRemaining || 0} credits remaining</span>
+          <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-3 px-4 py-2 bg-white/50 backdrop-blur-sm rounded-2xl border border-white/30 shadow-soft">
+              <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center">
+                <Zap className="w-4 h-4 text-white" />
+              </div>
+              <div className="text-sm">
+                <span className="font-bold text-slate-900">{typedUser?.creditsRemaining || 0}</span>
+                <span className="text-slate-600 ml-1">credits remaining</span>
+              </div>
             </div>
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center space-x-2">
-                  <Avatar className="w-8 h-8">
+                <Button variant="ghost" className="flex items-center space-x-3 px-4 py-2 h-12 rounded-2xl hover:bg-white/50 backdrop-blur-sm transition-all duration-300 hover:scale-105">
+                  <Avatar className="w-8 h-8 ring-2 ring-primary/20">
                     <AvatarImage src={typedUser?.profileImageUrl || ""} alt="User avatar" />
-                    <AvatarFallback>
+                    <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-white font-bold">
                       {typedUser?.firstName?.[0] || typedUser?.email?.[0] || "U"}
                     </AvatarFallback>
                   </Avatar>
-                  <span>{typedUser?.firstName || typedUser?.email || "User"}</span>
-                  <ChevronDown className="w-4 h-4" />
+                  <span className="font-medium text-slate-900">{typedUser?.firstName || typedUser?.email || "User"}</span>
+                  <ChevronDown className="w-4 h-4 text-slate-400" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={handleLogout}>
-                  Logout
+              <DropdownMenuContent 
+                align="end" 
+                className="mt-2 bg-white/90 backdrop-blur-xl border border-white/20 shadow-xl rounded-2xl overflow-hidden"
+              >
+                <DropdownMenuItem 
+                  onClick={handleLogout}
+                  className="px-4 py-3 hover:bg-slate-50 transition-colors cursor-pointer"
+                >
+                  <span className="font-medium">Logout</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

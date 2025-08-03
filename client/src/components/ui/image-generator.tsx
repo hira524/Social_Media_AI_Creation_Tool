@@ -19,7 +19,8 @@ import {
   Copy, 
   Heart, 
   RotateCcw,
-  Lightbulb
+  Lightbulb,
+  Palette
 } from "lucide-react";
 
 interface GenerateRequest {
@@ -227,63 +228,87 @@ export default function ImageGenerator() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Generation Interface */}
-      <Card>
+      <Card className="bg-white/80 backdrop-blur-xl border border-white/20 shadow-medium rounded-2xl overflow-hidden">
         <CardContent className="p-8">
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-slate-900 mb-2">Create Your Social Media Image</h1>
-            <p className="text-slate-600">Describe what you want to create and our AI will generate it for you</p>
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-white" />
+              </div>
+              <h1 className="text-3xl font-bold text-slate-900">Create Your Social Media Image</h1>
+            </div>
+            <p className="text-slate-600 text-lg">Describe what you want to create and our AI will generate it for you</p>
           </div>
 
-          <form onSubmit={handleGenerate} className="space-y-6">
+          <form onSubmit={handleGenerate} className="space-y-8">
             {/* Prompt Input */}
-            <div>
-              <Label className="text-sm font-medium text-slate-700 mb-3 block">Describe your image</Label>
+            <div className="space-y-3">
+              <Label className="text-lg font-semibold text-slate-700 flex items-center space-x-2">
+                <Lightbulb className="w-5 h-5 text-primary" />
+                <span>Describe your image</span>
+              </Label>
               <Textarea
                 rows={4}
                 placeholder="A motivational fitness quote with a mountain background, modern typography, and vibrant colors..."
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                className="resize-none"
+                className="input-modern resize-none text-lg"
               />
               {typedUser?.niche && typedUser?.stylePreference && (
-                <div className="mt-2 text-sm text-slate-500 flex items-center">
-                  <Lightbulb className="w-4 h-4 text-accent mr-1" />
-                  We'll enhance your prompt based on your preferences ({typedUser.niche} • {typedUser.stylePreference})
+                <div className="mt-3 p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl border border-white/30">
+                  <div className="text-sm text-slate-600 flex items-center">
+                    <Lightbulb className="w-4 h-4 text-primary mr-2" />
+                    We'll enhance your prompt based on your preferences ({typedUser.niche} • {typedUser.stylePreference})
+                  </div>
                 </div>
               )}
             </div>
 
             {/* Platform Selection */}
-            <div>
-              <Label className="text-sm font-medium text-slate-700 mb-3 block">Choose platform format</Label>
-              <div className="grid grid-cols-3 gap-3">
+            <div className="space-y-4">
+              <Label className="text-lg font-semibold text-slate-700 flex items-center space-x-2">
+                <span>🎯</span>
+                <span>Choose platform format</span>
+              </Label>
+              <div className="grid grid-cols-3 gap-4">
                 {platforms.map((platform) => (
                   <Button
                     key={platform.value}
                     type="button"
                     variant={selectedPlatform === platform.value ? "default" : "outline"}
-                    className="p-4 h-auto flex-col space-y-2"
+                    className={`p-6 h-auto flex-col space-y-3 rounded-2xl transition-all duration-300 hover:scale-105 ${
+                      selectedPlatform === platform.value 
+                        ? "bg-gradient-to-br from-primary to-secondary text-white shadow-lg" 
+                        : "bg-white/50 backdrop-blur-sm border-2 border-white/30 hover:bg-white/80"
+                    }`}
                     onClick={() => setSelectedPlatform(platform.value as any)}
                   >
-                    <platform.icon className="w-6 h-6" />
-                    <div className="font-medium">{platform.label}</div>
-                    <div className="text-xs opacity-70">{platform.dimensions}</div>
+                    <platform.icon className="w-8 h-8" />
+                    <div className="font-semibold text-lg">{platform.label}</div>
+                    <div className="text-sm opacity-80">{platform.dimensions}</div>
                   </Button>
                 ))}
               </div>
             </div>
 
             {/* Style Options */}
-            <div>
-              <Label className="text-sm font-medium text-slate-700 mb-3 block">Style variations (optional)</Label>
-              <div className="flex flex-wrap gap-2">
+            <div className="space-y-4">
+              <Label className="text-lg font-semibold text-slate-700 flex items-center space-x-2">
+                <Palette className="w-5 h-5 text-primary" />
+                <span>Style variations (optional)</span>
+              </Label>
+              <div className="flex flex-wrap gap-3">
                 {styleOptions.map((style) => (
                   <Badge
                     key={style}
                     variant={selectedStyles.includes(style) ? "default" : "secondary"}
-                    className="cursor-pointer"
+                    className={`cursor-pointer px-4 py-2 rounded-xl text-base font-medium transition-all duration-300 hover:scale-105 ${
+                      selectedStyles.includes(style)
+                        ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg"
+                        : "bg-white/50 backdrop-blur-sm border border-white/30 text-slate-700 hover:bg-white/80"
+                    }`}
                     onClick={() => handleStyleToggle(style)}
                   >
                     {style}
@@ -296,17 +321,17 @@ export default function ImageGenerator() {
             <Button 
               type="submit" 
               size="lg" 
-              className="w-full"
+              className="w-full btn-primary text-xl py-6 h-16 rounded-2xl shadow-lg hover:shadow-primary/25 transform hover:scale-105 transition-all duration-300"
               disabled={generateMutation.isPending || !typedUser?.creditsRemaining}
             >
               {generateMutation.isPending ? (
-                <div className="flex items-center space-x-2">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                <div className="flex items-center justify-center">
+                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin mr-3"></div>
                   <span>Generating Image...</span>
                 </div>
               ) : (
-                <div className="flex items-center space-x-2">
-                  <Sparkles className="w-4 h-4" />
+                <div className="flex items-center justify-center">
+                  <Sparkles className="w-6 h-6 mr-3" />
                   <span>Generate Image</span>
                 </div>
               )}
@@ -317,81 +342,124 @@ export default function ImageGenerator() {
 
       {/* Loading State */}
       {generateMutation.isPending && (
-        <Card>
-          <CardContent className="p-8 text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">Creating your image...</h3>
-            <p className="text-slate-600">This usually takes 10-30 seconds</p>
+        <Card className="bg-white/80 backdrop-blur-xl border border-white/20 shadow-medium rounded-2xl overflow-hidden">
+          <CardContent className="p-12 text-center">
+            <div className="relative mb-8">
+              <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto"></div>
+              <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-r-secondary rounded-full animate-spin animate-reverse mx-auto"></div>
+            </div>
+            <h3 className="text-2xl font-bold text-slate-900 mb-3">Creating your image...</h3>
+            <p className="text-slate-600 text-lg">This usually takes 10-30 seconds</p>
+            <div className="mt-6 flex items-center justify-center space-x-2">
+              <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-secondary rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
+              <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
+            </div>
           </CardContent>
         </Card>
       )}
 
       {/* Generated Image Result */}
       {generatedImage && (
-        <Card>
+        <Card className="bg-white/80 backdrop-blur-xl border border-white/20 shadow-medium rounded-2xl overflow-hidden">
           <CardContent className="p-8">
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-slate-900 mb-2">Your Generated Image</h2>
-              <p className="text-slate-600">
-                Generated for {generatedImage.platform} • {generatedImage.style} style
+            <div className="mb-8">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center">
+                  <span className="text-white font-bold">✓</span>
+                </div>
+                <h2 className="text-2xl font-bold text-slate-900">Your Generated Image</h2>
+              </div>
+              <p className="text-slate-600 text-lg">
+                Generated for <span className="font-semibold text-primary">{generatedImage.platform}</span> • <span className="font-semibold text-secondary">{generatedImage.style}</span> style
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
               {/* Generated Image Preview */}
-              <div>
+              <div className="relative group">
                 <img
                   src={generatedImage.imageUrl}
                   alt="AI-generated social media post"
-                  className="w-full rounded-lg shadow-lg"
+                  className="w-full rounded-2xl shadow-medium group-hover:shadow-intense transition-all duration-300"
                 />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 rounded-2xl transition-all duration-300"></div>
               </div>
 
               {/* Image Actions */}
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div>
-                  <h3 className="font-semibold text-slate-900 mb-2">Download Options</h3>
-                  <div className="space-y-2">
-                    <Button onClick={handleDownload} className="w-full">
-                      <Download className="w-4 h-4 mr-2" />
+                  <h3 className="font-bold text-slate-900 mb-4 text-lg flex items-center space-x-2">
+                    <Download className="w-5 h-5 text-primary" />
+                    <span>Download Options</span>
+                  </h3>
+                  <div className="space-y-3">
+                    <Button 
+                      onClick={handleDownload} 
+                      className="w-full btn-primary py-3 rounded-2xl shadow-lg hover:shadow-primary/25 transition-all duration-300"
+                    >
+                      <Download className="w-5 h-5 mr-3" />
                       Download High Quality
                     </Button>
-                    <Button variant="outline" onClick={handleCopyToClipboard} className="w-full">
-                      <Copy className="w-4 h-4 mr-2" />
+                    <Button 
+                      variant="outline" 
+                      onClick={handleCopyToClipboard} 
+                      className="w-full py-3 rounded-2xl bg-white/50 backdrop-blur-sm border-2 border-white/30 hover:bg-white/80 transition-all duration-300"
+                    >
+                      <Copy className="w-5 h-5 mr-3" />
                       Copy to Clipboard
                     </Button>
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-slate-900 mb-2">Actions</h3>
-                  <div className="space-y-2">
+                  <h3 className="font-bold text-slate-900 mb-4 text-lg flex items-center space-x-2">
+                    <Heart className="w-5 h-5 text-primary" />
+                    <span>Actions</span>
+                  </h3>
+                  <div className="space-y-3">
                     <Button 
                       variant="outline" 
                       onClick={handleToggleFavorite}
-                      className="w-full"
+                      className="w-full py-3 rounded-2xl bg-white/50 backdrop-blur-sm border-2 border-white/30 hover:bg-white/80 transition-all duration-300"
                       disabled={favoriteMutation.isPending}
                     >
-                      <Heart className={`w-4 h-4 mr-2 ${generatedImage.isFavorite ? 'fill-current text-red-500' : ''}`} />
+                      <Heart className={`w-5 h-5 mr-3 transition-colors ${generatedImage.isFavorite ? 'fill-current text-red-500' : 'text-slate-600'}`} />
                       {generatedImage.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
                     </Button>
                     <Button 
                       variant="outline" 
-                      onClick={() => setGeneratedImage(null)}
-                      className="w-full"
+                      onClick={() => {
+                        setPrompt(generatedImage.prompt);
+                        setGeneratedImage(null);
+                      }}
+                      className="w-full py-3 rounded-2xl bg-white/50 backdrop-blur-sm border-2 border-white/30 hover:bg-white/80 transition-all duration-300"
                     >
-                      <RotateCcw className="w-4 h-4 mr-2" />
+                      <RotateCcw className="w-5 h-5 mr-3" />
                       Generate New Image
                     </Button>
                   </div>
                 </div>
 
-                <div className="mt-6 p-4 bg-slate-50 rounded-lg">
-                  <h4 className="font-medium text-slate-900 mb-2">Generation Details</h4>
-                  <div className="text-sm text-slate-600 space-y-1">
-                    <div>Platform: {generatedImage.platform} ({generatedImage.dimensions})</div>
-                    <div>Style: {generatedImage.style}</div>
-                    <div>Generated: {new Date(generatedImage.createdAt).toLocaleString()}</div>
+                <div className="mt-8 p-6 bg-gradient-to-br from-slate-50 to-indigo-50/50 rounded-2xl border border-white/30">
+                  <h4 className="font-bold text-slate-900 mb-4 text-lg flex items-center space-x-2">
+                    <span>ℹ️</span>
+                    <span>Generation Details</span>
+                  </h4>
+                  <div className="text-slate-600 space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <span className="font-medium">Platform:</span>
+                      <span className="font-semibold text-primary">{generatedImage.platform}</span>
+                      <span className="text-sm">({generatedImage.dimensions})</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <span className="font-medium">Style:</span>
+                      <span className="font-semibold text-secondary">{generatedImage.style}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <span className="font-medium">Generated:</span>
+                      <span>{new Date(generatedImage.createdAt).toLocaleString()}</span>
+                    </div>
                   </div>
                 </div>
               </div>

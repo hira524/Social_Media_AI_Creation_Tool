@@ -37,6 +37,9 @@ export interface IStorage {
   // Data export and account deletion
   exportUserData(userId: string): Promise<any>;
   deleteUser(userId: string): Promise<void>;
+  
+  // Debug method (temporary)
+  getUsersForDebug(): Promise<User[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -91,22 +94,46 @@ export class DatabaseStorage implements IStorage {
   // Onboarding operations
   async updateOnboarding(userId: string, data: UpdateOnboarding): Promise<User> {
     try {
+      console.log("Storage: updateOnboarding called for user:", userId);
+      console.log("Storage: onboarding data to save:", JSON.stringify(data, null, 2));
+      console.log("Storage: data keys:", Object.keys(data));
+      console.log("Storage: data values exist:", Object.values(data).some(v => v !== undefined && v !== "" && (Array.isArray(v) ? v.length > 0 : true)));
+      
+      const updateQuery = { 
+        ...data,
+        onboardingCompleted: true
+      };
+      
+      console.log("Storage: final update query:", JSON.stringify(updateQuery, null, 2));
+      
       const user = await UserModel.findOneAndUpdate(
         { id: userId },
-        { 
-          ...data,
-          onboardingCompleted: true
-        },
+        updateQuery,
         { new: true }
       ).exec();
       
+      console.log("Storage: findOneAndUpdate result:", user ? "User found and updated" : "User not found");
+      
       if (!user) {
+        console.error("Storage: User not found for ID:", userId);
         throw new Error("User not found");
       }
       
+      console.log("Storage: Updated user verification:", {
+        id: user.id,
+        onboardingCompleted: user.onboardingCompleted,
+        businessType: user.businessType,
+        targetAudience: user.targetAudience,
+        primaryGoal: user.primaryGoal,
+        brandPersonality: user.brandPersonality,
+        primaryPlatforms: user.primaryPlatforms,
+        hasAnyOnboardingField: !!(user.businessType || user.targetAudience || user.primaryGoal || user.brandPersonality || user.niche)
+      });
+
       return user;
     } catch (error) {
       console.error("Error updating onboarding:", error);
+      console.error("Error stack:", error instanceof Error ? error.stack : 'No stack trace');
       throw error;
     }
   }
@@ -289,6 +316,17 @@ export class DatabaseStorage implements IStorage {
     } catch (error) {
       console.error("Error deleting user:", error);
       throw error;
+    }
+  }
+  
+  // Debug method to get all users (temporary for debugging)
+  async getUsersForDebug(): Promise<User[]> {
+    try {
+      const users = await UserModel.find({}).select('-password').limit(10).exec();
+      return users;
+    } catch (error) {
+      console.error("Error fetching users for debug:", error);
+      return [];
     }
   }
 }

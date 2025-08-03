@@ -8,6 +8,9 @@ const openai = new OpenAI({
 // Image generation function
 export async function generateImage(prompt: string): Promise<{ url: string }> {
   try {
+    console.log("OpenAI: Starting image generation with prompt:", prompt);
+    console.log("OpenAI: API Key configured:", !!process.env.OPENAI_API_KEY);
+    
     const response = await openai.images.generate({
       model: "dall-e-3",
       prompt: prompt,
@@ -16,13 +19,21 @@ export async function generateImage(prompt: string): Promise<{ url: string }> {
       quality: "standard",
     });
 
+    console.log("OpenAI: Response received:", JSON.stringify(response, null, 2));
+
     if (!response.data?.[0]?.url) {
+      console.error("OpenAI: No image URL in response");
       throw new Error("No image URL returned from OpenAI");
     }
 
+    console.log("OpenAI: Image URL generated:", response.data[0].url);
     return { url: response.data[0].url };
   } catch (error) {
-    console.error("OpenAI image generation error:", error);
+    console.error("OpenAI image generation error details:", {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : 'No stack trace',
+      error: error
+    });
     throw new Error("Failed to generate image: " + (error instanceof Error ? error.message : "Unknown error"));
   }
 }

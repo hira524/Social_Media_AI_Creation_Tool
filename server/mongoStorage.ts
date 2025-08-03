@@ -59,6 +59,9 @@ export class DatabaseStorage implements IStorage {
   // Onboarding operations
   async updateOnboarding(userId: string, data: UpdateOnboarding): Promise<User> {
     try {
+      console.log("MongoDB: updateOnboarding called for user:", userId);
+      console.log("MongoDB: onboarding data to save:", JSON.stringify(data, null, 2));
+      
       const user = await UserModel.findOneAndUpdate(
         { id: userId },
         { 
@@ -68,10 +71,24 @@ export class DatabaseStorage implements IStorage {
         { new: true }
       ).exec();
       
+      console.log("MongoDB: findOneAndUpdate result:", user ? "User found and updated" : "User not found");
+      
       if (!user) {
+        console.error("MongoDB: User not found for ID:", userId);
         throw new Error("User not found");
       }
       
+      console.log("MongoDB: Updated user fields:", {
+        id: user.id,
+        onboardingCompleted: user.onboardingCompleted,
+        businessType: user.businessType,
+        targetAudience: user.targetAudience,
+        primaryGoal: user.primaryGoal,
+        brandPersonality: user.brandPersonality,
+        primaryPlatforms: user.primaryPlatforms,
+        fieldsCount: Object.keys(data).length
+      });
+
       return user;
     } catch (error) {
       console.error("Error updating onboarding:", error);

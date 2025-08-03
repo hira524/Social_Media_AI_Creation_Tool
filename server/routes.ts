@@ -111,21 +111,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Debug route to check user data (temporary for debugging)
+  app.get('/api/debug/users', async (req: any, res) => {
+    try {
+      const users = await storage.getUsersForDebug();
+      res.json({
+        totalUsers: users.length,
+        users: users.map((user: any) => ({
+          id: user.id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          onboardingCompleted: user.onboardingCompleted,
+          hasOnboardingData: !!(user.businessType || user.targetAudience || user.primaryGoal),
+          businessType: user.businessType,
+          targetAudience: user.targetAudience,
+          primaryGoal: user.primaryGoal,
+          brandPersonality: user.brandPersonality,
+          primaryPlatforms: user.primaryPlatforms,
+          createdAt: user.createdAt
+        }))
+      });
+    } catch (error) {
+      console.error("Debug users error:", error);
+      res.status(500).json({ message: "Failed to fetch debug data" });
+    }
+  });
+
   // Image generation routes
   app.post('/api/generate', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
+      console.log("Image generation request for user:", userId);
+      console.log("Request body:", JSON.stringify(req.body, null, 2));
+      
       const user = await storage.getUser(userId);
       
       if (!user) {
+        console.log("User not found:", userId);
         return res.status(404).json({ message: "User not found" });
       }
 
+      console.log("User credits remaining:", user.creditsRemaining);
       if ((user.creditsRemaining || 0) <= 0) {
+        console.log("No credits remaining for user:", userId);
         return res.status(402).json({ message: "No credits remaining" });
       }
 
       const { prompt, platform, style } = generateImageRequestSchema.parse(req.body);
+      console.log("Parsed request:", { prompt, platform, style });
       
       // Enhance prompt based on user's comprehensive onboarding data
       let enhancedPrompt = prompt;
@@ -187,8 +221,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       enhancedPrompt += `. Social media post format, ${dimensions[platform]} aspect ratio, professional design, high quality`;
 
+      console.log("Enhanced prompt:", enhancedPrompt);
+      console.log("Attempting to generate image with OpenAI...");
+
       // Generate image using OpenAI
       const imageResult = await generateImage(enhancedPrompt);
+      console.log("Image generated successfully:", imageResult.url);
       
       // Save to database
       const imageData = {
@@ -201,18 +239,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
         dimensions: dimensions[platform],
       };
       
+      console.log("Saving image to database...");
       const savedImage = await storage.createGeneratedImage(imageData);
+      console.log("Image saved to database:", savedImage._id);
       
       // Decrement user credits
       await storage.decrementUserCredits(userId);
+      console.log("User credits decremented");
       
       res.json(savedImage);
     } catch (error) {
       console.error("Error generating image:", error);
+      console.error("Error stack:", error instanceof Error ? error.stack : 'No stack trace');
       if (error instanceof z.ZodError) {
         res.status(400).json({ message: "Invalid generation request", errors: error.errors });
       } else {
-        res.status(500).json({ message: "Failed to generate image" });
+        res.status(500).json({ message: "Failed to generate image", error: error instanceof Error ? error.message : 'Unknown error' });
       }
     }
   });

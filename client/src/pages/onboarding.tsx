@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "wouter";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { 
   UserCog, 
@@ -82,6 +83,7 @@ export default function Onboarding() {
   });
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [, setLocation] = useLocation();
 
   const onboardingMutation = useMutation({
     mutationFn: async (data: OnboardingData) => {
@@ -93,6 +95,11 @@ export default function Onboarding() {
         description: "Your preferences have been saved. Let's start creating!",
       });
       queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      
+      // Redirect to dashboard after successful onboarding
+      setTimeout(() => {
+        setLocation("/dashboard");
+      }, 1000); // Small delay to show the success message
     },
     onError: (error) => {
       if (isUnauthorizedError(error)) {

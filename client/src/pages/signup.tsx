@@ -6,10 +6,12 @@ import { Label } from "@/components/ui/label";
 import { Sparkles, ArrowRight, Mail, Lock, User } from "lucide-react";
 import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function SignUp() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { refetch } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -56,8 +58,13 @@ export default function SignUp() {
           description: "Account created successfully. Let's set up your profile.",
         });
         
-        // Redirect to onboarding for new users
-        window.location.href = "/onboarding";
+        // Refresh authentication state before redirecting
+        await refetch();
+        
+        // Small delay to ensure auth state is updated
+        setTimeout(() => {
+          setLocation("/onboarding");
+        }, 500);
       } else {
         throw new Error('Sign up failed');
       }

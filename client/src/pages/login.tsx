@@ -6,10 +6,12 @@ import { Label } from "@/components/ui/label";
 import { Sparkles, ArrowRight, Mail, Lock } from "lucide-react";
 import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Login() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { refetch } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -43,8 +45,13 @@ export default function Login() {
           description: "You've been successfully logged in.",
         });
         
-        // Redirect to dashboard for existing users
-        window.location.href = "/dashboard";
+        // Refresh authentication state before redirecting
+        await refetch();
+        
+        // Small delay to ensure auth state is updated
+        setTimeout(() => {
+          setLocation("/dashboard");
+        }, 500);
       } else {
         throw new Error('Login failed');
       }

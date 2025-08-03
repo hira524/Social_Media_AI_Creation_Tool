@@ -9,11 +9,20 @@ if (!process.env.DATABASE_URL) {
 // Connect to MongoDB
 export const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.DATABASE_URL!);
+    console.log('Connecting to MongoDB...');
+    await mongoose.connect(process.env.DATABASE_URL!, {
+      serverSelectionTimeoutMS: 10000, // 10 second timeout
+      connectTimeoutMS: 10000,
+      socketTimeoutMS: 10000,
+    });
     console.log('Connected to MongoDB successfully');
   } catch (error) {
     console.error('MongoDB connection error:', error);
-    process.exit(1);
+    console.log('Continuing without database connection for development...');
+    // Don't exit in development mode, just continue without DB
+    if (process.env.NODE_ENV === 'production') {
+      process.exit(1);
+    }
   }
 };
 

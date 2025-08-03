@@ -58,8 +58,12 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  // Connect to MongoDB first
-  await connectDB();
+  // Try to connect to MongoDB, but don't fail if it's not available in development
+  try {
+    await connectDB();
+  } catch (error) {
+    console.error('Database connection failed, but continuing in development mode');
+  }
   
   const server = await registerRoutes(app);
 

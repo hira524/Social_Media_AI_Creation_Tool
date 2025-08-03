@@ -188,6 +188,24 @@
     box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
   }
 
+  /* Grid pattern background */
+  .bg-grid-pattern {
+    background-image: 
+      linear-gradient(90deg, rgba(200, 200, 200, 0.1) 1px, transparent 1px),
+      linear-gradient(rgba(200, 200, 200, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  /* Hover effects */
+  .hover-lift {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+
   /* Enhanced modern card styles */
   .card-hover {
     @apply transition-all duration-300 ease-out hover:shadow-xl hover:-translate-y-1;
@@ -272,13 +290,6 @@
     -webkit-text-fill-color: transparent;
     background-size: 200% 200%;
     animation: gradient-shift 3s ease-in-out infinite;
-  }
-
-  .text-gradient-secondary {
-    background: linear-gradient(135deg, hsl(220, 85%, 65%) 0%, hsl(200, 85%, 70%) 50%, hsl(180, 90%, 75%) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 
   .text-shimmer {
@@ -489,26 +500,56 @@
 }
 
 @layer utilities {
-  /* Text gradients */
+  /* Text gradients with animations */
   .text-gradient-primary {
-    background: linear-gradient(to right, hsl(var(--primary)), rgb(168, 85, 247), rgb(236, 72, 153));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #EC4899 100%) !important;
+    background-size: 200% 200% !important;
+    animation: gradient-shift 3s ease-in-out infinite !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
   }
 
   .text-gradient-secondary {
-    background: linear-gradient(to right, rgb(59, 130, 246), rgb(168, 85, 247), hsl(var(--primary)));
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
+    background: linear-gradient(135deg, rgb(90, 140, 242) 0%, rgb(113, 200, 244) 50%, rgb(134, 249, 249) 100%) !important;
+    background-size: 200% 200% !important;
+    animation: gradient-shift 3s ease-in-out infinite !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
   }
 
   .text-gradient-warm {
-    background: linear-gradient(to right, rgb(249, 115, 22), rgb(239, 68, 68), rgb(236, 72, 153));
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
+    background: linear-gradient(to right, rgb(249, 115, 22), rgb(239, 68, 68), rgb(236, 72, 153)) !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+  }
+
+  /* Animation utility classes */
+  .animate-gradient {
+    background: linear-gradient(-45deg, #8B5CF6, #A855F7, #EC4899, #8B5CF6) !important;
+    background-size: 400% 400% !important;
+    animation: gradient 3s ease-in-out infinite !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+  }
+
+  .animate-shimmer {
+    position: relative !important;
+    background: linear-gradient(90deg, transparent 30%, rgba(255, 255, 255, 0.8) 50%, transparent 70%) !important;
+    background-size: 200% 100% !important;
+    animation: shimmer 2s linear infinite !important;
+  }
+
+  /* Test animation to verify CSS is loading */
+  .pulse-test {
+    animation: pulse 2s infinite !important;
   }
 
   /* Shadow utilities */
@@ -526,6 +567,19 @@
 
   .shadow-intense {
     box-shadow: var(--shadow-elevation-highest);
+  }
+
+  /* Landing page specific shadow utilities */
+  .shadow-strong {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .shadow-glow-primary {
+    box-shadow: 0 0 30px rgba(138, 90, 243, 0.3);
+  }
+
+  .shadow-glow-primary:hover {
+    box-shadow: 0 0 50px rgba(138, 90, 243, 0.5);
   }
 
   /* Backdrop blur utilities */
@@ -654,6 +708,11 @@
 }
 
 @keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes gradient {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
 }

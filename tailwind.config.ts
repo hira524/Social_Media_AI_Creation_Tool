@@ -202,6 +202,10 @@ export default {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        "gradient": {
+          "0%, 100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -218,6 +222,7 @@ export default {
         "shimmer": "shimmer 2s linear infinite",
         "aurora-shift": "aurora-shift 8s ease-in-out infinite",
         "gradient-shift": "gradient-shift 3s ease-in-out infinite",
+        "gradient": "gradient 3s ease-in-out infinite",
         "glow": "glow 2s ease-in-out infinite alternate",
         "rotate-slow": "rotate-slow 8s linear infinite",
         "heartbeat": "heartbeat 1.5s ease-in-out infinite",

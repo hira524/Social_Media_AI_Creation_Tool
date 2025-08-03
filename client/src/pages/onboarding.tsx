@@ -89,17 +89,16 @@ export default function Onboarding() {
     mutationFn: async (data: OnboardingData) => {
       await apiRequest("POST", "/api/onboarding", data);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       toast({
         title: "Setup Complete!",
         description: "Your preferences have been saved. Let's start creating!",
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      // Immediately invalidate and refetch user data
+      await queryClient.invalidateQueries({ queryKey: ['auth-user'] });
       
-      // Redirect to dashboard after successful onboarding
-      setTimeout(() => {
-        setLocation("/dashboard");
-      }, 1000); // Small delay to show the success message
+      // Navigate to dashboard immediately after invalidating queries
+      setLocation("/dashboard");
     },
     onError: (error) => {
       if (isUnauthorizedError(error)) {

@@ -70,7 +70,7 @@ export default function ImageGenerator() {
         title: "Image Generated!",
         description: "Your AI-generated image is ready for download.",
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      queryClient.invalidateQueries({ queryKey: ['auth-user'] });
       queryClient.invalidateQueries({ queryKey: ["/api/images"] });
     },
     onError: (error) => {

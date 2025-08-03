@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
@@ -25,7 +26,7 @@ import {
   Check,
   X
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { User } from "@shared/mongoSchema";
 
 export default function Settings() {
@@ -34,47 +35,95 @@ export default function Settings() {
   const queryClient = useQueryClient();
   
   // Local state for form fields
-  const [firstName, setFirstName] = useState(user?.firstName || "");
-  const [lastName, setLastName] = useState(user?.lastName || "");
-  const [email, setEmail] = useState(user?.email || "");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   
   // Basic onboarding data
-  const [niche, setNiche] = useState(user?.niche || "");
-  const [contentType, setContentType] = useState(user?.contentType || "");
-  const [stylePreference, setStylePreference] = useState(user?.stylePreference || "");
+  const [niche, setNiche] = useState("");
+  const [contentType, setContentType] = useState("");
+  const [stylePreference, setStylePreference] = useState("");
   
   // Business information
-  const [businessType, setBusinessType] = useState(user?.businessType || "");
-  const [targetAudience, setTargetAudience] = useState(user?.targetAudience || "");
-  const [audienceAge, setAudienceAge] = useState(user?.audienceAge || "");
+  const [businessType, setBusinessType] = useState("");
+  const [targetAudience, setTargetAudience] = useState("");
+  const [audienceAge, setAudienceAge] = useState("");
   
   // Content goals
-  const [primaryGoal, setPrimaryGoal] = useState(user?.primaryGoal || "");
-  const [postingFrequency, setPostingFrequency] = useState(user?.postingFrequency || "");
-  const [contentThemes, setContentThemes] = useState<string[]>(user?.contentThemes || []);
+  const [primaryGoal, setPrimaryGoal] = useState("");
+  const [postingFrequency, setPostingFrequency] = useState("");
+  const [contentThemes, setContentThemes] = useState<string[]>([]);
   
   // Brand personality
-  const [brandPersonality, setBrandPersonality] = useState(user?.brandPersonality || "");
-  const [colorPreferences, setColorPreferences] = useState<string[]>(user?.colorPreferences || []);
-  const [brandKeywords, setBrandKeywords] = useState(user?.brandKeywords || "");
+  const [brandPersonality, setBrandPersonality] = useState("");
+  const [colorPreferences, setColorPreferences] = useState<string[]>([]);
+  const [brandKeywords, setBrandKeywords] = useState("");
   
   // Platform strategy
-  const [primaryPlatforms, setPrimaryPlatforms] = useState<string[]>(user?.primaryPlatforms || []);
-  const [contentFormats, setContentFormats] = useState<string[]>(user?.contentFormats || []);
-  const [specialRequirements, setSpecialRequirements] = useState(user?.specialRequirements || "");
+  const [primaryPlatforms, setPrimaryPlatforms] = useState<string[]>([]);
+  const [contentFormats, setContentFormats] = useState<string[]>([]);
+  const [specialRequirements, setSpecialRequirements] = useState("");
   
   // Notification preferences (you can expand this based on your needs)
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [browserNotifications, setBrowserNotifications] = useState(true);
   const [marketingEmails, setMarketingEmails] = useState(false);
 
+  // Sync state with user data when it loads
+  useEffect(() => {
+    if (user) {
+      console.log("Settings: Syncing user data:", user); // Debug log
+      setFirstName(user.firstName || "");
+      setLastName(user.lastName || "");
+      setEmail(user.email || "");
+      
+      // Basic onboarding data
+      setNiche(user.niche || "");
+      setContentType(user.contentType || "");
+      setStylePreference(user.stylePreference || "");
+      
+      // Business information
+      setBusinessType(user.businessType || "");
+      setTargetAudience(user.targetAudience || "");
+      setAudienceAge(user.audienceAge || "");
+      
+      // Content goals
+      setPrimaryGoal(user.primaryGoal || "");
+      setPostingFrequency(user.postingFrequency || "");
+      setContentThemes(user.contentThemes || []);
+      
+      // Brand personality
+      setBrandPersonality(user.brandPersonality || "");
+      setColorPreferences(user.colorPreferences || []);
+      setBrandKeywords(user.brandKeywords || "");
+      
+      // Platform strategy
+      setPrimaryPlatforms(user.primaryPlatforms || []);
+      setContentFormats(user.contentFormats || []);
+      setSpecialRequirements(user.specialRequirements || "");
+    }
+  }, [user]);
+
+  // Helper function for multi-select fields
+  const handleMultiSelect = (
+    currentArray: string[], 
+    setArray: (array: string[]) => void, 
+    value: string
+  ) => {
+    const newArray = currentArray.includes(value)
+      ? currentArray.filter(item => item !== value)
+      : [...currentArray, value];
+    setArray(newArray);
+  };
+
   const updateProfileMutation = useMutation({
     mutationFn: async (profileData: Partial<User>) => {
       await apiRequest("PATCH", "/api/user/profile", profileData);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      // Invalidate both query keys to ensure fresh data
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
       toast({
         title: "Success",
         description: "Profile updated successfully.",
@@ -429,6 +478,23 @@ export default function Settings() {
                 </Select>
               </div>
             </div>
+            
+            {/* Content Themes */}
+            <div className="space-y-2">
+              <Label>Content Themes (Select multiple)</Label>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {["Motivation", "Tips & Tricks", "Industry News", "Personal Stories", "Product Features", "Customer Success", "Behind the Scenes", "Trends", "How-to Guides"].map((theme) => (
+                  <div key={theme} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={theme}
+                      checked={contentThemes.includes(theme)}
+                      onCheckedChange={() => handleMultiSelect(contentThemes, setContentThemes, theme)}
+                    />
+                    <Label htmlFor={theme} className="text-sm cursor-pointer">{theme}</Label>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           <Separator />
@@ -462,6 +528,99 @@ export default function Settings() {
                   onChange={(e) => setBrandKeywords(e.target.value)}
                   placeholder="e.g., innovative, reliable, premium"
                 />
+              </div>
+            </div>
+            
+            {/* Color Preferences */}
+            <div className="space-y-2">
+              <Label>Color Preferences (Select 2-4)</Label>
+              <div className="grid grid-cols-5 md:grid-cols-10 gap-3">
+                {[
+                  { value: "blue", label: "Blue", color: "bg-blue-500" },
+                  { value: "red", label: "Red", color: "bg-red-500" },
+                  { value: "green", label: "Green", color: "bg-green-500" },
+                  { value: "purple", label: "Purple", color: "bg-purple-500" },
+                  { value: "orange", label: "Orange", color: "bg-orange-500" },
+                  { value: "pink", label: "Pink", color: "bg-pink-500" },
+                  { value: "yellow", label: "Yellow", color: "bg-yellow-500" },
+                  { value: "black", label: "Black", color: "bg-black" },
+                  { value: "white", label: "White", color: "bg-white border" },
+                  { value: "gray", label: "Gray", color: "bg-gray-500" },
+                ].map((color) => (
+                  <Button
+                    key={color.value}
+                    type="button"
+                    variant="outline"
+                    className={`p-3 h-auto flex-col space-y-2 ${
+                      colorPreferences.includes(color.value) ? 'ring-2 ring-primary' : ''
+                    }`}
+                    onClick={() => handleMultiSelect(colorPreferences, setColorPreferences, color.value)}
+                  >
+                    <div className={`w-8 h-8 rounded-full ${color.color}`} />
+                    <span className="text-xs">{color.label}</span>
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Platform Strategy */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Platform Strategy</h3>
+            
+            {/* Primary Platforms */}
+            <div className="space-y-2">
+              <Label>Primary Platforms (Select multiple)</Label>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {[
+                  { value: "instagram", label: "Instagram", description: "Visual storytelling" },
+                  { value: "linkedin", label: "LinkedIn", description: "Professional networking" },
+                  { value: "twitter", label: "Twitter/X", description: "Real-time updates" },
+                  { value: "facebook", label: "Facebook", description: "Community building" },
+                  { value: "tiktok", label: "TikTok", description: "Short-form video" },
+                  { value: "youtube", label: "YouTube", description: "Long-form content" },
+                ].map((platform) => (
+                  <div key={platform.value} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={platform.value}
+                      checked={primaryPlatforms.includes(platform.value)}
+                      onCheckedChange={() => handleMultiSelect(primaryPlatforms, setPrimaryPlatforms, platform.value)}
+                    />
+                    <Label htmlFor={platform.value} className="flex-1 cursor-pointer">
+                      <div className="font-medium text-slate-900">{platform.label}</div>
+                      <div className="text-sm text-slate-600">{platform.description}</div>
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Content Formats */}
+            <div className="space-y-2">
+              <Label>Content Formats (Select multiple)</Label>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {[
+                  { value: "single-image", label: "Single Images", description: "Standard posts" },
+                  { value: "carousel", label: "Carousel Posts", description: "Multiple images" },
+                  { value: "stories", label: "Stories", description: "Temporary content" },
+                  { value: "videos", label: "Videos", description: "Motion content" },
+                  { value: "infographics", label: "Infographics", description: "Data visualization" },
+                  { value: "testimonials", label: "Testimonials", description: "Customer reviews" },
+                ].map((format) => (
+                  <div key={format.value} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={format.value}
+                      checked={contentFormats.includes(format.value)}
+                      onCheckedChange={() => handleMultiSelect(contentFormats, setContentFormats, format.value)}
+                    />
+                    <Label htmlFor={format.value} className="flex-1 cursor-pointer">
+                      <div className="font-medium text-slate-900">{format.label}</div>
+                      <div className="text-sm text-slate-600">{format.description}</div>
+                    </Label>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

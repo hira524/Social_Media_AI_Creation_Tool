@@ -57,6 +57,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const userId = req.user.claims.sub;
       const user = await storage.getUser(userId);
+      
+      console.log("Returning user data:", JSON.stringify({
+        id: user?.id,
+        email: user?.email,
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        onboardingCompleted: user?.onboardingCompleted,
+        businessType: user?.businessType,
+        targetAudience: user?.targetAudience,
+        primaryGoal: user?.primaryGoal,
+        brandPersonality: user?.brandPersonality,
+        primaryPlatforms: user?.primaryPlatforms,
+        hasOnboardingData: !!(user?.businessType || user?.targetAudience || user?.primaryGoal)
+      }, null, 2));
+      
       res.json(user);
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -68,9 +83,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/onboarding', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
+      console.log("Onboarding request for user:", userId);
+      console.log("Onboarding data received:", JSON.stringify(req.body, null, 2));
+      
       const validatedData = updateOnboardingSchema.parse(req.body);
+      console.log("Validated onboarding data:", JSON.stringify(validatedData, null, 2));
       
       const user = await storage.updateOnboarding(userId, validatedData);
+      console.log("Updated user after onboarding:", JSON.stringify({
+        id: user.id,
+        onboardingCompleted: user.onboardingCompleted,
+        businessType: user.businessType,
+        targetAudience: user.targetAudience,
+        primaryGoal: user.primaryGoal,
+        brandPersonality: user.brandPersonality,
+        primaryPlatforms: user.primaryPlatforms
+      }, null, 2));
+      
       res.json(user);
     } catch (error) {
       console.error("Error updating onboarding:", error);
@@ -274,18 +303,80 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch('/api/user/profile', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
-      const { firstName, lastName, email, niche, contentType, stylePreference } = req.body;
+      console.log("Profile update request for user:", userId);
+      console.log("Profile update data received:", JSON.stringify(req.body, null, 2));
       
-      // Validation
+      const { 
+        firstName, 
+        lastName, 
+        email,
+        // Basic onboarding data
+        niche,
+        contentType,
+        stylePreference,
+        // Business information
+        businessType,
+        targetAudience,
+        audienceAge,
+        // Content goals
+        primaryGoal,
+        postingFrequency,
+        contentThemes,
+        // Brand personality
+        brandPersonality,
+        colorPreferences,
+        brandKeywords,
+        // Platform strategy
+        primaryPlatforms,
+        contentFormats,
+        specialRequirements
+      } = req.body;
+      
+      // Build profile data object with all supported fields
       const profileData: any = {};
       if (firstName !== undefined) profileData.firstName = firstName;
       if (lastName !== undefined) profileData.lastName = lastName;
       if (email !== undefined) profileData.email = email;
+      
+      // Basic onboarding data
       if (niche !== undefined) profileData.niche = niche;
       if (contentType !== undefined) profileData.contentType = contentType;
       if (stylePreference !== undefined) profileData.stylePreference = stylePreference;
       
+      // Business information
+      if (businessType !== undefined) profileData.businessType = businessType;
+      if (targetAudience !== undefined) profileData.targetAudience = targetAudience;
+      if (audienceAge !== undefined) profileData.audienceAge = audienceAge;
+      
+      // Content goals
+      if (primaryGoal !== undefined) profileData.primaryGoal = primaryGoal;
+      if (postingFrequency !== undefined) profileData.postingFrequency = postingFrequency;
+      if (contentThemes !== undefined) profileData.contentThemes = contentThemes;
+      
+      // Brand personality
+      if (brandPersonality !== undefined) profileData.brandPersonality = brandPersonality;
+      if (colorPreferences !== undefined) profileData.colorPreferences = colorPreferences;
+      if (brandKeywords !== undefined) profileData.brandKeywords = brandKeywords;
+      
+      // Platform strategy
+      if (primaryPlatforms !== undefined) profileData.primaryPlatforms = primaryPlatforms;
+      if (contentFormats !== undefined) profileData.contentFormats = contentFormats;
+      if (specialRequirements !== undefined) profileData.specialRequirements = specialRequirements;
+      
+      console.log("Profile data to update:", JSON.stringify(profileData, null, 2));
+      
       const updatedUser = await storage.updateUserProfile(userId, profileData);
+      
+      console.log("Updated user profile:", JSON.stringify({
+        id: updatedUser.id,
+        onboardingCompleted: updatedUser.onboardingCompleted,
+        businessType: updatedUser.businessType,
+        targetAudience: updatedUser.targetAudience,
+        primaryGoal: updatedUser.primaryGoal,
+        brandPersonality: updatedUser.brandPersonality,
+        primaryPlatforms: updatedUser.primaryPlatforms
+      }, null, 2));
+      
       res.json(updatedUser);
     } catch (error) {
       console.error("Error updating profile:", error);

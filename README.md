@@ -13,18 +13,22 @@ A full-stack SaaS web application for AI-powered social media image generation u
 ## Setup Instructions
 
 ### 1. Clone the repository
+
 ```bash
 git clone https://github.com/hira524/Social_Media_AI_Creation_Tool.git
 cd Social_Media_AI_Creation_Tool
 ```
 
 ### 2. Install dependencies
+
 ```bash
 npm install
 ```
 
 ### 3. Environment Configuration
+
 1. Copy the example environment file:
+
    ```bash
    cp .env.example .env
    ```
@@ -36,11 +40,13 @@ npm install
    - **Other settings**: Update according to your setup
 
 ### 4. Database Setup
+
 ```bash
 npm run db:push
 ```
 
 ### 5. Start the development server
+
 ```bash
 npm run dev
 ```

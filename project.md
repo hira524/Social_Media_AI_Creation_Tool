@@ -13,6 +13,7 @@ Preferred communication style: Simple, everyday language.
 ## System Architecture
 
 ### Frontend Architecture
+
 - **Framework**: React 18 with TypeScript using Vite as the build tool
 - **UI Framework**: Custom design system built on Radix UI primitives with Tailwind CSS
 - **State Management**: TanStack Query (React Query) for server state management
@@ -21,6 +22,7 @@ Preferred communication style: Simple, everyday language.
 - **Styling**: Tailwind CSS with CSS variables for theming
 
 ### Backend Architecture
+
 - **Runtime**: Node.js with Express.js server
 - **Language**: TypeScript with ES modules
 - **Database**: MongoDB with Mongoose ODM
@@ -29,7 +31,9 @@ Preferred communication style: Simple, everyday language.
 - **Session Management**: Express sessions stored in MongoDB
 
 ### Database Design
+
 The application uses MongoDB with the following key collections:
+
 - `users`: Stores user profiles, onboarding data, and credit system
 - `generated_images`: Tracks all generated images with metadata
 - `sessions`: Handles user authentication sessions (required for Custom Auth)
@@ -37,31 +41,36 @@ The application uses MongoDB with the following key collections:
 ## Key Components
 
 ### Authentication System
+
 - **Provider**: Custom Auth with OpenID Connect
 - **Session Storage**: MongoDB-based session store using connect-mongo
 - **User Management**: Automatic user creation/updates on login
 - **Security**: JWT-based authentication with secure HTTP-only cookies
 
 ### Onboarding Flow
+
 - **Purpose**: Personalizes AI image generation based on user preferences
-- **Data Collected**: 
+- **Data Collected**:
   - User niche (fitness, food, tech, fashion, business, travel)
   - Content type (quotes, promotions, educational, announcements)
   - Style preference (professional, creative, minimalist, bold)
 - **Implementation**: Multi-step form with validation, stored in user profile
 
 ### AI Image Generation
+
 - **Primary Service**: OpenAI DALL-E 3 for image generation
 - **Enhancement**: GPT-4 for prompt optimization based on user preferences
 - **Platform Optimization**: Different dimensions and styles for Instagram, LinkedIn, Twitter
 - **Quality**: Standard quality 1024x1024 images with platform-specific adaptations
 
 ### Credit System
+
 - **Initial Credits**: 5 credits per new user
 - **Usage**: 1 credit per image generation
 - **Tracking**: Real-time credit balance display and validation
 
 ### Image Management
+
 - **History**: Complete generation history with favorites system
 - **Metadata**: Stores original prompt, enhanced prompt, platform, style, and dimensions
 - **Actions**: Download, favorite/unfavorite, view full resolution
@@ -70,7 +79,7 @@ The application uses MongoDB with the following key collections:
 
 1. **User Registration/Login**: Handled by Custom Auth, creates/updates user record
 2. **Onboarding**: Collects user preferences and stores in database
-3. **Image Generation Request**: 
+3. **Image Generation Request**:
    - User submits prompt and selects platform/style
    - System enhances prompt using user preferences via GPT-4
    - Enhanced prompt sent to DALL-E 3 for image generation
@@ -82,6 +91,7 @@ The application uses MongoDB with the following key collections:
 ## External Dependencies
 
 ### Core Dependencies
+
 - **Database**: MongoDB (cloud or self-hosted)
 - **AI Services**: OpenAI API (DALL-E 3 + GPT-4)
 - **Authentication**: Custom Auth service
@@ -90,6 +100,7 @@ The application uses MongoDB with the following key collections:
 - **Styling**: Tailwind CSS with class-variance-authority
 
 ### Development Tools
+
 - **Build Tool**: Vite with React plugin
 - **Database ODM**: Mongoose for MongoDB
 - **TypeScript**: Full type safety across frontend and backend
@@ -98,15 +109,17 @@ The application uses MongoDB with the following key collections:
 ## Deployment Strategy
 
 ### Development Environment
+
 - **Server**: Development server runs on tsx with hot reloading
 - **Database**: Connected to MongoDB via DATABASE_URL
-- **Environment Variables**: 
+- **Environment Variables**:
   - `DATABASE_URL`: MongoDB connection string
   - `OPENAI_API_KEY`: OpenAI API authentication
   - `SESSION_SECRET`: Session encryption key
   - `APP_ID`: Application identifier
 
 ### Production Build
+
 - **Frontend**: Vite builds React app to `dist/public`
 - **Backend**: esbuild bundles server code to `dist/index.js`
 - **Database**: MongoDB collections created automatically via Mongoose

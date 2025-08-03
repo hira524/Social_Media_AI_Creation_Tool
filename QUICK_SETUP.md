@@ -5,6 +5,7 @@
 Your project has been fixed and is now ready for setup! Follow these steps:
 
 ### 1. ✅ Already Completed
+
 - Fixed environment variable loading
 - Fixed server network binding issues
 - Fixed TypeScript configuration
@@ -15,19 +16,23 @@ Your project has been fixed and is now ready for setup! Follow these steps:
 **Choose one option:**
 
 #### Option A: Neon (Recommended)
-1. Go to https://neon.tech
+
+1. Go to <https://neon.tech>
 2. Create free account
 3. Create new project
 4. Copy your connection string
 5. Update `.env` file:
+
    ```bash
    DATABASE_URL=your_neon_connection_string_here
    ```
 
 #### Option B: Local PostgreSQL
+
 1. Install PostgreSQL
 2. Create database
 3. Update `.env`:
+
    ```bash
    DATABASE_URL=postgresql://username:password@localhost:5432/your_db_name
    ```
@@ -47,7 +52,7 @@ npm run dev
 
 ### 4. 🌐 Access Your App
 
-Open http://localhost:5000 in your browser.
+Open <http://localhost:5000> in your browser.
 
 ### 5. 🔑 Verify Your API Keys
 
@@ -60,6 +65,6 @@ Open http://localhost:5000 in your browser.
 - Keep your API keys secure
 - Don't commit `.env` file to version control
 
-## 🎯 Your app should now work without errors!
+## 🎯 Your app should now work without errors
 
 If you encounter any issues, check the detailed documentation in `FIXES_APPLIED.md`.

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "wouter";
 import Navigation from "@/components/ui/navigation";
 import ImageGenerator from "@/components/ui/image-generator";
 import ImageHistory from "@/components/ui/image-history";
@@ -8,21 +9,20 @@ import ImageHistory from "@/components/ui/image-history";
 export default function Dashboard() {
   const { toast } = useToast();
   const { isAuthenticated, isLoading } = useAuth();
+  const [, setLocation] = useLocation();
 
   // Redirect to home if not authenticated
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       toast({
-        title: "Unauthorized",
-        description: "You are logged out. Logging in again...",
+        title: "Please sign in",
+        description: "You need to be logged in to access the dashboard.",
         variant: "destructive",
       });
-      setTimeout(() => {
-        window.location.href = '/api/login';
-      }, 500);
+      setLocation("/");
       return;
     }
-  }, [isAuthenticated, isLoading, toast]);
+  }, [isAuthenticated, isLoading, toast, setLocation]);
 
   if (isLoading) {
     return (

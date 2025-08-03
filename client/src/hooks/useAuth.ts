@@ -1,7 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useAuth() {
-  const { data: user, isLoading, error } = useQuery({
+  const queryClient = useQueryClient();
+  
+  const { data: user, isLoading, error, refetch } = useQuery({
     queryKey: ['auth-user'],
     queryFn: async () => {
       try {
@@ -32,10 +34,16 @@ export function useAuth() {
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
+  const refreshAuth = () => {
+    queryClient.invalidateQueries({ queryKey: ['auth-user'] });
+  };
+
   return {
     user,
     isLoading,
     isAuthenticated: !!user,
     error,
+    refetch,
+    refreshAuth,
   };
 }

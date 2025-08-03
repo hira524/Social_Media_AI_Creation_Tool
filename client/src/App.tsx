@@ -9,6 +9,8 @@ import NotFound from "@/pages/not-found";
 import Landing from "@/pages/landing";
 import Dashboard from "@/pages/dashboard";
 import Onboarding from "@/pages/onboarding";
+import SignUp from "@/pages/signup";
+import Login from "@/pages/login";
 
 function Router() {
   const { isAuthenticated, isLoading, user } = useAuth();
@@ -25,6 +27,8 @@ function Router() {
 
   return (
     <Switch>
+      <Route path="/signup" component={SignUp} />
+      <Route path="/login" component={Login} />
       <Route path="/dashboard">
         {!isAuthenticated ? (
           <Landing />

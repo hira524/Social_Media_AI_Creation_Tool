@@ -1,10 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles, Brain, Smartphone, Zap, Palette, History, Download, ArrowRight, Check, Play } from "lucide-react";
+import { useLocation } from "wouter";
 
 export default function Landing() {
+  const [, setLocation] = useLocation();
+
   const handleGetStarted = () => {
-    window.location.href = "/api/login";
+    setLocation("/signup");
+  };
+
+  const handleLogin = () => {
+    setLocation("/login");
   };
 
   const features = [
@@ -104,7 +111,7 @@ export default function Landing() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" onClick={() => window.location.href = "/api/login"}>
+              <Button variant="ghost" onClick={handleLogin}>
                 Sign In
               </Button>
               <Button onClick={handleGetStarted}>

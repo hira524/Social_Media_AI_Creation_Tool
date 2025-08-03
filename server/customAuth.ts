@@ -133,17 +133,18 @@ export async function setupAuth(app: Express) {
         console.log("Session ID:", req.sessionID);
         console.log("User object:", req.user);
         
-        // For development, return JSON response instead of redirect to handle CORS better
-        if (process.env.NODE_ENV === "development") {
-          return res.json({ 
-            success: true, 
-            message: "Login successful", 
-            user: defaultUser,
-            redirect: "/dashboard"
-          });
-        } else {
-          res.redirect("/dashboard");
-        }
+        // Always return JSON response for API calls
+        return res.json({ 
+          success: true, 
+          message: "Login successful", 
+          user: {
+            id: defaultUser.claims.sub,
+            email: defaultUser.claims.email,
+            firstName: defaultUser.claims.first_name,
+            lastName: defaultUser.claims.last_name
+          },
+          redirect: "/dashboard"
+        });
       });
     });
 
@@ -167,17 +168,18 @@ export async function setupAuth(app: Express) {
           return res.status(500).json({ message: "Signup failed" });
         }
         
-        // For development, return JSON response instead of redirect
-        if (process.env.NODE_ENV === "development") {
-          return res.json({ 
-            success: true, 
-            message: "Signup successful", 
-            user: defaultUser,
-            redirect: "/onboarding"
-          });
-        } else {
-          res.redirect("/onboarding");
-        }
+        // Always return JSON response for API calls
+        return res.json({ 
+          success: true, 
+          message: "Signup successful", 
+          user: {
+            id: defaultUser.claims.sub,
+            email: defaultUser.claims.email,
+            firstName: defaultUser.claims.first_name,
+            lastName: defaultUser.claims.last_name
+          },
+          redirect: "/onboarding"
+        });
       });
     });
 
@@ -186,13 +188,18 @@ export async function setupAuth(app: Express) {
     });
 
     app.get("/api/logout", (req, res) => {
-      req.logout(() => {
-        // In development, redirect to the Vite dev server
-        if (process.env.NODE_ENV === "development") {
-          res.redirect("http://localhost:3000/");
-        } else {
-          res.redirect("/");
+      req.logout((err) => {
+        if (err) {
+          console.error("Logout error:", err);
+          return res.status(500).json({ message: "Logout failed" });
         }
+        
+        // Always return JSON response for API calls
+        res.json({ 
+          success: true, 
+          message: "Logout successful",
+          redirect: "/"
+        });
       });
     });
 

@@ -8,14 +8,44 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sparkles, Zap, ChevronDown } from "lucide-react";
+import { useLocation } from "wouter";
+import { useToast } from "@/hooks/use-toast";
 import type { User } from "@shared/mongoSchema";
 
 export default function Navigation() {
-  const { user } = useAuth();
+  const { user, refreshAuth } = useAuth();
   const typedUser = user as User;
+  const [, setLocation] = useLocation();
+  const { toast } = useToast();
 
-  const handleLogout = () => {
-    window.location.href = '/api/logout';
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/logout', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        toast({
+          title: "Goodbye!",
+          description: "You've been successfully logged out.",
+        });
+        
+        // Refresh auth state and redirect
+        refreshAuth();
+        setLocation("/");
+      } else {
+        throw new Error('Logout failed');
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to logout. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

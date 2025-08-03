@@ -1,0 +1,123 @@
+I want you to build me a complete full-stack SaaS web application using the MERN stack (MongoDB, Express.js, React.js, Node.js) with integrated AI image generation powered by Stable Diffusion or any suitable open-source model.
+
+This tool will allow users to generate AI-based social media image posts, similar to Leonardo AI. It should include user authentication, niche-based onboarding, and a complete image generation workflow.
+
+🧠 Features & Functionality
+1. 🔐 User Authentication (Secure with Bcrypt)
+Sign up / Log in system with:
+
+Password hashing using bcrypt
+
+JWT-based session management
+
+User info stored securely in MongoDB
+
+2. 👤 Smart Onboarding (Ask Before Generate)
+After signing up, users must answer a few questions:
+
+“What is your niche?” (e.g., fitness, fashion, tech, food)
+
+“What type of social media content do you create?” (quotes, promotions, carousels, etc.)
+
+“What style/tone do you prefer?” (professional, fun, luxury, minimalist)
+
+Store answers in user profile (MongoDB)
+
+Use these to personalize the AI prompt for image generation
+
+3. 💻 Frontend (React.js + Tailwind CSS)
+Pages & UI Components:
+
+Landing Page (with CTA)
+
+Sign up / Login Form
+
+Onboarding Form (shown once per user)
+
+Main Dashboard:
+
+Prompt input
+
+Style selector (Instagram, LinkedIn, X/Twitter)
+
+“Generate Image” button
+
+Image preview + download
+
+History section
+
+4. 🧠 Backend (Node.js + Express.js)
+Routes:
+
+/auth/register — Hash password with bcrypt
+
+/auth/login — JWT authentication
+
+/user/profile — Save/retrieve onboarding data
+
+/generate — AI image generation route using:
+
+Stable Diffusion (self-hosted) or
+
+Any suitable open-source model (e.g., DALL·E mini, SDXL, etc.)
+
+Store generated image URLs + metadata in DB
+
+5. 🗃️ Database (MongoDB)
+Users Collection:
+
+Email, password (bcrypt), onboarding info
+
+Images Collection:
+
+userId, prompt, imageUrl, timestamp
+
+6. 🎨 AI Image Generation
+Use:
+
+Stable Diffusion (preferred) or another open-source image model
+
+Host locally or through external APIs (e.g., Stability.ai, Replicate, HuggingFace)
+
+Accept:
+
+User prompt
+
+Niche/context from onboarding
+
+Optional style inputs
+
+Return generated image for download
+
+📦 Deliverables:
+Complete MERN SaaS AI image generation tool
+
+Full source code:
+
+React frontend
+
+Express backend
+
+MongoDB schemas
+
+Stable Diffusion integration (or similar model)
+
+Setup instructions for Replit (Windows):
+
+Environment variables
+
+MongoDB connection
+
+API keys if required
+
+How to run frontend + backend
+
+Please provide:
+
+Full folder structure
+
+All backend + frontend code
+
+Stable Diffusion integration (or recommended open-source model)
+
+Clear, step-by-step setup instructions

@@ -1,5 +1,19 @@
 import { z } from "zod";
 
+// Validation schema for user signup
+export const signupSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email("Valid email is required"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+// Validation schema for user login
+export const loginSchema = z.object({
+  email: z.string().email("Valid email is required"),
+  password: z.string().min(1, "Password is required"),
+});
+
 // Validation schema for onboarding updates
 export const updateOnboardingSchema = z.object({
   niche: z.string().min(1, "Niche is required"),
@@ -26,6 +40,8 @@ export const insertGeneratedImageSchema = z.object({
   isFavorite: z.boolean().optional().default(false),
 });
 
+export type SignupRequest = z.infer<typeof signupSchema>;
+export type LoginRequest = z.infer<typeof loginSchema>;
 export type UpdateOnboarding = z.infer<typeof updateOnboardingSchema>;
 export type GenerateImageRequest = z.infer<typeof generateImageRequestSchema>;
 export type InsertGeneratedImage = z.infer<typeof insertGeneratedImageSchema>;

@@ -13,6 +13,8 @@ export interface IStorage {
   // User operations
   // (IMPORTANT) these user operations are mandatory for Custom Auth.
   getUser(id: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
+  createUser(user: UpsertUser): Promise<User>;
   upsertUser(user: UpsertUser): Promise<User>;
   
   // Onboarding operations
@@ -39,6 +41,27 @@ export class DatabaseStorage implements IStorage {
     } catch (error) {
       console.error("Error fetching user:", error);
       return undefined;
+    }
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    try {
+      const user = await UserModel.findOne({ email }).exec();
+      return user || undefined;
+    } catch (error) {
+      console.error("Error fetching user by email:", error);
+      return undefined;
+    }
+  }
+
+  async createUser(userData: UpsertUser): Promise<User> {
+    try {
+      const user = new UserModel(userData);
+      await user.save();
+      return user;
+    } catch (error) {
+      console.error("Error creating user:", error);
+      throw error;
     }
   }
 

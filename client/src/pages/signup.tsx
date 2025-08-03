@@ -44,10 +44,19 @@ export default function SignUp() {
     setIsLoading(true);
     
     try {
-      // For now, use the simplified auth endpoint
+      // Send signup data to the server
       const response = await fetch('/api/signup', {
-        method: 'GET',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         credentials: 'include',
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+        }),
       });
       
       if (response.ok) {
@@ -66,13 +75,14 @@ export default function SignUp() {
           setLocation("/onboarding");
         }, 500);
       } else {
-        throw new Error('Sign up failed');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Sign up failed');
       }
     } catch (error) {
       console.error('Sign up error:', error);
       toast({
         title: "Error",
-        description: "Failed to create account. Please try again.",
+        description: error instanceof Error ? error.message : "Failed to create account. Please try again.",
         variant: "destructive",
       });
     } finally {

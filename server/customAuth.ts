@@ -1,5 +1,7 @@
 import * as client from "openid-client";
 import { Strategy, type VerifyFunction } from "openid-client/passport";
+import bcrypt from "bcrypt";
+import { v4 as uuidv4 } from 'uuid';
 
 import passport from "passport";
 import session from "express-session";
@@ -7,6 +9,7 @@ import type { Express, RequestHandler } from "express";
 import memoize from "memoizee";
 import MongoStore from "connect-mongo";
 import { storage } from "./storage";
+import { signupSchema, loginSchema } from "@shared/validation";
 
 // Development mode flag
 const isDevelopment = process.env.NODE_ENV === "development";
@@ -101,86 +104,129 @@ export async function setupAuth(app: Express) {
     passport.serializeUser((user: Express.User, cb) => cb(null, user));
     passport.deserializeUser((user: Express.User, cb) => cb(null, user));
 
-    // Ensure the default user exists in the database on startup
-    await storage.upsertUser({
-      id: "default-user-123",
-      email: "user@example.com",
-      firstName: "Default",
-      lastName: "User",
-      profileImageUrl: "",
-    });
-
-    app.get("/api/login", (req, res) => {
-      // Manual login - create session only when explicitly requested
-      const defaultUser = {
-        claims: {
-          sub: "default-user-123",
-          email: "user@example.com",
-          first_name: "Default",
-          last_name: "User"
-        },
-        access_token: "default-access-token",
-        expires_at: Math.floor(Date.now() / 1000) + 86400 // 24 hours from now
-      };
-
-      console.log("Login attempt - creating session...");
-      req.login(defaultUser, (err) => {
-        if (err) {
-          console.error("Login error:", err);
-          return res.status(500).json({ message: "Login failed" });
-        }
-        console.log("Login successful - session created");
-        console.log("Session ID:", req.sessionID);
-        console.log("User object:", req.user);
+    // POST route for user signup
+    app.post("/api/signup", async (req, res) => {
+      try {
+        const validatedData = signupSchema.parse(req.body);
         
-        // Always return JSON response for API calls
-        return res.json({ 
-          success: true, 
-          message: "Login successful", 
-          user: {
-            id: defaultUser.claims.sub,
-            email: defaultUser.claims.email,
-            firstName: defaultUser.claims.first_name,
-            lastName: defaultUser.claims.last_name
-          },
-          redirect: "/dashboard"
-        });
-      });
-    });
-
-    app.get("/api/signup", (req, res) => {
-      // For now, signup does the same as login since we're using a default user
-      // In the future, this would create a new user account
-      const defaultUser = {
-        claims: {
-          sub: "default-user-123",
-          email: "user@example.com",
-          first_name: "Default",
-          last_name: "User"
-        },
-        access_token: "default-access-token",
-        expires_at: Math.floor(Date.now() / 1000) + 86400 // 24 hours from now
-      };
-
-      req.login(defaultUser, (err) => {
-        if (err) {
-          console.error("Signup error:", err);
-          return res.status(500).json({ message: "Signup failed" });
+        // Check if user already exists
+        const existingUser = await storage.getUserByEmail(validatedData.email);
+        if (existingUser) {
+          return res.status(400).json({ message: "User already exists with this email" });
         }
         
-        // Always return JSON response for API calls
-        return res.json({ 
-          success: true, 
-          message: "Signup successful", 
-          user: {
-            id: defaultUser.claims.sub,
-            email: defaultUser.claims.email,
-            firstName: defaultUser.claims.first_name,
-            lastName: defaultUser.claims.last_name
-          },
-          redirect: "/onboarding"
+        // Hash password
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(validatedData.password, saltRounds);
+        
+        // Create new user
+        const userId = uuidv4();
+        const newUser = await storage.createUser({
+          id: userId,
+          email: validatedData.email,
+          password: hashedPassword,
+          firstName: validatedData.firstName,
+          lastName: validatedData.lastName,
+          profileImageUrl: "",
+          onboardingCompleted: false,
+          creditsRemaining: 5
         });
-      });
+        
+        // Create session
+        const userSession = {
+          claims: {
+            sub: newUser.id,
+            email: newUser.email,
+            first_name: newUser.firstName,
+            last_name: newUser.lastName
+          },
+          access_token: `token-${userId}`,
+          expires_at: Math.floor(Date.now() / 1000) + 86400 // 24 hours from now
+        };
+
+        req.login(userSession, (err) => {
+          if (err) {
+            console.error("Signup login error:", err);
+            return res.status(500).json({ message: "Signup failed" });
+          }
+          
+          return res.json({ 
+            success: true, 
+            message: "Account created successfully", 
+            user: {
+              id: newUser.id,
+              email: newUser.email,
+              firstName: newUser.firstName,
+              lastName: newUser.lastName
+            },
+            redirect: "/onboarding"
+          });
+        });
+        
+      } catch (error) {
+        console.error("Signup error:", error);
+        if (error instanceof Error && 'issues' in error) {
+          return res.status(400).json({ message: "Invalid signup data", errors: error.issues });
+        }
+        return res.status(500).json({ message: "Signup failed" });
+      }
+    });
+
+    // POST route for user login
+    app.post("/api/login", async (req, res) => {
+      try {
+        const validatedData = loginSchema.parse(req.body);
+        
+        // Find user by email
+        const user = await storage.getUserByEmail(validatedData.email);
+        if (!user || !user.password) {
+          return res.status(401).json({ message: "Invalid email or password" });
+        }
+        
+        // Verify password
+        const isValidPassword = await bcrypt.compare(validatedData.password, user.password);
+        if (!isValidPassword) {
+          return res.status(401).json({ message: "Invalid email or password" });
+        }
+        
+        // Create session
+        const userSession = {
+          claims: {
+            sub: user.id,
+            email: user.email,
+            first_name: user.firstName,
+            last_name: user.lastName
+          },
+          access_token: `token-${user.id}`,
+          expires_at: Math.floor(Date.now() / 1000) + 86400 // 24 hours from now
+        };
+
+        req.login(userSession, (err) => {
+          if (err) {
+            console.error("Login error:", err);
+            return res.status(500).json({ message: "Login failed" });
+          }
+          
+          return res.json({ 
+            success: true, 
+            message: "Login successful", 
+            user: {
+              id: user.id,
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName
+            },
+            redirect: "/dashboard"
+          });
+        });
+        
+      } catch (error) {
+        console.error("Login error:", error);
+        if (error instanceof Error && 'issues' in error) {
+          return res.status(400).json({ message: "Invalid login data", errors: error.issues });
+        }
+        return res.status(500).json({ message: "Login failed" });
+      }
     });
 
     app.get("/api/callback", (req, res) => {

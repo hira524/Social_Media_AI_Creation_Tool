@@ -31,10 +31,17 @@ export default function Login() {
     setIsLoading(true);
     
     try {
-      // For now, use the simplified auth endpoint
+      // Send login data to the server
       const response = await fetch('/api/login', {
-        method: 'GET',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         credentials: 'include',
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
       });
       
       if (response.ok) {
@@ -53,13 +60,14 @@ export default function Login() {
           setLocation("/dashboard");
         }, 500);
       } else {
-        throw new Error('Login failed');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Login failed');
       }
     } catch (error) {
       console.error('Login error:', error);
       toast({
         title: "Error",
-        description: "Invalid email or password. Please try again.",
+        description: error instanceof Error ? error.message : "Invalid email or password. Please try again.",
         variant: "destructive",
       });
     } finally {

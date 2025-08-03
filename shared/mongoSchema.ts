@@ -22,6 +22,7 @@ export const Session = mongoose.model<ISession>('Session', sessionSchema);
 export interface IUser extends Document {
   id: string;
   email?: string;
+  password?: string; // Added password field
   firstName?: string;
   lastName?: string;
   profileImageUrl?: string;
@@ -37,6 +38,7 @@ export interface IUser extends Document {
 const userSchema = new Schema<IUser>({
   id: { type: String, required: true, unique: true },
   email: { type: String, unique: true, sparse: true },
+  password: String, // Added password field
   firstName: String,
   lastName: String,
   profileImageUrl: String,
@@ -94,6 +96,7 @@ export type GeneratedImage = IGeneratedImage;
 export interface UpsertUser {
   id: string;
   email?: string;
+  password?: string; // Added password field
   firstName?: string;
   lastName?: string;
   profileImageUrl?: string;

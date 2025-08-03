@@ -27,9 +27,32 @@ export interface IUser extends Document {
   lastName?: string;
   profileImageUrl?: string;
   onboardingCompleted?: boolean;
+  
+  // Basic onboarding data
   niche?: string;
   contentType?: string;
   stylePreference?: string;
+  
+  // Business information
+  businessType?: string;
+  targetAudience?: string;
+  audienceAge?: string;
+  
+  // Content goals
+  primaryGoal?: string;
+  postingFrequency?: string;
+  contentThemes?: string[];
+  
+  // Brand personality
+  brandPersonality?: string;
+  colorPreferences?: string[];
+  brandKeywords?: string;
+  
+  // Platform strategy
+  primaryPlatforms?: string[];
+  contentFormats?: string[];
+  specialRequirements?: string;
+  
   creditsRemaining?: number;
   createdAt: Date;
   updatedAt: Date;
@@ -43,9 +66,32 @@ const userSchema = new Schema<IUser>({
   lastName: String,
   profileImageUrl: String,
   onboardingCompleted: { type: Boolean, default: false },
+  
+  // Basic onboarding data
   niche: String,
   contentType: String,
   stylePreference: String,
+  
+  // Business information
+  businessType: String,
+  targetAudience: String,
+  audienceAge: String,
+  
+  // Content goals
+  primaryGoal: String,
+  postingFrequency: String,
+  contentThemes: [String],
+  
+  // Brand personality
+  brandPersonality: String,
+  colorPreferences: [String],
+  brandKeywords: String,
+  
+  // Platform strategy
+  primaryPlatforms: [String],
+  contentFormats: [String],
+  specialRequirements: String,
+  
   creditsRemaining: { type: Number, default: 5 }
 }, {
   timestamps: true
@@ -102,9 +148,32 @@ export interface UpsertUser {
   lastName?: string;
   profileImageUrl?: string;
   onboardingCompleted?: boolean;
+  
+  // Basic onboarding data
   niche?: string;
   contentType?: string;
   stylePreference?: string;
+  
+  // Business information
+  businessType?: string;
+  targetAudience?: string;
+  audienceAge?: string;
+  
+  // Content goals
+  primaryGoal?: string;
+  postingFrequency?: string;
+  contentThemes?: string[];
+  
+  // Brand personality
+  brandPersonality?: string;
+  colorPreferences?: string[];
+  brandKeywords?: string;
+  
+  // Platform strategy
+  primaryPlatforms?: string[];
+  contentFormats?: string[];
+  specialRequirements?: string;
+  
   creditsRemaining?: number;
 }
 
@@ -120,7 +189,28 @@ export interface InsertGeneratedImage {
 }
 
 export interface UpdateOnboarding {
+  // Basic info (Step 1)
   niche: string;
   contentType: string;
   stylePreference: string;
+  
+  // Business info (Step 2)
+  businessType: string;
+  targetAudience: string;
+  audienceAge?: string;
+  
+  // Content goals (Step 3)
+  primaryGoal: string;
+  postingFrequency: string;
+  contentThemes?: string[];
+  
+  // Brand personality (Step 4)
+  brandPersonality: string;
+  colorPreferences: string[];
+  brandKeywords?: string;
+  
+  // Platform strategy (Step 5)
+  primaryPlatforms: string[];
+  contentFormats: string[];
+  specialRequirements?: string;
 }

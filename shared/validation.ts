@@ -16,9 +16,30 @@ export const loginSchema = z.object({
 
 // Validation schema for onboarding updates
 export const updateOnboardingSchema = z.object({
+  // Basic info (Step 1)
   niche: z.string().min(1, "Niche is required"),
   contentType: z.string().min(1, "Content type is required"),
   stylePreference: z.string().min(1, "Style preference is required"),
+  
+  // Business info (Step 2)
+  businessType: z.string().min(1, "Business type is required"),
+  targetAudience: z.string().min(1, "Target audience is required"),
+  audienceAge: z.string().optional(),
+  
+  // Content goals (Step 3)
+  primaryGoal: z.string().min(1, "Primary goal is required"),
+  postingFrequency: z.string().min(1, "Posting frequency is required"),
+  contentThemes: z.array(z.string()).optional().default([]),
+  
+  // Brand personality (Step 4)
+  brandPersonality: z.string().min(1, "Brand personality is required"),
+  colorPreferences: z.array(z.string()).min(1, "At least one color preference is required"),
+  brandKeywords: z.string().optional(),
+  
+  // Platform strategy (Step 5)
+  primaryPlatforms: z.array(z.string()).min(1, "At least one platform is required"),
+  contentFormats: z.array(z.string()).min(1, "At least one content format is required"),
+  specialRequirements: z.string().optional(),
 });
 
 // Validation schema for image generation

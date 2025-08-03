@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
@@ -36,9 +37,31 @@ export default function Settings() {
   const [firstName, setFirstName] = useState(user?.firstName || "");
   const [lastName, setLastName] = useState(user?.lastName || "");
   const [email, setEmail] = useState(user?.email || "");
+  
+  // Basic onboarding data
   const [niche, setNiche] = useState(user?.niche || "");
   const [contentType, setContentType] = useState(user?.contentType || "");
   const [stylePreference, setStylePreference] = useState(user?.stylePreference || "");
+  
+  // Business information
+  const [businessType, setBusinessType] = useState(user?.businessType || "");
+  const [targetAudience, setTargetAudience] = useState(user?.targetAudience || "");
+  const [audienceAge, setAudienceAge] = useState(user?.audienceAge || "");
+  
+  // Content goals
+  const [primaryGoal, setPrimaryGoal] = useState(user?.primaryGoal || "");
+  const [postingFrequency, setPostingFrequency] = useState(user?.postingFrequency || "");
+  const [contentThemes, setContentThemes] = useState<string[]>(user?.contentThemes || []);
+  
+  // Brand personality
+  const [brandPersonality, setBrandPersonality] = useState(user?.brandPersonality || "");
+  const [colorPreferences, setColorPreferences] = useState<string[]>(user?.colorPreferences || []);
+  const [brandKeywords, setBrandKeywords] = useState(user?.brandKeywords || "");
+  
+  // Platform strategy
+  const [primaryPlatforms, setPrimaryPlatforms] = useState<string[]>(user?.primaryPlatforms || []);
+  const [contentFormats, setContentFormats] = useState<string[]>(user?.contentFormats || []);
+  const [specialRequirements, setSpecialRequirements] = useState(user?.specialRequirements || "");
   
   // Notification preferences (you can expand this based on your needs)
   const [emailNotifications, setEmailNotifications] = useState(true);
@@ -105,9 +128,31 @@ export default function Settings() {
       firstName,
       lastName,
       email,
+      
+      // Basic onboarding data
       niche,
       contentType,
       stylePreference,
+      
+      // Business information
+      businessType,
+      targetAudience,
+      audienceAge,
+      
+      // Content goals
+      primaryGoal,
+      postingFrequency,
+      contentThemes,
+      
+      // Brand personality
+      brandPersonality,
+      colorPreferences,
+      brandKeywords,
+      
+      // Platform strategy
+      primaryPlatforms,
+      contentFormats,
+      specialRequirements,
     });
   };
 
@@ -165,7 +210,19 @@ export default function Settings() {
     email !== (user?.email || "") ||
     niche !== (user?.niche || "") ||
     contentType !== (user?.contentType || "") ||
-    stylePreference !== (user?.stylePreference || "");
+    stylePreference !== (user?.stylePreference || "") ||
+    businessType !== (user?.businessType || "") ||
+    targetAudience !== (user?.targetAudience || "") ||
+    audienceAge !== (user?.audienceAge || "") ||
+    primaryGoal !== (user?.primaryGoal || "") ||
+    postingFrequency !== (user?.postingFrequency || "") ||
+    JSON.stringify(contentThemes) !== JSON.stringify(user?.contentThemes || []) ||
+    brandPersonality !== (user?.brandPersonality || "") ||
+    JSON.stringify(colorPreferences) !== JSON.stringify(user?.colorPreferences || []) ||
+    brandKeywords !== (user?.brandKeywords || "") ||
+    JSON.stringify(primaryPlatforms) !== JSON.stringify(user?.primaryPlatforms || []) ||
+    JSON.stringify(contentFormats) !== JSON.stringify(user?.contentFormats || []) ||
+    specialRequirements !== (user?.specialRequirements || "");
 
   return (
     <div className="w-full space-y-6">
@@ -227,15 +284,18 @@ export default function Settings() {
                   <SelectValue placeholder="Select your niche" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="technology">Technology</SelectItem>
-                  <SelectItem value="business">Business</SelectItem>
+                  <SelectItem value="fitness">Fitness & Health</SelectItem>
+                  <SelectItem value="food">Food & Cooking</SelectItem>
+                  <SelectItem value="tech">Technology</SelectItem>
+                  <SelectItem value="fashion">Fashion & Style</SelectItem>
+                  <SelectItem value="business">Business & Finance</SelectItem>
+                  <SelectItem value="travel">Travel & Adventure</SelectItem>
                   <SelectItem value="lifestyle">Lifestyle</SelectItem>
                   <SelectItem value="education">Education</SelectItem>
-                  <SelectItem value="health">Health & Fitness</SelectItem>
-                  <SelectItem value="food">Food & Cooking</SelectItem>
-                  <SelectItem value="travel">Travel</SelectItem>
-                  <SelectItem value="fashion">Fashion</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
+                  <SelectItem value="entertainment">Entertainment</SelectItem>
+                  <SelectItem value="music">Music & Arts</SelectItem>
+                  <SelectItem value="automotive">Automotive</SelectItem>
+                  <SelectItem value="realestate">Real Estate</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -247,11 +307,12 @@ export default function Settings() {
                   <SelectValue placeholder="Select content type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="posts">Social Media Posts</SelectItem>
-                  <SelectItem value="ads">Advertisements</SelectItem>
-                  <SelectItem value="stories">Stories</SelectItem>
-                  <SelectItem value="banners">Banners</SelectItem>
-                  <SelectItem value="thumbnails">Thumbnails</SelectItem>
+                  <SelectItem value="quotes">Inspirational Quotes</SelectItem>
+                  <SelectItem value="promotions">Product Promotions</SelectItem>
+                  <SelectItem value="educational">Educational Content</SelectItem>
+                  <SelectItem value="announcements">Announcements</SelectItem>
+                  <SelectItem value="behind-scenes">Behind the Scenes</SelectItem>
+                  <SelectItem value="user-generated">User-Generated Content</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -263,14 +324,162 @@ export default function Settings() {
                   <SelectValue placeholder="Select style" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="minimalist">Minimalist</SelectItem>
-                  <SelectItem value="vibrant">Vibrant</SelectItem>
                   <SelectItem value="professional">Professional</SelectItem>
-                  <SelectItem value="artistic">Artistic</SelectItem>
-                  <SelectItem value="modern">Modern</SelectItem>
+                  <SelectItem value="fun">Fun & Playful</SelectItem>
+                  <SelectItem value="luxury">Luxury</SelectItem>
+                  <SelectItem value="minimalist">Minimalist</SelectItem>
+                  <SelectItem value="bold">Bold & Vibrant</SelectItem>
                   <SelectItem value="vintage">Vintage</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Business Information */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Business Information</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="businessType">Business Type</Label>
+                <Select value={businessType} onValueChange={setBusinessType}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select business type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="startup">Startup</SelectItem>
+                    <SelectItem value="smallbusiness">Small Business</SelectItem>
+                    <SelectItem value="corporation">Corporation</SelectItem>
+                    <SelectItem value="nonprofit">Non-Profit</SelectItem>
+                    <SelectItem value="freelancer">Freelancer</SelectItem>
+                    <SelectItem value="influencer">Influencer</SelectItem>
+                    <SelectItem value="personal">Personal Brand</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="targetAudience">Target Audience</Label>
+                <Select value={targetAudience} onValueChange={setTargetAudience}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select target audience" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="b2b">Businesses (B2B)</SelectItem>
+                    <SelectItem value="b2c">Consumers (B2C)</SelectItem>
+                    <SelectItem value="millennials">Millennials</SelectItem>
+                    <SelectItem value="genz">Gen Z</SelectItem>
+                    <SelectItem value="genx">Gen X</SelectItem>
+                    <SelectItem value="professionals">Professionals</SelectItem>
+                    <SelectItem value="students">Students</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="audienceAge">Audience Age Range</Label>
+                <Input
+                  id="audienceAge"
+                  value={audienceAge}
+                  onChange={(e) => setAudienceAge(e.target.value)}
+                  placeholder="e.g., 25-35, 18-24"
+                />
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Content Strategy */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Content Strategy</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="primaryGoal">Primary Goal</Label>
+                <Select value={primaryGoal} onValueChange={setPrimaryGoal}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select primary goal" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="brand-awareness">Brand Awareness</SelectItem>
+                    <SelectItem value="lead-generation">Lead Generation</SelectItem>
+                    <SelectItem value="sales">Direct Sales</SelectItem>
+                    <SelectItem value="engagement">Community Engagement</SelectItem>
+                    <SelectItem value="education">Education</SelectItem>
+                    <SelectItem value="thought-leadership">Thought Leadership</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="postingFrequency">Posting Frequency</Label>
+                <Select value={postingFrequency} onValueChange={setPostingFrequency}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select posting frequency" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="daily">Daily</SelectItem>
+                    <SelectItem value="frequent">Frequent (4-6/week)</SelectItem>
+                    <SelectItem value="regular">Regular (2-3/week)</SelectItem>
+                    <SelectItem value="weekly">Weekly</SelectItem>
+                    <SelectItem value="bi-weekly">Bi-weekly</SelectItem>
+                    <SelectItem value="monthly">Monthly</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Brand Personality */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Brand Personality</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="brandPersonality">Brand Personality</Label>
+                <Select value={brandPersonality} onValueChange={setBrandPersonality}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select brand personality" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="professional">Professional</SelectItem>
+                    <SelectItem value="friendly">Friendly</SelectItem>
+                    <SelectItem value="innovative">Innovative</SelectItem>
+                    <SelectItem value="authentic">Authentic</SelectItem>
+                    <SelectItem value="inspiring">Inspiring</SelectItem>
+                    <SelectItem value="fun">Fun</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="brandKeywords">Brand Keywords</Label>
+                <Input
+                  id="brandKeywords"
+                  value={brandKeywords}
+                  onChange={(e) => setBrandKeywords(e.target.value)}
+                  placeholder="e.g., innovative, reliable, premium"
+                />
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Special Requirements */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Special Requirements</h3>
+            <div className="space-y-2">
+              <Label htmlFor="specialRequirements">Additional Preferences or Requirements</Label>
+              <Textarea
+                id="specialRequirements"
+                value={specialRequirements}
+                onChange={(e) => setSpecialRequirements(e.target.value)}
+                placeholder="e.g., Always include company logo, specific font preferences, avoid certain colors, accessibility requirements..."
+                rows={3}
+              />
             </div>
           </div>
           

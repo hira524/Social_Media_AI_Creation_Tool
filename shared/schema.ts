@@ -36,11 +36,31 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
   
-  // Onboarding data
+  // Basic onboarding data
   niche: varchar("niche"),
   contentType: varchar("content_type"),
   stylePreference: varchar("style_preference"),
   onboardingCompleted: boolean("onboarding_completed").default(false),
+  
+  // Business information
+  businessType: varchar("business_type"),
+  targetAudience: varchar("target_audience"),
+  audienceAge: varchar("audience_age"),
+  
+  // Content goals
+  primaryGoal: varchar("primary_goal"),
+  postingFrequency: varchar("posting_frequency"),
+  contentThemes: jsonb("content_themes"), // array of strings
+  
+  // Brand personality
+  brandPersonality: varchar("brand_personality"),
+  colorPreferences: jsonb("color_preferences"), // array of strings
+  brandKeywords: text("brand_keywords"),
+  
+  // Platform strategy
+  primaryPlatforms: jsonb("primary_platforms"), // array of strings
+  contentFormats: jsonb("content_formats"), // array of strings
+  specialRequirements: text("special_requirements"),
   
   // Credits system
   creditsRemaining: integer("credits_remaining").default(5),
@@ -81,9 +101,30 @@ export const insertGeneratedImageSchema = createInsertSchema(generatedImages).om
 });
 
 export const updateOnboardingSchema = z.object({
-  niche: z.string(),
-  contentType: z.string(),
-  stylePreference: z.string(),
+  // Basic info (Step 1)
+  niche: z.string().min(1, "Niche is required"),
+  contentType: z.string().min(1, "Content type is required"),
+  stylePreference: z.string().min(1, "Style preference is required"),
+  
+  // Business info (Step 2)
+  businessType: z.string().min(1, "Business type is required"),
+  targetAudience: z.string().min(1, "Target audience is required"),
+  audienceAge: z.string().optional(),
+  
+  // Content goals (Step 3)
+  primaryGoal: z.string().min(1, "Primary goal is required"),
+  postingFrequency: z.string().min(1, "Posting frequency is required"),
+  contentThemes: z.array(z.string()).optional().default([]),
+  
+  // Brand personality (Step 4)
+  brandPersonality: z.string().min(1, "Brand personality is required"),
+  colorPreferences: z.array(z.string()).min(1, "At least one color preference is required"),
+  brandKeywords: z.string().optional(),
+  
+  // Platform strategy (Step 5)
+  primaryPlatforms: z.array(z.string()).min(1, "At least one platform is required"),
+  contentFormats: z.array(z.string()).min(1, "At least one content format is required"),
+  specialRequirements: z.string().optional(),
 });
 
 export type UpsertUser = z.infer<typeof insertUserSchema>;

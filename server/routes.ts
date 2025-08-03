@@ -13,9 +13,30 @@ const generateImageRequestSchema = z.object({
 });
 
 const updateOnboardingSchema = z.object({
-  niche: z.string(),
-  contentType: z.string(),
-  stylePreference: z.string(),
+  // Basic info (Step 1)
+  niche: z.string().min(1, "Niche is required"),
+  contentType: z.string().min(1, "Content type is required"),
+  stylePreference: z.string().min(1, "Style preference is required"),
+  
+  // Business info (Step 2)
+  businessType: z.string().min(1, "Business type is required"),
+  targetAudience: z.string().min(1, "Target audience is required"),
+  audienceAge: z.string().optional(),
+  
+  // Content goals (Step 3)
+  primaryGoal: z.string().min(1, "Primary goal is required"),
+  postingFrequency: z.string().min(1, "Posting frequency is required"),
+  contentThemes: z.array(z.string()).optional().default([]),
+  
+  // Brand personality (Step 4)
+  brandPersonality: z.string().min(1, "Brand personality is required"),
+  colorPreferences: z.array(z.string()).min(1, "At least one color preference is required"),
+  brandKeywords: z.string().optional(),
+  
+  // Platform strategy (Step 5)
+  primaryPlatforms: z.array(z.string()).min(1, "At least one platform is required"),
+  contentFormats: z.array(z.string()).min(1, "At least one content format is required"),
+  specialRequirements: z.string().optional(),
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -77,8 +98,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const { prompt, platform, style } = generateImageRequestSchema.parse(req.body);
       
-      // Enhance prompt based on user's onboarding data
+      // Enhance prompt based on user's comprehensive onboarding data
       let enhancedPrompt = prompt;
+      
+      // Basic preferences
       if (user.niche) {
         enhancedPrompt += ` in ${user.niche} niche`;
       }
@@ -87,6 +110,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       if (user.contentType) {
         enhancedPrompt += ` for ${user.contentType} content`;
+      }
+      
+      // Business context
+      if (user.businessType) {
+        enhancedPrompt += ` targeting ${user.businessType} audience`;
+      }
+      if (user.targetAudience) {
+        enhancedPrompt += `, specifically for ${user.targetAudience}`;
+      }
+      if (user.audienceAge) {
+        enhancedPrompt += ` aged ${user.audienceAge}`;
+      }
+      
+      // Content goals
+      if (user.primaryGoal) {
+        enhancedPrompt += ` designed to achieve ${user.primaryGoal}`;
+      }
+      
+      // Brand personality
+      if (user.brandPersonality) {
+        enhancedPrompt += ` with ${user.brandPersonality} brand personality`;
+      }
+      if (user.colorPreferences && user.colorPreferences.length > 0) {
+        enhancedPrompt += ` using colors: ${user.colorPreferences.join(', ')}`;
+      }
+      if (user.brandKeywords) {
+        enhancedPrompt += ` incorporating brand keywords: ${user.brandKeywords}`;
+      }
+      
+      // Platform optimization
+      if (user.primaryPlatforms && user.primaryPlatforms.includes(platform)) {
+        enhancedPrompt += ` optimized for ${platform}`;
+      }
+      
+      // Special requirements
+      if (user.specialRequirements) {
+        enhancedPrompt += ` with special requirements: ${user.specialRequirements}`;
       }
       
       // Add platform-specific dimensions

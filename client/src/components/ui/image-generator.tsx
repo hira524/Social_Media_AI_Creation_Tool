@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -12,21 +11,11 @@ import { isUnauthorizedError } from "@/lib/authUtils";
 import type { User } from "@shared/mongoSchema";
 import { 
   Sparkles, 
-  Instagram, 
-  Linkedin, 
-  Twitter, 
-  Download, 
-  Copy, 
-  Heart, 
-  RotateCcw,
-  Lightbulb,
-  Palette
+  Lightbulb
 } from "lucide-react";
 
 interface GenerateRequest {
   prompt: string;
-  platform: "instagram" | "linkedin" | "twitter";
-  style?: string;
 }
 
 interface GeneratedImage {
@@ -41,22 +30,12 @@ interface GeneratedImage {
   createdAt: string;
 }
 
-const platforms = [
-  { value: "instagram", label: "Instagram", icon: Instagram, dimensions: "1080×1080" },
-  { value: "linkedin", label: "LinkedIn", icon: Linkedin, dimensions: "1200×627" },
-  { value: "twitter", label: "Twitter", icon: Twitter, dimensions: "1200×675" },
-];
-
-const styleOptions = ["Realistic", "Illustration", "Abstract", "Vintage"];
-
 interface ImageGeneratorProps {
   onImageGenerated?: (image: GeneratedImage) => void;
 }
 
 export default function ImageGenerator({ onImageGenerated }: ImageGeneratorProps) {
   const [prompt, setPrompt] = useState("");
-  const [selectedPlatform, setSelectedPlatform] = useState<"instagram" | "linkedin" | "twitter">("instagram");
-  const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   
   const { toast } = useToast();
   const { user } = useAuth();
@@ -132,17 +111,7 @@ export default function ImageGenerator({ onImageGenerated }: ImageGeneratorProps
 
     generateMutation.mutate({
       prompt,
-      platform: selectedPlatform,
-      style: selectedStyles.join(", "),
     });
-  };
-
-  const handleStyleToggle = (style: string) => {
-    setSelectedStyles(prev =>
-      prev.includes(style)
-        ? prev.filter(s => s !== style)
-        : [...prev, style]
-    );
   };
 
   return (
@@ -194,71 +163,6 @@ export default function ImageGenerator({ onImageGenerated }: ImageGeneratorProps
                   </div>
                 </div>
               )}
-            </div>
-
-            {/* Enhanced Platform Selection */}
-            <div className="space-y-6">
-              <Label className="text-xl font-bold text-slate-900 flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center">
-                  <span>🎯</span>
-                </div>
-                <span>Choose platform format</span>
-              </Label>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                {platforms.map((platform) => {
-                  const Icon = platform.icon;
-                  const isSelected = selectedPlatform === platform.value;
-                  return (
-                    <button
-                      key={platform.value}
-                      type="button"
-                      onClick={() => setSelectedPlatform(platform.value as typeof selectedPlatform)}
-                      className={`interactive-card p-8 rounded-3xl border-3 transition-all duration-300 group relative overflow-hidden ${
-                        isSelected
-                          ? "border-primary bg-gradient-to-br from-primary/10 via-purple-50 to-pink-50 shadow-glow-primary"
-                          : "border-slate-200 bg-white/70 hover:border-primary/50 hover:bg-white/90"
-                      }`}
-                    >
-                      {isSelected && (
-                        <div className="absolute top-3 right-3 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                          <span className="text-white font-bold">✓</span>
-                        </div>
-                      )}
-                      <Icon className={`w-12 h-12 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 ${
-                        isSelected ? "text-primary" : "text-slate-600"
-                      }`} />
-                      <h3 className={`text-xl font-bold mb-2 ${isSelected ? "text-primary" : "text-slate-900"}`}>
-                        {platform.label}
-                      </h3>
-                      <p className="text-sm text-slate-500 font-medium">{platform.dimensions}</p>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Style Options */}
-            <div className="space-y-4">
-              <Label className="text-lg font-semibold text-slate-700 flex items-center space-x-2">
-                <Palette className="w-5 h-5 text-primary" />
-                <span>Style variations (optional)</span>
-              </Label>
-              <div className="flex flex-wrap gap-3">
-                {styleOptions.map((style) => (
-                  <Badge
-                    key={style}
-                    variant={selectedStyles.includes(style) ? "default" : "secondary"}
-                    className={`cursor-pointer px-4 py-2 rounded-xl text-base font-medium transition-all duration-300 hover:scale-105 ${
-                      selectedStyles.includes(style)
-                        ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg"
-                        : "bg-white/50 backdrop-blur-sm border border-white/30 text-slate-700 hover:bg-white/80"
-                    }`}
-                    onClick={() => handleStyleToggle(style)}
-                  >
-                    {style}
-                  </Badge>
-                ))}
-              </div>
             </div>
 
             {/* Generate Button */}

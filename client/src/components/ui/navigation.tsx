@@ -15,7 +15,7 @@ export default function Navigation() {
   const typedUser = user as User;
 
   const handleLogout = () => {
-    window.location.href = "/api/logout";
+    window.location.href = '/api/logout';
   };
 
   return (

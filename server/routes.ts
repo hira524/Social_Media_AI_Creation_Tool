@@ -30,6 +30,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
+      console.log("Auth check - Session ID:", req.sessionID);
+      console.log("Auth check - User:", req.user);
+      console.log("Auth check - Authenticated:", req.isAuthenticated());
+      
       const userId = req.user.claims.sub;
       const user = await storage.getUser(userId);
       res.json(user);

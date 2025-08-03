@@ -26,17 +26,19 @@ const getOidcConfig = memoize(
 export function getSession() {
   const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week
   
-  // For development, use simpler session store configuration
+  // For development, use a simple in-memory session store
   if (isDevelopment) {
     return session({
       secret: process.env.SESSION_SECRET!,
       resave: false,
-      saveUninitialized: true, // Save uninitialized sessions in development
+      saveUninitialized: false, // Don't save uninitialized sessions
       cookie: {
         httpOnly: true,
         secure: false, // Allow non-secure cookies in development
         maxAge: sessionTtl,
+        sameSite: 'lax', // Allow same-site requests
       },
+      // Use default MemoryStore for development
     });
   }
 
@@ -121,14 +123,24 @@ export async function setupAuth(app: Express) {
         expires_at: Math.floor(Date.now() / 1000) + 86400 // 24 hours from now
       };
 
+      console.log("Login attempt - creating session...");
       req.login(defaultUser, (err) => {
         if (err) {
           console.error("Login error:", err);
           return res.status(500).json({ message: "Login failed" });
         }
-        // In development, redirect to the Vite dev server
+        console.log("Login successful - session created");
+        console.log("Session ID:", req.sessionID);
+        console.log("User object:", req.user);
+        
+        // For development, return JSON response instead of redirect to handle CORS better
         if (process.env.NODE_ENV === "development") {
-          res.redirect("http://localhost:3000/dashboard");
+          return res.json({ 
+            success: true, 
+            message: "Login successful", 
+            user: defaultUser,
+            redirect: "/dashboard"
+          });
         } else {
           res.redirect("/dashboard");
         }
@@ -154,9 +166,15 @@ export async function setupAuth(app: Express) {
           console.error("Signup error:", err);
           return res.status(500).json({ message: "Signup failed" });
         }
-        // In development, redirect to the Vite dev server  
+        
+        // For development, return JSON response instead of redirect
         if (process.env.NODE_ENV === "development") {
-          res.redirect("http://localhost:3000/onboarding");
+          return res.json({ 
+            success: true, 
+            message: "Signup successful", 
+            user: defaultUser,
+            redirect: "/onboarding"
+          });
         } else {
           res.redirect("/onboarding");
         }
@@ -235,6 +253,10 @@ export async function setupAuth(app: Express) {
 }
 
 export const isAuthenticated: RequestHandler = async (req, res, next) => {
+  console.log("IsAuthenticated check - Session ID:", req.sessionID);
+  console.log("IsAuthenticated check - User:", req.user);
+  console.log("IsAuthenticated check - isAuthenticated():", req.isAuthenticated());
+  
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Authentication required" });
   }

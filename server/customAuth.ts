@@ -8,15 +8,20 @@ import memoize from "memoizee";
 import MongoStore from "connect-mongo";
 import { storage } from "./storage";
 
-if (!process.env.REPLIT_DOMAINS) {
-  throw new Error("Environment variable REPLIT_DOMAINS not provided");
+if (!process.env.AUTH_DOMAINS) {
+  throw new Error("Environment variable AUTH_DOMAINS not provided");
 }
 
 const getOidcConfig = memoize(
   async () => {
+    // For development/demo purposes, we'll use a mock OIDC config
+    // In production, replace with your actual OAuth provider
+    if (process.env.NODE_ENV === "development") {
+      return null; // Skip OIDC discovery in development
+    }
     return await client.discovery(
-      new URL(process.env.ISSUER_URL ?? "https://replit.com/oidc"),
-      process.env.REPL_ID!
+      new URL(process.env.ISSUER_URL ?? "https://oauth.provider.com/oidc"),
+      process.env.APP_ID!
     );
   },
   { maxAge: 3600 * 1000 }
@@ -73,6 +78,29 @@ export async function setupAuth(app: Express) {
 
   const config = await getOidcConfig();
 
+  // Skip OIDC setup in development mode
+  if (!config) {
+    console.log("Development mode: Skipping OIDC authentication setup");
+    
+    // Set up simple mock authentication for development
+    passport.serializeUser((user: Express.User, cb) => cb(null, user));
+    passport.deserializeUser((user: Express.User, cb) => cb(null, user));
+
+    app.get("/api/login", (req, res) => {
+      res.json({ message: "Development mode: Authentication disabled" });
+    });
+
+    app.get("/api/callback", (req, res) => {
+      res.redirect("/");
+    });
+
+    app.get("/api/logout", (req, res) => {
+      res.json({ message: "Development mode: Logout disabled" });
+    });
+
+    return;
+  }
+
   const verify: VerifyFunction = async (
     tokens: client.TokenEndpointResponse & client.TokenEndpointResponseHelpers,
     verified: passport.AuthenticateCallback
@@ -84,10 +112,10 @@ export async function setupAuth(app: Express) {
   };
 
   for (const domain of process.env
-    .REPLIT_DOMAINS!.split(",")) {
+    .AUTH_DOMAINS!.split(",")) {
     const strategy = new Strategy(
       {
-        name: `replitauth:${domain}`,
+        name: `customauth:${domain}`,
         config,
         scope: "openid email profile offline_access",
         callbackURL: `https://${domain}/api/callback`,
@@ -101,14 +129,14 @@ export async function setupAuth(app: Express) {
   passport.deserializeUser((user: Express.User, cb) => cb(null, user));
 
   app.get("/api/login", (req, res, next) => {
-    passport.authenticate(`replitauth:${req.hostname}`, {
+    passport.authenticate(`customauth:${req.hostname}`, {
       prompt: "login consent",
       scope: ["openid", "email", "profile", "offline_access"],
     })(req, res, next);
   });
 
   app.get("/api/callback", (req, res, next) => {
-    passport.authenticate(`replitauth:${req.hostname}`, {
+    passport.authenticate(`customauth:${req.hostname}`, {
       successReturnToOrRedirect: "/",
       failureRedirect: "/api/login",
     })(req, res, next);
@@ -146,6 +174,10 @@ export const isAuthenticated: RequestHandler = async (req, res, next) => {
 
   try {
     const config = await getOidcConfig();
+    if (!config) {
+      // Development mode: skip token refresh
+      return next();
+    }
     const tokenResponse = await client.refreshTokenGrant(config, refreshToken);
     updateUserSession(user, tokenResponse);
     return next();

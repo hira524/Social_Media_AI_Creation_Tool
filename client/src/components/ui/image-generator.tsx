@@ -9,7 +9,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { isUnauthorizedError } from "@/lib/authUtils";
-import type { User } from "@shared/schema";
+import type { User } from "@shared/mongoSchema";
 import { 
   Sparkles, 
   Instagram, 

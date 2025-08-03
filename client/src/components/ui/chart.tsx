@@ -1,5 +1,7 @@
 "use client"
 
+/* eslint-disable @microsoft/sdl/no-inline-styles */
+
 import * as React from "react"
 import * as RechartsPrimitive from "recharts"
 
@@ -208,7 +210,7 @@ const ChartTooltipContent = React.forwardRef<
                       !hideIndicator && (
                         <div
                           className={cn(
-                            "shrink-0 rounded-[2px] border-[--color-border] bg-[--color-bg]",
+                            "shrink-0 rounded-[2px] bg-current border-current",
                             {
                               "h-2.5 w-2.5": indicator === "dot",
                               "w-1": indicator === "line",
@@ -217,12 +219,7 @@ const ChartTooltipContent = React.forwardRef<
                               "my-0.5": nestLabel && indicator === "dashed",
                             }
                           )}
-                          style={
-                            {
-                              "--color-bg": indicatorColor,
-                              "--color-border": indicatorColor,
-                            } as React.CSSProperties
-                          }
+                          style={{ color: indicatorColor } as React.CSSProperties}
                         />
                       )
                     )}
@@ -301,9 +298,7 @@ const ChartLegendContent = React.forwardRef<
               ) : (
                 <div
                   className="h-2 w-2 shrink-0 rounded-[2px]"
-                  style={{
-                    backgroundColor: item.color,
-                  }}
+                  style={{ backgroundColor: item.color } as React.CSSProperties}
                 />
               )}
               {itemConfig?.label}

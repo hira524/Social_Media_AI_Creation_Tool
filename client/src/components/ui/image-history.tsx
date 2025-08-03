@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { apiRequest } from "@/lib/queryClient";
 import { Heart, Download, Eye } from "lucide-react";
-import type { GeneratedImage } from "@shared/schema";
+import type { GeneratedImage } from "@shared/mongoSchema";
 
 export default function ImageHistory() {
   const { toast } = useToast();
@@ -186,7 +186,7 @@ export default function ImageHistory() {
                       {image.platform}
                     </Badge>
                     <div className="text-xs text-slate-600">
-                      {new Date(image.createdAt).toLocaleDateString()}
+                      {image.createdAt ? new Date(image.createdAt).toLocaleDateString() : 'Unknown date'}
                     </div>
                   </div>
                 </div>

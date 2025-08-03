@@ -24,19 +24,24 @@ const DrawerClose = DrawerPrimitive.Close
 
 const DrawerOverlay = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay> & {
+    className?: string;
+  }
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Overlay
     ref={ref}
     className={cn("fixed inset-0 z-50 bg-black/80", className)}
-    {...props}
+    {...(props as any)}
   />
 ))
 DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName
 
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content> & {
+    className?: string;
+    children?: React.ReactNode;
+  }
 >(({ className, children, ...props }, ref) => (
   <DrawerPortal>
     <DrawerOverlay />
@@ -46,7 +51,7 @@ const DrawerContent = React.forwardRef<
         "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background",
         className
       )}
-      {...props}
+      {...(props as any)}
     >
       <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted" />
       {children}
@@ -79,7 +84,9 @@ DrawerFooter.displayName = "DrawerFooter"
 
 const DrawerTitle = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Title>
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Title> & {
+    className?: string;
+  }
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Title
     ref={ref}
@@ -87,19 +94,21 @@ const DrawerTitle = React.forwardRef<
       "text-lg font-semibold leading-none tracking-tight",
       className
     )}
-    {...props}
+    {...(props as any)}
   />
 ))
 DrawerTitle.displayName = DrawerPrimitive.Title.displayName
 
 const DrawerDescription = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Description>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Description>
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Description> & {
+    className?: string;
+  }
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Description
     ref={ref}
     className={cn("text-sm text-muted-foreground", className)}
-    {...props}
+    {...(props as any)}
   />
 ))
 DrawerDescription.displayName = DrawerPrimitive.Description.displayName

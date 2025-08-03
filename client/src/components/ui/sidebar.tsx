@@ -1,3 +1,5 @@
+/* eslint-disable @microsoft/sdl/no-inline-styles */
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
@@ -211,8 +213,8 @@ const Sidebar = React.forwardRef<
             side={side}
           >
             <SheetHeader className="sr-only">
-              <SheetTitle>Sidebar</SheetTitle>
-              <SheetDescription>Displays the mobile sidebar.</SheetDescription>
+              <SheetTitle {...({ children: "Sidebar" } as any)}>Sidebar</SheetTitle>
+              <SheetDescription {...({ children: "Displays the mobile sidebar." } as any)}>Displays the mobile sidebar.</SheetDescription>
             </SheetHeader>
             <div className="flex h-full w-full flex-col">{children}</div>
           </SheetContent>
@@ -390,7 +392,9 @@ SidebarFooter.displayName = "SidebarFooter"
 
 const SidebarSeparator = React.forwardRef<
   React.ElementRef<typeof Separator>,
-  React.ComponentProps<typeof Separator>
+  React.ComponentProps<typeof Separator> & {
+    className?: string;
+  }
 >(({ className, ...props }, ref) => {
   return (
     <Separator
@@ -398,6 +402,7 @@ const SidebarSeparator = React.forwardRef<
       data-sidebar="separator"
       className={cn("mx-2 w-auto bg-sidebar-border", className)}
       {...props}
+      {...({ className: cn("mx-2 w-auto bg-sidebar-border", className) } as any)}
     />
   )
 })
@@ -587,7 +592,7 @@ const SidebarMenuButton = React.forwardRef<
 
     return (
       <Tooltip>
-        <TooltipTrigger asChild>{button}</TooltipTrigger>
+        <TooltipTrigger asChild {...({ children: button } as any)}>{button}</TooltipTrigger>
         <TooltipContent
           side="right"
           align="center"

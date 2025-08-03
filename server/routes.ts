@@ -1,15 +1,21 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAuth, isAuthenticated } from "./customAuth";
 import { generateImage } from "./openai";
-import { insertGeneratedImageSchema, updateOnboardingSchema } from "@shared/schema";
 import { z } from "zod";
 
+// Validation schemas
 const generateImageRequestSchema = z.object({
   prompt: z.string().min(1, "Prompt is required"),
   platform: z.enum(["instagram", "linkedin", "twitter"]),
   style: z.string().optional(),
+});
+
+const updateOnboardingSchema = z.object({
+  niche: z.string(),
+  contentType: z.string(),
+  stylePreference: z.string(),
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -127,7 +133,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/images/:id', isAuthenticated, async (req: any, res) => {
     try {
-      const imageId = parseInt(req.params.id);
+      const imageId = req.params.id; // MongoDB uses string IDs
       const image = await storage.getImageById(imageId);
       
       if (!image) {
@@ -149,7 +155,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.patch('/api/images/:id/favorite', isAuthenticated, async (req: any, res) => {
     try {
-      const imageId = parseInt(req.params.id);
+      const imageId = req.params.id; // MongoDB uses string IDs
       const { isFavorite } = req.body;
       
       const image = await storage.getImageById(imageId);

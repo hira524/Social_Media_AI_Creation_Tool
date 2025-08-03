@@ -23,22 +23,22 @@ Preferred communication style: Simple, everyday language.
 ### Backend Architecture
 - **Runtime**: Node.js with Express.js server
 - **Language**: TypeScript with ES modules
-- **Database**: PostgreSQL with Drizzle ORM
-- **Authentication**: Replit Auth with OpenID Connect integration
+- **Database**: MongoDB with Mongoose ODM
+- **Authentication**: Custom Auth with OpenID Connect integration
 - **AI Integration**: OpenAI API for image generation (DALL-E 3) and prompt enhancement (GPT-4)
-- **Session Management**: Express sessions stored in PostgreSQL
+- **Session Management**: Express sessions stored in MongoDB
 
 ### Database Design
-The application uses PostgreSQL with the following key tables:
+The application uses MongoDB with the following key collections:
 - `users`: Stores user profiles, onboarding data, and credit system
 - `generated_images`: Tracks all generated images with metadata
-- `sessions`: Handles user authentication sessions (required for Replit Auth)
+- `sessions`: Handles user authentication sessions (required for Custom Auth)
 
 ## Key Components
 
 ### Authentication System
-- **Provider**: Replit Auth with OpenID Connect
-- **Session Storage**: PostgreSQL-based session store using connect-pg-simple
+- **Provider**: Custom Auth with OpenID Connect
+- **Session Storage**: MongoDB-based session store using connect-mongo
 - **User Management**: Automatic user creation/updates on login
 - **Security**: JWT-based authentication with secure HTTP-only cookies
 
@@ -68,7 +68,7 @@ The application uses PostgreSQL with the following key tables:
 
 ## Data Flow
 
-1. **User Registration/Login**: Handled by Replit Auth, creates/updates user record
+1. **User Registration/Login**: Handled by Custom Auth, creates/updates user record
 2. **Onboarding**: Collects user preferences and stores in database
 3. **Image Generation Request**: 
    - User submits prompt and selects platform/style
@@ -82,16 +82,16 @@ The application uses PostgreSQL with the following key tables:
 ## External Dependencies
 
 ### Core Dependencies
-- **Database**: Neon PostgreSQL (serverless)
+- **Database**: MongoDB (cloud or self-hosted)
 - **AI Services**: OpenAI API (DALL-E 3 + GPT-4)
-- **Authentication**: Replit Auth service
+- **Authentication**: Custom Auth service
 - **UI Components**: Radix UI primitives
 - **Validation**: Zod for schema validation
 - **Styling**: Tailwind CSS with class-variance-authority
 
 ### Development Tools
 - **Build Tool**: Vite with React plugin
-- **Database Migrations**: Drizzle Kit
+- **Database ODM**: Mongoose for MongoDB
 - **TypeScript**: Full type safety across frontend and backend
 - **Development**: tsx for TypeScript execution
 
@@ -99,24 +99,24 @@ The application uses PostgreSQL with the following key tables:
 
 ### Development Environment
 - **Server**: Development server runs on tsx with hot reloading
-- **Database**: Connected to Neon PostgreSQL via DATABASE_URL
+- **Database**: Connected to MongoDB via DATABASE_URL
 - **Environment Variables**: 
-  - `DATABASE_URL`: PostgreSQL connection string
+  - `DATABASE_URL`: MongoDB connection string
   - `OPENAI_API_KEY`: OpenAI API authentication
   - `SESSION_SECRET`: Session encryption key
-  - `REPL_ID`: Replit environment identifier
+  - `APP_ID`: Application identifier
 
 ### Production Build
 - **Frontend**: Vite builds React app to `dist/public`
 - **Backend**: esbuild bundles server code to `dist/index.js`
-- **Database**: Drizzle migrations applied via `db:push` command
+- **Database**: MongoDB collections created automatically via Mongoose
 - **Deployment**: Single Node.js process serving both API and static files
 
 ### Architecture Decisions
 
 1. **Monorepo Structure**: Simplified deployment and shared TypeScript types
-2. **Replit Auth**: Chosen for seamless integration with Replit platform
-3. **PostgreSQL + Drizzle**: Type-safe database operations with good performance
+2. **Custom Auth**: Flexible authentication system with OpenID Connect
+3. **MongoDB + Mongoose**: Document-based database with strong schema validation
 4. **OpenAI Integration**: Industry-leading image generation quality
 5. **Credit System**: Simple usage tracking and monetization foundation
 6. **Shared Schema**: Common types between frontend and backend for consistency

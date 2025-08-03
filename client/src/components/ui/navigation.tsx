@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sparkles, Zap, ChevronDown } from "lucide-react";
-import type { User } from "@shared/schema";
+import type { User } from "@shared/mongoSchema";
 
 export default function Navigation() {
   const { user } = useAuth();

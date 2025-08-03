@@ -14,7 +14,7 @@ import { z } from "zod";
 import { relations } from "drizzle-orm";
 
 // Session storage table.
-// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
+// (IMPORTANT) This table is mandatory for Custom Auth, don't drop it.
 export const sessions = pgTable(
   "sessions",
   {
@@ -26,7 +26,7 @@ export const sessions = pgTable(
 );
 
 // User storage table.
-// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
+// (IMPORTANT) This table is mandatory for Custom Auth, don't drop it.
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().notNull(),
   email: varchar("email").unique(),

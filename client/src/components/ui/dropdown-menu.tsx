@@ -1,8 +1,43 @@
 import * as React from "react"
-import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
+import { 
+  Root,
+  Trigger,
+  Group,
+  Portal,
+  Sub,
+  RadioGroup,
+  SubTrigger,
+  SubContent,
+  Content,
+  Item,
+  CheckboxItem,
+  ItemIndicator,
+  RadioItem,
+  Label,
+  Separator
+} from "@radix-ui/react-dropdown-menu"
 import { Check, ChevronRight, Circle } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+
+// Create a namespace for backward compatibility
+const DropdownMenuPrimitive = {
+  Root,
+  Trigger,
+  Group,
+  Portal,
+  Sub,
+  RadioGroup,
+  SubTrigger,
+  SubContent,
+  Content,
+  Item,
+  CheckboxItem,
+  ItemIndicator,
+  RadioItem,
+  Label,
+  Separator
+}
 
 const DropdownMenu = DropdownMenuPrimitive.Root
 

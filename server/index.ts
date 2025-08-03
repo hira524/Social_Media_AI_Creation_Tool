@@ -1,6 +1,8 @@
+import "dotenv/config"; // Load environment variables first
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { connectDB } from "./db";
 
 const app = express();
 app.use(express.json());
@@ -13,8 +15,11 @@ app.use((req, res, next) => {
 
   const originalResJson = res.json;
   res.json = function (bodyJson, ...args) {
-    capturedJsonResponse = bodyJson;
-    return originalResJson.apply(res, [bodyJson, ...args]);
+    if (!res.headersSent) {
+      capturedJsonResponse = bodyJson;
+      return originalResJson.apply(res, [bodyJson, ...args]);
+    }
+    return res;
   };
 
   res.on("finish", () => {
@@ -37,14 +42,20 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // Connect to MongoDB first
+  await connectDB();
+  
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
 
-    res.status(status).json({ message });
-    throw err;
+    if (!res.headersSent) {
+      res.status(status).json({ message });
+    }
+    // Don't throw again after sending response
+    console.error('Error handled:', err);
   });
 
   // importantly only setup vite in development and after
@@ -61,11 +72,7 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || '5000', 10);
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
+  server.listen(port, () => {
     log(`serving on port ${port}`);
   });
 })();

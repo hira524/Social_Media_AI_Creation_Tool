@@ -8,33 +8,46 @@ import memoize from "memoizee";
 import MongoStore from "connect-mongo";
 import { storage } from "./storage";
 
-if (!process.env.AUTH_DOMAINS) {
+// Development mode flag
+const isDevelopment = process.env.NODE_ENV === "development";
+
+if (!process.env.AUTH_DOMAINS && !isDevelopment) {
   throw new Error("Environment variable AUTH_DOMAINS not provided");
 }
 
 const getOidcConfig = memoize(
   async () => {
-    // For development/demo purposes, we'll use a mock OIDC config
-    // In production, replace with your actual OAuth provider
-    if (process.env.NODE_ENV === "development") {
-      return null; // Skip OIDC discovery in development
-    }
-    return await client.discovery(
-      new URL(process.env.ISSUER_URL ?? "https://oauth.provider.com/oidc"),
-      process.env.APP_ID!
-    );
+    // Skip OIDC discovery for now - authentication disabled
+    return null;
   },
   { maxAge: 3600 * 1000 }
 );
 
 export function getSession() {
   const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week
+  
+  // For development, use simpler session store configuration
+  if (isDevelopment) {
+    return session({
+      secret: process.env.SESSION_SECRET!,
+      resave: false,
+      saveUninitialized: true, // Save uninitialized sessions in development
+      cookie: {
+        httpOnly: true,
+        secure: false, // Allow non-secure cookies in development
+        maxAge: sessionTtl,
+      },
+    });
+  }
+
+  // Production MongoDB session store
   const sessionStore = MongoStore.create({
     mongoUrl: process.env.DATABASE_URL,
     ttl: Math.floor(sessionTtl / 1000), // TTL in seconds
     collectionName: "sessions",
     touchAfter: 24 * 3600 // lazy session update
   });
+  
   return session({
     secret: process.env.SESSION_SECRET!,
     store: sessionStore,
@@ -42,7 +55,7 @@ export function getSession() {
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: true,
+      secure: !isDevelopment, // Allow non-secure cookies in development
       maxAge: sessionTtl,
     },
   });
@@ -78,16 +91,45 @@ export async function setupAuth(app: Express) {
 
   const config = await getOidcConfig();
 
-  // Skip OIDC setup in development mode
+  // Authentication is simplified - no OIDC for now
   if (!config) {
-    console.log("Development mode: Skipping OIDC authentication setup");
+    console.log("Authentication: Using simplified auth (no OIDC configured)");
     
-    // Set up simple mock authentication for development
+    // Set up simple authentication
     passport.serializeUser((user: Express.User, cb) => cb(null, user));
     passport.deserializeUser((user: Express.User, cb) => cb(null, user));
 
+    // Create a default user for the application
+    const defaultUser = {
+      claims: {
+        sub: "default-user-123",
+        email: "user@example.com",
+        first_name: "Default",
+        last_name: "User"
+      },
+      access_token: "default-access-token",
+      expires_at: Math.floor(Date.now() / 1000) + 86400 // 24 hours from now
+    };
+
+    // Ensure the default user exists in the database
+    await storage.upsertUser({
+      id: defaultUser.claims.sub,
+      email: defaultUser.claims.email,
+      firstName: defaultUser.claims.first_name,
+      lastName: defaultUser.claims.last_name,
+      profileImageUrl: "",
+    });
+
     app.get("/api/login", (req, res) => {
-      res.json({ message: "Development mode: Authentication disabled" });
+      // Auto-login
+      req.login(defaultUser, (err) => {
+        if (err) {
+          console.error("Login error:", err);
+          return res.status(500).json({ message: "Login failed" });
+        }
+        // Redirect to main app after successful login
+        res.redirect("/");
+      });
     });
 
     app.get("/api/callback", (req, res) => {
@@ -95,7 +137,10 @@ export async function setupAuth(app: Express) {
     });
 
     app.get("/api/logout", (req, res) => {
-      res.json({ message: "Development mode: Logout disabled" });
+      req.logout(() => {
+        // Redirect to landing page after logout
+        res.redirect("/landing");
+      });
     });
 
     return;
@@ -146,7 +191,7 @@ export async function setupAuth(app: Express) {
     req.logout(() => {
       res.redirect(
         client.buildEndSessionUrl(config, {
-          client_id: process.env.REPL_ID!,
+          client_id: process.env.APP_ID!,
           post_logout_redirect_uri: `${req.protocol}://${req.hostname}`,
         }).href
       );
@@ -155,34 +200,38 @@ export async function setupAuth(app: Express) {
 }
 
 export const isAuthenticated: RequestHandler = async (req, res, next) => {
-  const user = req.user as any;
+  // For now, auto-authenticate all requests with a default user
+  // TODO: Replace with proper authentication when ready
+  if (!req.isAuthenticated()) {
+    // Auto-create a session with default user
+    const defaultUser = {
+      claims: {
+        sub: "default-user-123",
+        email: "user@example.com",
+        first_name: "Default",
+        last_name: "User"
+      },
+      access_token: "default-access-token",
+      expires_at: Math.floor(Date.now() / 1000) + 86400 // 24 hours from now
+    };
 
-  if (!req.isAuthenticated() || !user.expires_at) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
+    // Ensure the default user exists in the database
+    await storage.upsertUser({
+      id: defaultUser.claims.sub,
+      email: defaultUser.claims.email,
+      firstName: defaultUser.claims.first_name,
+      lastName: defaultUser.claims.last_name,
+      profileImageUrl: "",
+    });
 
-  const now = Math.floor(Date.now() / 1000);
-  if (now <= user.expires_at) {
-    return next();
-  }
-
-  const refreshToken = user.refresh_token;
-  if (!refreshToken) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
-  }
-
-  try {
-    const config = await getOidcConfig();
-    if (!config) {
-      // Development mode: skip token refresh
+    req.login(defaultUser, (err) => {
+      if (err) {
+        console.error("Auto-login error:", err);
+        return res.status(500).json({ message: "Authentication failed" });
+      }
       return next();
-    }
-    const tokenResponse = await client.refreshTokenGrant(config, refreshToken);
-    updateUserSession(user, tokenResponse);
-    return next();
-  } catch (error) {
-    res.status(401).json({ message: "Unauthorized" });
+    });
     return;
   }
+  return next();
 };

@@ -7,6 +7,10 @@ export default function Landing() {
     window.location.href = "/api/login";
   };
 
+  const handleGoToDashboard = () => {
+    window.location.href = "/";
+  };
+
   const features = [
     {
       icon: Brain,

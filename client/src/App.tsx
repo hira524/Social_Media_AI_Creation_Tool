@@ -18,6 +18,7 @@ function Router() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        <p className="ml-4 text-slate-600">Loading...</p>
       </div>
     );
   }
@@ -25,14 +26,27 @@ function Router() {
   return (
     <Switch>
       {!isAuthenticated ? (
-        <Route path="/" component={Landing} />
+        <>
+          <Route path="/" component={Landing} />
+          <Route path="/landing" component={Landing} />
+        </>
       ) : (
         <>
-          {typedUser && !typedUser.onboardingCompleted ? (
-            <Route path="/" component={Onboarding} />
-          ) : (
-            <Route path="/" component={Dashboard} />
-          )}
+          <Route path="/landing" component={Landing} />
+          <Route path="/onboarding">
+            {typedUser && !typedUser.onboardingCompleted ? (
+              <Onboarding />
+            ) : (
+              <Dashboard />
+            )}
+          </Route>
+          <Route path="/">
+            {typedUser && !typedUser.onboardingCompleted ? (
+              <Onboarding />
+            ) : (
+              <Dashboard />
+            )}
+          </Route>
         </>
       )}
       <Route component={NotFound} />

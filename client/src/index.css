@@ -349,8 +349,8 @@
   /* Text gradients */
   .text-gradient-primary {
     background: linear-gradient(to right, hsl(var(--primary)), rgb(168, 85, 247), rgb(236, 72, 153));
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     color: transparent;
   }
 

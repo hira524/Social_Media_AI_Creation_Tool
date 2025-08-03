@@ -186,6 +186,89 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Delete image endpoint
+  app.delete('/api/images/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const imageId = req.params.id;
+      const image = await storage.getImageById(imageId);
+      
+      if (!image) {
+        return res.status(404).json({ message: "Image not found" });
+      }
+      
+      // Verify ownership
+      const userId = req.user.claims.sub;
+      if (image.userId !== userId) {
+        return res.status(403).json({ message: "Access denied" });
+      }
+      
+      await storage.deleteImage(imageId);
+      res.json({ message: "Image deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting image:", error);
+      res.status(500).json({ message: "Failed to delete image" });
+    }
+  });
+
+  // User profile update endpoint
+  app.patch('/api/user/profile', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { firstName, lastName, email, niche, contentType, stylePreference } = req.body;
+      
+      // Validation
+      const profileData: any = {};
+      if (firstName !== undefined) profileData.firstName = firstName;
+      if (lastName !== undefined) profileData.lastName = lastName;
+      if (email !== undefined) profileData.email = email;
+      if (niche !== undefined) profileData.niche = niche;
+      if (contentType !== undefined) profileData.contentType = contentType;
+      if (stylePreference !== undefined) profileData.stylePreference = stylePreference;
+      
+      const updatedUser = await storage.updateUserProfile(userId, profileData);
+      res.json(updatedUser);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      res.status(500).json({ message: "Failed to update profile" });
+    }
+  });
+
+  // Export user data endpoint
+  app.get('/api/user/export', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const userData = await storage.exportUserData(userId);
+      
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Content-Disposition', `attachment; filename="user-data-export-${new Date().toISOString().split('T')[0]}.json"`);
+      res.json(userData);
+    } catch (error) {
+      console.error("Error exporting user data:", error);
+      res.status(500).json({ message: "Failed to export user data" });
+    }
+  });
+
+  // Delete account endpoint
+  app.delete('/api/user/account', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      // Delete all user images first
+      await storage.deleteAllUserImages(userId);
+      
+      // Delete user account
+      await storage.deleteUser(userId);
+      
+      // Clear session
+      req.logout(() => {
+        res.json({ message: "Account deleted successfully" });
+      });
+    } catch (error) {
+      console.error("Error deleting account:", error);
+      res.status(500).json({ message: "Failed to delete account" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

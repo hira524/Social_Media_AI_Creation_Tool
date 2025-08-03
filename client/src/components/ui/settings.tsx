@@ -50,7 +50,8 @@ export default function Settings() {
       await apiRequest("PATCH", "/api/user/profile", profileData);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      queryClient.invalidateQueries({ queryKey: ["auth-user"] });
       toast({
         title: "Success",
         description: "Profile updated successfully.",

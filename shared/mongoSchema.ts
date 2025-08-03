@@ -55,6 +55,7 @@ export const User = mongoose.model<IUser>('User', userSchema);
 
 // Generated Image schema
 export interface IGeneratedImage extends Document {
+  id: string;
   userId: string;
   prompt: string;
   enhancedPrompt: string;

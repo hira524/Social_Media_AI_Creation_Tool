@@ -18,7 +18,7 @@ export default function ImageHistory() {
   });
 
   const favoriteMutation = useMutation({
-    mutationFn: async ({ id, isFavorite }: { id: number; isFavorite: boolean }) => {
+    mutationFn: async ({ id, isFavorite }: { id: string; isFavorite: boolean }) => {
       await apiRequest("PATCH", `/api/images/${id}/favorite`, { isFavorite });
     },
     onSuccess: () => {

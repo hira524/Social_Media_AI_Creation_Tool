@@ -24,7 +24,7 @@ export default function History() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: number) => {
+    mutationFn: async (id: string) => {
       await apiRequest("DELETE", `/api/images/${id}`);
     },
     onSuccess: () => {
@@ -55,7 +55,7 @@ export default function History() {
   });
 
   const favoriteMutation = useMutation({
-    mutationFn: async ({ id, isFavorite }: { id: number; isFavorite: boolean }) => {
+    mutationFn: async ({ id, isFavorite }: { id: string; isFavorite: boolean }) => {
       await apiRequest("PATCH", `/api/images/${id}/favorite`, { isFavorite });
     },
     onSuccess: () => {
@@ -119,7 +119,7 @@ export default function History() {
     window.open(image.imageUrl, '_blank');
   };
 
-  const handleDeleteImage = (id: number) => {
+  const handleDeleteImage = (id: string) => {
     if (window.confirm("Are you sure you want to delete this image? This action cannot be undone.")) {
       deleteMutation.mutate(id);
     }

@@ -117,7 +117,7 @@ export default function ImageGenerator({ onImageGenerated }: ImageGeneratorProps
   return (
     <div className="space-y-6">
       {/* Clean Generation Interface */}
-      <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl p-6">
+      <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-sm rounded-2xl p-6">
         <div className="mb-6">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center">
@@ -145,7 +145,7 @@ export default function ImageGenerator({ onImageGenerated }: ImageGeneratorProps
                 placeholder="A motivational fitness quote with a mountain background, modern typography, and vibrant colors..."
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                className="resize-none p-4 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 text-sm bg-white/50"
+                className="resize-none p-4 rounded-xl border border-gray-600 bg-gray-800 text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 text-sm"
               />
               <div className="absolute bottom-3 right-3 text-xs text-slate-400">
                 {prompt.length}/500
@@ -188,7 +188,7 @@ export default function ImageGenerator({ onImageGenerated }: ImageGeneratorProps
 
       {/* Clean Loading State */}
       {generateMutation.isPending && (
-        <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl p-8 text-center">
+        <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-sm rounded-2xl p-8 text-center">
           <div className="w-12 h-12 border-3 border-slate-200 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
           <h3 className="text-lg font-medium text-slate-900 mb-2">Creating your image...</h3>
           <p className="text-slate-600 text-sm">This usually takes 10-30 seconds</p>

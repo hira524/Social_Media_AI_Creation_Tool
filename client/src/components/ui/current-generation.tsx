@@ -122,7 +122,7 @@ export default function CurrentGeneration({
   }
 
   return (
-    <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl p-6">
+    <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-sm rounded-2xl p-6">
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-3">
           <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
@@ -163,7 +163,7 @@ export default function CurrentGeneration({
               <Button 
                 variant="outline" 
                 onClick={handleCopyToClipboard} 
-                className="w-full py-2.5 rounded-xl bg-white/50 border border-slate-200 hover:bg-slate-50 text-sm"
+                className="w-full py-2.5 rounded-xl bg-gray-800/50 border border-gray-600 hover:bg-gray-700 text-sm text-white"
               >
                 <Copy className="w-4 h-4 mr-2" />
                 Copy to Clipboard
@@ -172,7 +172,7 @@ export default function CurrentGeneration({
           </div>
 
           <div>
-            <h3 className="font-medium text-slate-900 mb-3 text-sm flex items-center gap-2">
+            <h3 className="font-medium text-white mb-3 text-sm flex items-center gap-2">
               <Heart className="w-4 h-4 text-primary" />
               <span>Actions</span>
             </h3>
@@ -180,16 +180,16 @@ export default function CurrentGeneration({
               <Button 
                 variant="outline" 
                 onClick={handleToggleFavorite}
-                className="w-full py-2.5 rounded-xl bg-white/50 border border-slate-200 hover:bg-slate-50 text-sm"
+                className="w-full py-2.5 rounded-xl bg-gray-800/50 border border-gray-600 hover:bg-gray-700 text-sm text-white"
                 disabled={favoriteMutation.isPending}
               >
-                <Heart className={`w-4 h-4 mr-2 transition-colors ${generatedImage.isFavorite ? 'fill-current text-red-500' : 'text-slate-600'}`} />
+                <Heart className={`w-4 h-4 mr-2 transition-colors ${generatedImage.isFavorite ? 'fill-current text-red-500' : 'text-gray-300'}`} />
                 {generatedImage.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
               </Button>
               <Button 
                 variant="outline" 
                 onClick={onGenerateNew}
-                className="w-full py-2.5 rounded-xl bg-white/50 border border-slate-200 hover:bg-slate-50 text-sm"
+                className="w-full py-2.5 rounded-xl bg-gray-800/50 border border-gray-600 hover:bg-gray-700 text-sm text-white"
               >
                 <RotateCcw className="w-4 h-4 mr-2" />
                 Generate New Image
@@ -218,7 +218,7 @@ export default function CurrentGeneration({
               </div>
               <div className="flex flex-col gap-1">
                 <span className="font-medium">Prompt:</span>
-                <span className="text-xs bg-white/70 p-2 rounded-lg leading-relaxed">{generatedImage.prompt}</span>
+                <span className="text-xs bg-gray-800 text-white p-2 rounded-lg leading-relaxed">{generatedImage.prompt}</span>
               </div>
             </div>
           </div>

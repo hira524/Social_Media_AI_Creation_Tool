@@ -22,7 +22,7 @@ export default function LoadingSpinner({
     <div className={`flex flex-col items-center justify-center space-y-4 p-6 ${className}`}>
       {/* Clean loading animation */}
       <div className="relative">
-        <div className={`${sizeClasses[size]} border-3 border-slate-200 border-t-primary rounded-full animate-spin`}></div>
+        <div className={`${sizeClasses[size]} border-3 border-gray-600 border-t-primary rounded-full animate-spin`}></div>
       </div>
       
       {/* Loading message */}
@@ -31,9 +31,9 @@ export default function LoadingSpinner({
           <div className="w-6 h-6 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
             <Sparkles className="w-3 h-3 text-white" />
           </div>
-          <span className="text-lg font-semibold text-slate-900">AI Creator Studio</span>
+          <span className="text-lg font-semibold text-white">AI Creator Studio</span>
         </div>
-        <p className="text-slate-600 text-sm">{message}</p>
+        <p className="text-gray-300 text-sm">{message}</p>
       </div>
     </div>
   );

@@ -237,7 +237,7 @@ export default function History() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredImages.map((image) => (
-              <div key={image.id} className="group relative bg-white rounded-lg border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-200">
+              <div key={image.id} className="group relative bg-gray-800 rounded-lg border border-gray-600 overflow-hidden hover:shadow-lg transition-all duration-200">
                 <div className="relative overflow-hidden">
                   <img
                     src={image.imageUrl}

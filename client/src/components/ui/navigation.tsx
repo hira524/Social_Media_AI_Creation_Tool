@@ -49,7 +49,7 @@ export default function Navigation() {
   };
 
   return (
-    <header className="bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-soft sticky top-0 z-50">
+    <header className="bg-black/90 backdrop-blur-xl border-b border-gray-800 shadow-soft sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-18">
           <div className="flex items-center space-x-3">
@@ -60,7 +60,7 @@ export default function Navigation() {
           </div>
           
           <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-3 px-4 py-2 bg-white/50 backdrop-blur-sm rounded-2xl border border-white/30 shadow-soft">
+            <div className="flex items-center space-x-3 px-4 py-2 bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700 shadow-soft">
               <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center">
                 <Zap className="w-4 h-4 text-white" />
               </div>
@@ -72,7 +72,7 @@ export default function Navigation() {
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center space-x-3 px-4 py-2 h-12 rounded-2xl hover:bg-white/50 backdrop-blur-sm transition-all duration-300 hover:scale-105">
+                <Button variant="ghost" className="flex items-center space-x-3 px-4 py-2 h-12 rounded-2xl hover:bg-gray-800/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 text-white">
                   <Avatar className="w-8 h-8 ring-2 ring-primary/20">
                     <AvatarImage src={typedUser?.profileImageUrl || ""} alt="User avatar" />
                     <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-white font-bold">
@@ -85,7 +85,7 @@ export default function Navigation() {
               </DropdownMenuTrigger>
               <DropdownMenuContent 
                 align="end" 
-                className="mt-2 bg-white/90 backdrop-blur-xl border border-white/20 shadow-xl rounded-2xl overflow-hidden"
+                className="mt-2 bg-gray-900/90 backdrop-blur-xl border border-gray-700 shadow-xl rounded-2xl overflow-hidden"
               >
                 <DropdownMenuItem 
                   onClick={handleLogout}

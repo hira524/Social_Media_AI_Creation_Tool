@@ -92,7 +92,7 @@ export default function Settings() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl p-6">
+      <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-sm rounded-2xl p-6">
         <div className="flex items-center gap-2">
           <SettingsIcon className="w-5 h-5" />
           <h2 className="text-xl font-semibold">Settings</h2>
@@ -100,7 +100,7 @@ export default function Settings() {
       </div>
 
       {/* Profile Settings */}
-      <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl p-6">
+      <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-sm rounded-2xl p-6">
         <div className="flex items-center gap-2 mb-4">
           <UserIcon className="w-5 h-5" />
           <h3 className="text-lg font-semibold">Profile Settings</h3>
@@ -218,16 +218,16 @@ export default function Settings() {
       </div>
 
       {/* Account & Usage */}
-      <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl p-6">
+      <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-sm rounded-2xl p-6">
         <div className="flex items-center gap-2 mb-4">
           <CreditCard className="w-5 h-5" />
           <h3 className="text-lg font-semibold">Account & Usage</h3>
         </div>
         <div className="space-y-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-4 bg-slate-50/80 rounded-xl">
+            <div className="text-center p-4 bg-gray-800/80 rounded-xl">
               <div className="text-2xl font-bold text-primary">{user?.creditsRemaining || 0}</div>
-              <div className="text-xs text-slate-600">Credits Remaining</div>
+              <div className="text-xs text-gray-400">Credits Remaining</div>
             </div>
             <div className="text-center p-4 bg-slate-50/80 rounded-xl">
               <div className="text-2xl font-bold text-secondary">{user?.creditsUsed || 0}</div>
@@ -254,7 +254,7 @@ export default function Settings() {
       </div>
 
       {/* Notification Preferences */}
-      <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl p-6">
+      <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-sm rounded-2xl p-6">
         <div className="flex items-center gap-2 mb-4">
           <Bell className="w-5 h-5" />
           <h3 className="text-lg font-semibold">Notification Preferences</h3>
@@ -263,7 +263,7 @@ export default function Settings() {
           <div className="flex items-center justify-between">
             <div>
               <Label className="text-sm font-medium">Email Notifications</Label>
-              <p className="text-xs text-slate-600">Receive updates about your account and generations</p>
+              <p className="text-xs text-gray-400">Receive updates about your account and generations</p>
             </div>
             <Switch 
               checked={emailNotifications} 
@@ -296,15 +296,15 @@ export default function Settings() {
       </div>
 
       {/* Danger Zone */}
-      <div className="bg-white/80 backdrop-blur-xl border border-red-200/60 shadow-sm rounded-2xl p-6">
+      <div className="bg-gray-900/80 backdrop-blur-xl border border-red-800/60 shadow-sm rounded-2xl p-6">
         <div className="flex items-center gap-2 mb-4">
           <AlertTriangle className="w-5 h-5 text-red-500" />
-          <h3 className="text-lg font-semibold text-red-900">Danger Zone</h3>
+          <h3 className="text-lg font-semibold text-red-400">Danger Zone</h3>
         </div>
         <div className="space-y-4">
-          <div className="p-4 bg-red-50/80 rounded-xl border border-red-200/50">
-            <h4 className="font-semibold text-red-900 mb-2 text-sm">Delete Account</h4>
-            <p className="text-red-700 text-xs mb-3">
+          <div className="p-4 bg-red-900/30 rounded-xl border border-red-800/50">
+            <h4 className="font-semibold text-red-400 mb-2 text-sm">Delete Account</h4>
+            <p className="text-red-300 text-xs mb-3">
               This will permanently delete your account and all associated data. This action cannot be undone.
             </p>
             <Button 

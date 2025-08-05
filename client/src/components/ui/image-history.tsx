@@ -84,7 +84,7 @@ export default function ImageHistory() {
 
   if (isLoading) {
     return (
-      <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl p-6">
+      <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-sm rounded-2xl p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-slate-900">Recent Generations</h2>
         </div>
@@ -104,7 +104,7 @@ export default function ImageHistory() {
   const typedImages = images as GeneratedImage[];
 
   return (
-    <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl p-6">
+    <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-sm rounded-2xl p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-slate-900">Recent Generations</h2>
         {typedImages.length > 8 && (

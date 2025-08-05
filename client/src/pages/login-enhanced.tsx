@@ -75,7 +75,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-black text-white flex items-center justify-center p-4 relative overflow-hidden">
       {/* Enhanced background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-96 h-96 bg-primary/10 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
@@ -90,7 +90,7 @@ export default function Login() {
 
       <div className="relative w-full max-w-md">
         {/* Enhanced login card */}
-        <Card className="glass-card border-0 shadow-strong overflow-hidden animate-scale-in">
+        <Card className="glass-card bg-gray-900/80 border border-gray-700 shadow-strong overflow-hidden animate-scale-in">
           <CardHeader className="text-center pb-8 pt-10">
             <div className="flex justify-center mb-6">
               <div className="w-20 h-20 bg-gradient-to-br from-primary via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-xl animate-glow">

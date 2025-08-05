@@ -388,8 +388,8 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-4xl">
+    <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
+      <Card className="w-full max-w-4xl bg-gray-900/90 border border-gray-700 shadow-xl">
         <CardContent className="p-8">
           {/* Header */}
           <div className="text-center mb-8">

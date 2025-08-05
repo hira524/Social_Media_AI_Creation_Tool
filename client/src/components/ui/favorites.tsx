@@ -155,7 +155,7 @@ export default function Favorites() {
 
   if (isLoading) {
     return (
-      <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl p-6">
+      <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-sm rounded-2xl p-6">
         <div className="flex items-center gap-2 mb-4">
           <Heart className="w-5 h-5 text-red-500 fill-current" />
           <h2 className="text-xl font-semibold">Favorite Images</h2>
@@ -175,7 +175,7 @@ export default function Favorites() {
   }
 
   return (
-    <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl p-6">
+    <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-sm rounded-2xl p-6">
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-4">
           <Heart className="w-5 h-5 text-red-500 fill-current" />
@@ -258,7 +258,7 @@ export default function Favorites() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredImages.map((image) => (
-            <div key={image.id} className="group relative bg-white/70 rounded-xl border border-red-200/50 overflow-hidden hover:shadow-md transition-all duration-200">
+            <div key={image.id} className="group relative bg-gray-800/70 rounded-xl border border-gray-600 overflow-hidden hover:shadow-md transition-all duration-200">
               <div className="relative overflow-hidden">
                 <img
                   src={image.imageUrl}

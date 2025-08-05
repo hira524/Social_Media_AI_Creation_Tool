@@ -389,30 +389,30 @@ export default function Onboarding() {
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
-      <Card className="w-full max-w-4xl bg-gray-900/90 border border-gray-700 shadow-xl">
+      <Card className="w-full max-w-4xl bg-gray-900/90 border border-gray-700 shadow-xl animate-in fade-in duration-500">
         <CardContent className="p-8">
           {/* Header */}
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="text-center mb-8 animate-in slide-in-from-top duration-700">
+            <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4 animate-in zoom-in duration-500 delay-300">
               <UserCog className="w-8 h-8 text-white" />
             </div>
-            <h2 className="text-3xl font-bold text-slate-900">Let's Personalize Your Experience</h2>
-            <p className="text-slate-600 mt-2">{getStepDescription(currentStep)}</p>
+            <h2 className="text-3xl font-bold text-slate-900 animate-in slide-in-from-left duration-600 delay-200">Let's Personalize Your Experience</h2>
+            <p className="text-slate-600 mt-2 animate-in slide-in-from-right duration-600 delay-400">{getStepDescription(currentStep)}</p>
           </div>
 
           {/* Progress Bar */}
-          <div className="mb-8">
+          <div className="mb-8 animate-in fade-in duration-500 delay-500">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium text-slate-600">
+              <span className="text-sm font-medium text-slate-600 transition-all duration-300">
                 Step {currentStep} of {totalSteps}: {getStepTitle(currentStep)}
               </span>
-              <span className="text-sm text-slate-500">
+              <span className="text-sm text-slate-500 transition-all duration-300">
                 {Math.round((currentStep / totalSteps) * 100)}% Complete
               </span>
             </div>
-            <div className="w-full bg-slate-200 rounded-full h-2">
+            <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
               <div 
-                className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full transition-all duration-300"
+                className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full transition-all duration-700 ease-out animate-pulse"
                 style={{ width: `${(currentStep / totalSteps) * 100}%` }}
               />
             </div>
@@ -716,15 +716,15 @@ export default function Onboarding() {
             )}
 
             {/* Navigation Buttons */}
-            <div className="flex justify-between pt-8 border-t">
+            <div className="flex justify-between pt-8 border-t animate-in slide-in-from-bottom duration-500 delay-300">
               <Button
                 type="button"
                 variant="outline"
                 onClick={prevStep}
                 disabled={currentStep === 1}
-                className="flex items-center space-x-2"
+                className="flex items-center space-x-2 transition-all duration-300 hover:scale-105 hover:shadow-lg disabled:hover:scale-100 disabled:hover:shadow-none"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1" />
                 <span>Previous</span>
               </Button>
 
@@ -733,16 +733,16 @@ export default function Onboarding() {
                   type="button"
                   onClick={nextStep}
                   disabled={!isStepValid(currentStep)}
-                  className="flex items-center space-x-2"
+                  className="flex items-center space-x-2 transition-all duration-300 hover:scale-105 hover:shadow-lg disabled:hover:scale-100 disabled:hover:shadow-none group"
                 >
                   <span>Next</span>
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </Button>
               ) : (
                 <Button 
                   type="submit" 
                   disabled={!isFormValid() || onboardingMutation.isPending}
-                  className="flex items-center space-x-2"
+                  className="flex items-center space-x-2 transition-all duration-300 hover:scale-105 hover:shadow-lg disabled:hover:scale-100 disabled:hover:shadow-none"
                 >
                   {onboardingMutation.isPending ? (
                     <>
@@ -751,7 +751,7 @@ export default function Onboarding() {
                     </>
                   ) : (
                     <>
-                      <CheckCircle className="w-4 h-4" />
+                      <CheckCircle className="w-4 h-4 animate-pulse" />
                       <span>Complete Setup & Start Creating</span>
                     </>
                   )}

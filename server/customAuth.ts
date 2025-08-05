@@ -29,10 +29,11 @@ const getOidcConfig = memoize(
 export function getSession() {
   const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week
   
-  // For development, use a simple in-memory session store
+  // For development, use a simple in-memory session store (no MongoDB required)
   if (isDevelopment) {
+    console.log('Using in-memory session store for development');
     return session({
-      secret: process.env.SESSION_SECRET!,
+      secret: process.env.SESSION_SECRET || 'development-secret-key',
       resave: false,
       saveUninitialized: false, // Don't save uninitialized sessions
       cookie: {
@@ -41,7 +42,7 @@ export function getSession() {
         maxAge: sessionTtl,
         sameSite: 'lax', // Allow same-site requests
       },
-      // Use default MemoryStore for development
+      // Use default MemoryStore for development (no external dependencies)
     });
   }
 

@@ -47,7 +47,7 @@ export default function Login() {
         const result = await response.json();
         
         toast({
-          title: "Welcome back! 🎉",
+          title: "Welcome back!",
           description: "You've been successfully logged in.",
         });
         

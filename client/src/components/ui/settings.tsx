@@ -15,7 +15,8 @@ import {
   Bell, 
   AlertTriangle,
   Check,
-  Trash2
+  Trash2,
+  Crown
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import type { User } from "@shared/mongoSchema";
@@ -91,61 +92,74 @@ export default function Settings() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-sm rounded-2xl p-6">
-        <div className="flex items-center gap-2">
-          <SettingsIcon className="w-5 h-5" />
-          <h2 className="text-xl font-semibold">Settings</h2>
+      {/* Enhanced Header */}
+      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 animate-fade-in-up">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center shadow-lg">
+            <SettingsIcon className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-white">Settings</h2>
+            <p className="text-sm text-gray-400">Manage your account and preferences</p>
+          </div>
         </div>
       </div>
 
-      {/* Profile Settings */}
-      <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-sm rounded-2xl p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <UserIcon className="w-5 h-5" />
-          <h3 className="text-lg font-semibold">Profile Settings</h3>
+      {/* Enhanced Profile Settings */}
+      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 animate-fade-in-up hover:shadow-xl transition-all duration-300" style={{animationDelay: '0.1s'}}>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+            <UserIcon className="w-4 h-4 text-white" />
+          </div>
+          <h3 className="text-lg font-semibold text-white">Profile Settings</h3>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="firstName" className="text-sm font-medium">First Name</Label>
+            <div className="space-y-2 animate-slide-in-left" style={{animationDelay: '0.2s'}}>
+              <Label htmlFor="firstName" className="text-sm font-medium text-gray-300 flex items-center gap-2">
+                <UserIcon className="w-3 h-3 text-primary" />
+                First Name
+              </Label>
               <Input
                 id="firstName"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Enter your first name"
-                className="text-sm"
+                className="bg-gray-800 border-gray-600 text-white focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="lastName" className="text-sm font-medium">Last Name</Label>
+            <div className="space-y-2 animate-slide-in-right" style={{animationDelay: '0.3s'}}>
+              <Label htmlFor="lastName" className="text-sm font-medium text-gray-300 flex items-center gap-2">
+                <UserIcon className="w-3 h-3 text-primary" />
+                Last Name
+              </Label>
               <Input
                 id="lastName"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Enter your last name"
-                className="text-sm"
+                className="bg-gray-800 border-gray-600 text-white focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300"
               />
             </div>
           </div>
           
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
+          <div className="space-y-2 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+            <Label htmlFor="email" className="text-sm font-medium text-gray-300">Email Address</Label>
             <Input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="text-sm"
+              className="bg-gray-800 border-gray-600 text-white focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300"
             />
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="niche" className="text-sm font-medium">Niche</Label>
+            <div className="space-y-2 animate-fade-in-up" style={{animationDelay: '0.5s'}}>
+              <Label htmlFor="niche" className="text-sm font-medium text-gray-300">Niche</Label>
               <Select value={niche} onValueChange={setNiche}>
-                <SelectTrigger className="text-sm">
+                <SelectTrigger className="bg-gray-800 border-gray-600 text-white focus:border-primary">
                   <SelectValue placeholder="Select your niche" />
                 </SelectTrigger>
                 <SelectContent>
@@ -161,10 +175,10 @@ export default function Settings() {
               </Select>
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor="contentType" className="text-sm font-medium">Content Type</Label>
+            <div className="space-y-2 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
+              <Label htmlFor="contentType" className="text-sm font-medium text-gray-300">Content Type</Label>
               <Select value={contentType} onValueChange={setContentType}>
-                <SelectTrigger className="text-sm">
+                <SelectTrigger className="bg-gray-800 border-gray-600 text-white focus:border-primary">
                   <SelectValue placeholder="Select content type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -177,10 +191,10 @@ export default function Settings() {
               </Select>
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor="stylePreference" className="text-sm font-medium">Style Preference</Label>
+            <div className="space-y-2 animate-fade-in-up" style={{animationDelay: '0.7s'}}>
+              <Label htmlFor="stylePreference" className="text-sm font-medium text-gray-300">Style Preference</Label>
               <Select value={stylePreference} onValueChange={setStylePreference}>
-                <SelectTrigger className="text-sm">
+                <SelectTrigger className="bg-gray-800 border-gray-600 text-white focus:border-primary">
                   <SelectValue placeholder="Select style" />
                 </SelectTrigger>
                 <SelectContent>
@@ -195,11 +209,11 @@ export default function Settings() {
             </div>
           </div>
 
-          <div className="pt-4">
+          <div className="pt-4 animate-fade-in-up" style={{animationDelay: '0.8s'}}>
             <Button 
               onClick={handleSaveChanges}
               disabled={saveProfileMutation.isPending}
-              className="bg-gradient-to-r from-primary to-secondary text-white text-sm"
+              className="bg-gradient-to-r from-primary to-secondary text-white hover:shadow-lg hover:scale-105 transition-all duration-300 group"
             >
               {saveProfileMutation.isPending ? (
                 <>
@@ -208,7 +222,7 @@ export default function Settings() {
                 </>
               ) : (
                 <>
-                  <Check className="w-4 h-4 mr-2" />
+                  <Check className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
                   <span>Save Changes</span>
                 </>
               )}
@@ -217,100 +231,119 @@ export default function Settings() {
         </div>
       </div>
 
-      {/* Account & Usage */}
-      <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-sm rounded-2xl p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <CreditCard className="w-5 h-5" />
-          <h3 className="text-lg font-semibold">Account & Usage</h3>
+      {/* Enhanced Account & Usage */}
+      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 animate-fade-in-up hover:shadow-xl transition-all duration-300" style={{animationDelay: '0.2s'}}>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
+            <CreditCard className="w-4 h-4 text-white" />
+          </div>
+          <h3 className="text-lg font-semibold text-white">Account & Usage</h3>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-4 bg-gray-800/80 rounded-xl">
+            <div className="text-center p-4 bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-xl border border-primary/30 hover:scale-105 transition-all duration-300 animate-scale-in" style={{animationDelay: '0.3s'}}>
               <div className="text-2xl font-bold text-primary">{user?.creditsRemaining || 0}</div>
-              <div className="text-xs text-gray-400">Credits Remaining</div>
+              <div className="text-xs text-gray-300">Credits Remaining</div>
             </div>
-            <div className="text-center p-4 bg-slate-50/80 rounded-xl">
-              <div className="text-2xl font-bold text-secondary">{user?.creditsUsed || 0}</div>
-              <div className="text-xs text-slate-600">Credits Used</div>
+            <div className="text-center p-4 bg-gray-800/80 rounded-xl border border-gray-600 hover:scale-105 transition-all duration-300 animate-scale-in" style={{animationDelay: '0.4s'}}>
+              <div className="text-2xl font-bold text-orange-400">{user?.creditsUsed || 0}</div>
+              <div className="text-xs text-gray-400">Credits Used</div>
             </div>
-            <div className="text-center p-4 bg-slate-50/80 rounded-xl">
-              <div className="text-2xl font-bold text-slate-700">{user?.totalGenerations || 0}</div>
-              <div className="text-xs text-slate-600">Total Images</div>
+            <div className="text-center p-4 bg-gray-800/80 rounded-xl border border-gray-600 hover:scale-105 transition-all duration-300 animate-scale-in" style={{animationDelay: '0.5s'}}>
+              <div className="text-2xl font-bold text-white">{user?.totalGenerations || 0}</div>
+              <div className="text-xs text-gray-400">Total Images</div>
             </div>
-            <div className="text-center p-4 bg-slate-50/80 rounded-xl">
-              <div className="text-2xl font-bold text-red-500">{user?.favoriteCount || 0}</div>
-              <div className="text-xs text-slate-600">Favorites</div>
+            <div className="text-center p-4 bg-gray-800/80 rounded-xl border border-gray-600 hover:scale-105 transition-all duration-300 animate-scale-in" style={{animationDelay: '0.6s'}}>
+              <div className="text-2xl font-bold text-red-400">{user?.favoriteCount || 0}</div>
+              <div className="text-xs text-gray-400">Favorites</div>
             </div>
           </div>
           
-          <div className="p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl border border-primary/20">
-            <h4 className="font-semibold text-slate-900 mb-2 text-sm">Upgrade to Pro</h4>
-            <p className="text-slate-600 text-xs mb-3">Get unlimited generations and premium features</p>
-            <Button size="sm" className="bg-gradient-to-r from-primary to-secondary text-white text-xs">
-              Upgrade Now
-            </Button>
+          <div className="p-6 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-xl border border-primary/30 hover:shadow-lg transition-all duration-300 animate-fade-in-up" style={{animationDelay: '0.7s'}}>
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center shadow-lg">
+                <Crown className="w-6 h-6 text-white" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-white mb-1">Upgrade to Pro</h4>
+                <p className="text-gray-300 text-sm">Get unlimited generations and premium features</p>
+              </div>
+              <Button className="bg-gradient-to-r from-primary to-secondary text-white hover:shadow-lg hover:scale-105 transition-all duration-300">
+                Upgrade Now
+              </Button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Notification Preferences */}
-      <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-sm rounded-2xl p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Bell className="w-5 h-5" />
-          <h3 className="text-lg font-semibold">Notification Preferences</h3>
+      {/* Enhanced Notification Preferences */}
+      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 animate-fade-in-up hover:shadow-xl transition-all duration-300" style={{animationDelay: '0.8s'}}>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center">
+            <Bell className="w-4 h-4 text-white" />
+          </div>
+          <h3 className="text-lg font-semibold text-white">Notification Preferences</h3>
         </div>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
+        <div className="space-y-6">
+          <div className="flex items-center justify-between p-4 bg-gray-800/60 rounded-xl border border-gray-600 hover:bg-gray-800/80 transition-all duration-300 animate-slide-in" style={{animationDelay: '0.9s'}}>
             <div>
-              <Label className="text-sm font-medium">Email Notifications</Label>
-              <p className="text-xs text-gray-400">Receive updates about your account and generations</p>
+              <Label className="text-sm font-medium text-white">Email Notifications</Label>
+              <p className="text-xs text-gray-300">Receive updates about your account and generations</p>
             </div>
             <Switch 
               checked={emailNotifications} 
               onCheckedChange={setEmailNotifications}
+              className="data-[state=checked]:bg-primary"
             />
           </div>
           
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between p-4 bg-gray-800/60 rounded-xl border border-gray-600 hover:bg-gray-800/80 transition-all duration-300 animate-slide-in" style={{animationDelay: '1.0s'}}>
             <div>
-              <Label className="text-sm font-medium">Browser Notifications</Label>
-              <p className="text-xs text-slate-600">Get notified when your images are ready</p>
+              <Label className="text-sm font-medium text-white">Browser Notifications</Label>
+              <p className="text-xs text-gray-300">Get notified when your images are ready</p>
             </div>
             <Switch 
               checked={browserNotifications} 
               onCheckedChange={setBrowserNotifications}
+              className="data-[state=checked]:bg-primary"
             />
           </div>
           
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between p-4 bg-gray-800/60 rounded-xl border border-gray-600 hover:bg-gray-800/80 transition-all duration-300 animate-slide-in" style={{animationDelay: '1.1s'}}>
             <div>
-              <Label className="text-sm font-medium">Marketing Emails</Label>
-              <p className="text-xs text-slate-600">Receive tips, updates, and promotional offers</p>
+              <Label className="text-sm font-medium text-white">Marketing Emails</Label>
+              <p className="text-xs text-gray-300">Receive tips, updates, and promotional offers</p>
             </div>
             <Switch 
               checked={marketingEmails} 
               onCheckedChange={setMarketingEmails}
+              className="data-[state=checked]:bg-primary"
             />
           </div>
         </div>
       </div>
 
-      {/* Danger Zone */}
-      <div className="bg-gray-900/80 backdrop-blur-xl border border-red-800/60 shadow-sm rounded-2xl p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <AlertTriangle className="w-5 h-5 text-red-500" />
+      {/* Enhanced Danger Zone */}
+      <div className="glass-card bg-red-950/80 backdrop-blur-xl border border-red-800/60 shadow-strong rounded-2xl p-6 animate-fade-in-up hover:shadow-xl transition-all duration-300" style={{animationDelay: '1.2s'}}>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-8 h-8 bg-gradient-to-br from-red-600 to-red-800 rounded-lg flex items-center justify-center">
+            <AlertTriangle className="w-4 h-4 text-white" />
+          </div>
           <h3 className="text-lg font-semibold text-red-400">Danger Zone</h3>
         </div>
         <div className="space-y-4">
-          <div className="p-4 bg-red-900/30 rounded-xl border border-red-800/50">
-            <h4 className="font-semibold text-red-400 mb-2 text-sm">Delete Account</h4>
-            <p className="text-red-300 text-xs mb-3">
+          <div className="p-6 bg-red-900/40 rounded-xl border border-red-800/60 hover:bg-red-900/50 transition-all duration-300 animate-pulse-gentle" style={{animationDelay: '1.3s'}}>
+            <h4 className="font-semibold text-red-400 mb-2 text-sm flex items-center gap-2">
+              <Trash2 className="w-4 h-4" />
+              Delete Account
+            </h4>
+            <p className="text-red-300 text-xs mb-4">
               This will permanently delete your account and all associated data. This action cannot be undone.
             </p>
             <Button 
               variant="destructive" 
               size="sm"
-              className="text-xs"
+              className="text-xs bg-red-600 hover:bg-red-700 hover:scale-105 transition-all duration-300"
               onClick={() => {
                 if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
                   toast({

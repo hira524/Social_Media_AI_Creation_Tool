@@ -19,19 +19,14 @@ export function useAuth() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        return response.json();
+        const result = await response.json();
+        return result;
       } catch (error) {
         console.error('Auth check failed:', error);
         return null;
       }
     },
     retry: false,
-    refetchOnWindowFocus: false,
-    refetchInterval: false,
-    refetchOnMount: true,
-    refetchOnReconnect: false,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
   const refreshAuth = () => {

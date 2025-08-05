@@ -812,6 +812,44 @@
   }
 }
 
+@keyframes scaleBounce {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.3); 
+  }
+  50% { 
+    transform: scale(1.05); 
+  }
+  70% { 
+    transform: scale(0.9); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+}
+
+@keyframes wiggle {
+  0%, 7% { transform: rotateZ(0); }
+  15% { transform: rotateZ(-15deg); }
+  20% { transform: rotateZ(10deg); }
+  25% { transform: rotateZ(-10deg); }
+  30% { transform: rotateZ(6deg); }
+  35% { transform: rotateZ(-4deg); }
+  40%, 100% { transform: rotateZ(0); }
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-cursor {
+  from, to { border-color: transparent; }
+  50% { border-color: hsl(var(--primary)); }
+}
+
+/* Enhanced existing keyframes */
 @keyframes bounceGentle {
   0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
   40% { transform: translateY(-10px); }
@@ -855,6 +893,44 @@
 
 .animate-rotate {
   animation: rotate360 2s linear infinite;
+}
+
+/* Missing animation classes for landing page */
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: slideUp 0.8s ease-out;
+}
+
+.animate-bounce-gentle {
+  animation: bounceGentle 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-gentle {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+/* Additional enhanced animations */
+.animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.animate-scale-bounce {
+  animation: scaleBounce 0.6s ease-out;
+}
+
+.animate-wiggle {
+  animation: wiggle 1s ease-in-out;
+}
+
+.animate-typing {
+  animation: typing 3.5s steps(40, end), blink-cursor 0.75s step-end infinite;
 }
 
 .hover-glow-intense {

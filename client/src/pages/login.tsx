@@ -47,7 +47,7 @@ export default function Login() {
       
       if (response.ok) {
         toast({
-          title: "Welcome back! 🎉",
+          title: "Welcome back!",
           description: "You've been successfully logged in.",
         });
         

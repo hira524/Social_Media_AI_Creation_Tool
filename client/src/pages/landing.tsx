@@ -1,6 +1,6 @@
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
-import { Sparkles, Brain, Smartphone, Zap, Palette, History, Download, ArrowRight, Check, Play } from "lucide-react";
+import { Sparkles, Brain, Smartphone, Zap, Palette, History, Download, ArrowRight, Check, Play, Twitter, Facebook, Instagram, Linkedin } from "lucide-react";
 import { useLocation } from "wouter";
 
 export default function Landing() {
@@ -106,9 +106,18 @@ export default function Landing() {
             </div>
             
             <div className="hidden md:flex items-center space-x-8 slide-in-up">
-              <a href="#features" className="text-gray-300 hover:text-primary transition-all duration-300 font-medium hover:scale-105">Features</a>
-              <a href="#examples" className="text-gray-300 hover:text-primary transition-all duration-300 font-medium hover:scale-105">Examples</a>
-              <a href="#pricing" className="text-gray-300 hover:text-primary transition-all duration-300 font-medium hover:scale-105">Pricing</a>
+              <a href="#features" className="text-gray-300 hover:text-primary transition-all duration-300 font-medium hover:scale-105 relative group">
+                Features
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a href="#examples" className="text-gray-300 hover:text-primary transition-all duration-300 font-medium hover:scale-105 relative group">
+                Examples
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a href="#pricing" className="text-gray-300 hover:text-primary transition-all duration-300 font-medium hover:scale-105 relative group">
+                Pricing
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </a>
             </div>
 
             {/* Mobile Navigation - visible on mobile */}
@@ -149,6 +158,9 @@ export default function Landing() {
           <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary/60 rounded-full animate-bounce-gentle"></div>
           <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-purple-400/60 rounded-full animate-bounce-gentle" style={{animationDelay: '1s'}}></div>
           <div className="absolute top-1/2 left-3/4 w-3 h-3 bg-pink-400/40 rounded-full animate-bounce-gentle" style={{animationDelay: '3s'}}></div>
+          <div className="absolute top-1/3 right-1/3 w-1.5 h-1.5 bg-blue-400/50 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
+          <div className="absolute bottom-1/4 left-1/6 w-2.5 h-2.5 bg-green-400/40 rounded-full animate-bounce-gentle" style={{animationDelay: '4s'}}></div>
+          <div className="absolute top-1/5 right-1/5 w-1 h-1 bg-yellow-400/60 rounded-full animate-pulse" style={{animationDelay: '1.5s'}}></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -160,19 +172,22 @@ export default function Landing() {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                   </span>
-                  <span className="text-sm font-medium text-gray-300">✨ New: Advanced AI Image Generation</span>
+                  <span className="text-sm font-medium text-gray-300 flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-primary" />
+                    New: Advanced AI Image Generation
+                  </span>
                 </div>
                 
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight mb-8 mx-auto lg:mx-0 max-w-4xl lg:max-w-none">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight mb-8 mx-auto lg:mx-0 max-w-4xl lg:max-w-none animate-fade-in-up">
                   Create Stunning{" "}
                   <span className="text-gradient-primary relative animate-gradient">
-                    AI-Generated
-                    <div className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-primary/30 to-pink-500/30 rounded-full animate-shimmer"></div>
+                    <span className="inline-block animate-scale-bounce" style={{animationDelay: '0.5s'}}>AI-Generated</span>
+                    <div className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-primary/30 to-pink-500/30 rounded-full animate-shimmer" style={{animationDelay: '1s'}}></div>
                   </span>{" "}
-                  Social Media Posts
+                  <span className="inline-block" style={{animationDelay: '1s'}}>Social Media Posts</span>
                 </h1>
                 
-                <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 leading-relaxed mb-10 max-w-2xl mx-auto lg:mx-0">
+                <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 leading-relaxed mb-10 max-w-2xl mx-auto lg:mx-0 animate-fade-in-up" style={{animationDelay: '0.5s'}}>
                   Generate professional social media images tailored to your niche with our intelligent AI. 
                   Perfect for Instagram, LinkedIn, and Twitter posts that engage and convert.
                 </p>
@@ -181,7 +196,8 @@ export default function Landing() {
                   <Button 
                     size="lg" 
                     onClick={handleGetStarted} 
-                    className="btn-primary text-lg px-8 sm:px-10 py-4 sm:py-6 rounded-2xl shadow-strong hover:shadow-glow-primary transform hover:scale-105 transition-all duration-300 w-full sm:w-auto group"
+                    className="btn-primary text-lg px-8 sm:px-10 py-4 sm:py-6 rounded-2xl shadow-strong hover:shadow-glow-primary transform hover:scale-105 transition-all duration-300 w-full sm:w-auto group animate-scale-bounce"
+                    style={{animationDelay: '0.8s'}}
                   >
                     <Sparkles className="w-5 h-5 mr-3 group-hover:animate-spin" />
                     Start Creating Free
@@ -190,7 +206,8 @@ export default function Landing() {
                   <Button 
                     variant="outline" 
                     size="lg" 
-                    className="glass-button text-lg px-8 sm:px-10 py-4 sm:py-6 rounded-2xl border-2 border-gray-600 hover:border-primary/50 transition-all duration-300 w-full sm:w-auto group text-white"
+                    className="glass-button text-lg px-8 sm:px-10 py-4 sm:py-6 rounded-2xl border-2 border-gray-600 hover:border-primary/50 transition-all duration-300 w-full sm:w-auto group text-white hover:scale-105 animate-fade-in-up"
+                    style={{animationDelay: '1.0s'}}
                   >
                     <Play className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
                     Watch Demo
@@ -198,17 +215,17 @@ export default function Landing() {
                 </div>
 
                 <div className="mt-12 flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-8 text-sm text-gray-400">
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 hover:scale-105 transition-transform duration-300">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                     <Check className="w-5 h-5 text-green-500" />
                     <span className="font-medium">No credit card required</span>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 hover:scale-105 transition-transform duration-300">
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                     <Check className="w-5 h-5 text-blue-500" />
                     <span className="font-medium">5 free generations</span>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 hover:scale-105 transition-transform duration-300">
                     <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                     <Check className="w-5 h-5 text-purple-500" />
                     <span className="font-medium">10 second generation</span>
@@ -225,8 +242,8 @@ export default function Landing() {
                       key={index} 
                       className={`card-hover rounded-2xl overflow-hidden bg-white/80 backdrop-blur-sm border border-white/20 shadow-medium ${
                         index % 2 === 0 ? 'rotate-2' : '-rotate-2'
-                      } hover:rotate-0 stagger-item`}
-                      style={{animationDelay: `${index * 0.1}s`}}
+                      } hover:rotate-0 animate-scale-bounce`}
+                      style={{animationDelay: `${1.8 + index * 0.2}s`}}
                     >
                       <div className="relative overflow-hidden">
                         <div className="w-full h-40 bg-gradient-to-br from-slate-100 via-white to-slate-200 flex items-center justify-center relative">
@@ -248,8 +265,8 @@ export default function Landing() {
                   ))}
                 </div>
                 
-                <div className="absolute -top-6 -right-6 bg-gradient-to-r from-primary to-secondary text-white px-6 py-3 rounded-2xl text-sm font-semibold shadow-intense float">
-                  <Sparkles className="w-4 h-4 inline mr-2" />
+                <div className="absolute -top-6 -right-6 bg-gradient-to-r from-primary to-secondary text-white px-6 py-3 rounded-2xl text-sm font-semibold shadow-intense animate-scale-bounce" style={{animationDelay: '2.5s'}}>
+                  <Sparkles className="w-4 h-4 inline mr-2 animate-wiggle" style={{animationDelay: '3s'}} />
                   AI Generated
                 </div>
                 
@@ -292,8 +309,8 @@ export default function Landing() {
             {features.map((feature, index) => (
               <Card 
                 key={index} 
-                className="group text-center p-8 bg-gray-900/80 backdrop-blur-sm border border-gray-700 rounded-2xl shadow-medium hover:shadow-intense hover:scale-105 transition-all duration-500 stagger-item relative overflow-hidden"
-                style={{animationDelay: `${index * 0.1}s`}}
+                className="group text-center p-8 bg-gray-900/80 backdrop-blur-sm border border-gray-700 rounded-2xl shadow-medium hover:shadow-intense hover:scale-105 transition-all duration-500 animate-scale-bounce relative overflow-hidden"
+                style={{animationDelay: `${index * 0.2}s`}}
               >
                 {/* Gradient overlay on hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -347,8 +364,8 @@ export default function Landing() {
             {examples.map((example, index) => (
               <Card 
                 key={index} 
-                className="group overflow-hidden rounded-2xl bg-gray-800/80 backdrop-blur-sm border border-gray-700 shadow-medium hover:shadow-intense hover:scale-105 transition-all duration-500 stagger-item"
-                style={{animationDelay: `${index * 0.1}s`}}
+                className="group overflow-hidden rounded-2xl bg-gray-800/80 backdrop-blur-sm border border-gray-700 shadow-medium hover:shadow-intense hover:scale-105 transition-all duration-500 animate-scale-bounce"
+                style={{animationDelay: `${index * 0.15}s`}}
               >
                 <div className="relative overflow-hidden">
                   <div className="w-full h-56 bg-gradient-to-br from-slate-100 via-white to-slate-200 flex items-center justify-center relative group-hover:scale-110 transition-transform duration-500">
@@ -404,67 +421,67 @@ export default function Landing() {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-24 bg-white relative overflow-hidden">
+      <section id="pricing" className="py-24 bg-black relative overflow-hidden">
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236366f1' fill-opacity='0.1'%3E%3Cpath d='M20 20l20-20v40z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M20 20l20-20v40z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }} />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 sm:mb-20 fade-in">
-            <div className="inline-flex items-center px-4 py-2 bg-primary/10 rounded-full mb-6">
+            <div className="inline-flex items-center px-4 py-2 bg-primary/20 rounded-full mb-6">
               <Zap className="w-4 h-4 text-primary mr-2" />
               <span className="text-sm font-medium text-primary">Simple Pricing</span>
             </div>
             
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 mb-6 mx-auto max-w-5xl leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 mx-auto max-w-5xl leading-tight">
               Start creating for{" "}
               <span className="text-gradient-primary">free</span>
             </h2>
             
-            <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
               Try our AI image generation with 5 free credits. No credit card required.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {/* Free Plan */}
-            <Card className="relative overflow-hidden rounded-2xl bg-white/80 backdrop-blur-sm border border-white/20 shadow-medium hover:shadow-intense hover:scale-105 transition-all duration-500 stagger-item">
+            <Card className="relative overflow-hidden rounded-2xl bg-gray-900/80 backdrop-blur-sm border border-gray-700 shadow-medium hover:shadow-intense hover:scale-105 transition-all duration-500 group animate-scale-bounce" style={{animationDelay: '0.1s'}}>
               <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                  <Sparkles className="w-8 h-8 text-white" />
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 animate-glow">
+                  <Sparkles className="w-8 h-8 text-white group-hover:animate-wiggle" />
                 </div>
                 
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Free</h3>
-                <div className="text-4xl font-bold text-slate-900 mb-6">
-                  $0<span className="text-lg text-slate-500 font-normal">/month</span>
+                <h3 className="text-2xl font-bold text-white mb-2">Free</h3>
+                <div className="text-4xl font-bold text-white mb-6">
+                  $0<span className="text-lg text-gray-400 font-normal">/month</span>
                 </div>
                 
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                    <span className="text-slate-600">5 free image generations</span>
+                    <span className="text-gray-300">5 free image generations</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                    <span className="text-slate-600">All social media formats</span>
+                    <span className="text-gray-300">All social media formats</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                    <span className="text-slate-600">HD downloads</span>
+                    <span className="text-gray-300">HD downloads</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                    <span className="text-slate-600">Generation history</span>
+                    <span className="text-gray-300">Generation history</span>
                   </li>
                 </ul>
                 
                 <Button 
                   onClick={handleGetStarted} 
                   variant="outline"
-                  className="w-full py-3 rounded-xl border-2 hover:bg-green-50 hover:border-green-500 transition-all duration-300"
+                  className="w-full py-3 rounded-xl border-2 border-gray-600 hover:bg-green-500/20 hover:border-green-500 transition-all duration-300 text-white"
                 >
                   Get Started Free
                 </Button>
@@ -472,44 +489,44 @@ export default function Landing() {
             </Card>
 
             {/* Pro Plan */}
-            <Card className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/5 to-secondary/5 border-2 border-primary/20 shadow-intense hover:shadow-primary/25 hover:scale-105 transition-all duration-500 stagger-item">
+            <Card className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900/90 to-gray-800/90 border-2 border-primary/40 shadow-intense hover:shadow-primary/25 hover:scale-105 transition-all duration-500 group animate-scale-bounce" style={{animationDelay: '0.3s'}}>
               {/* Popular badge */}
               <div className="absolute -top-1 left-1/2 transform -translate-x-1/2">
-                <div className="bg-gradient-to-r from-primary to-secondary text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg">
+                <div className="bg-gradient-to-r from-primary to-secondary text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg animate-pulse">
                   MOST POPULAR
                 </div>
               </div>
               
               <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg pulse-glow">
-                  <Zap className="w-8 h-8 text-white" />
+                <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg pulse-glow group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                  <Zap className="w-8 h-8 text-white group-hover:animate-wiggle" />
                 </div>
                 
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Pro</h3>
-                <div className="text-4xl font-bold text-slate-900 mb-6">
-                  $19<span className="text-lg text-slate-500 font-normal">/month</span>
+                <h3 className="text-2xl font-bold text-white mb-2">Pro</h3>
+                <div className="text-4xl font-bold text-white mb-6">
+                  $19<span className="text-lg text-gray-400 font-normal">/month</span>
                 </div>
                 
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-primary mr-3 flex-shrink-0" />
-                    <span className="text-slate-600">200 image generations</span>
+                    <span className="text-gray-300">200 image generations</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-primary mr-3 flex-shrink-0" />
-                    <span className="text-slate-600">Priority generation speed</span>
+                    <span className="text-gray-300">Priority generation speed</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-primary mr-3 flex-shrink-0" />
-                    <span className="text-slate-600">Advanced customization</span>
+                    <span className="text-gray-300">Advanced customization</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-primary mr-3 flex-shrink-0" />
-                    <span className="text-slate-600">Commercial license</span>
+                    <span className="text-gray-300">Commercial license</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-primary mr-3 flex-shrink-0" />
-                    <span className="text-slate-600">Email support</span>
+                    <span className="text-gray-300">Email support</span>
                   </li>
                 </ul>
                 
@@ -523,43 +540,43 @@ export default function Landing() {
             </Card>
 
             {/* Enterprise Plan */}
-            <Card className="relative overflow-hidden rounded-2xl bg-white/80 backdrop-blur-sm border border-white/20 shadow-medium hover:shadow-intense hover:scale-105 transition-all duration-500 stagger-item">
+            <Card className="relative overflow-hidden rounded-2xl bg-gray-900/80 backdrop-blur-sm border border-gray-700 shadow-medium hover:shadow-intense hover:scale-105 transition-all duration-500 group animate-scale-bounce" style={{animationDelay: '0.5s'}}>
               <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-slate-600 to-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                  <Brain className="w-8 h-8 text-white" />
+                <div className="w-16 h-16 bg-gradient-to-br from-slate-600 to-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                  <Brain className="w-8 h-8 text-white group-hover:animate-pulse" />
                 </div>
                 
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Enterprise</h3>
-                <div className="text-4xl font-bold text-slate-900 mb-6">
-                  Custom<span className="text-lg text-slate-500 font-normal">/month</span>
+                <h3 className="text-2xl font-bold text-white mb-2">Enterprise</h3>
+                <div className="text-4xl font-bold text-white mb-6">
+                  Custom<span className="text-lg text-gray-400 font-normal">/month</span>
                 </div>
                 
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center">
-                    <Check className="w-5 h-5 text-slate-600 mr-3 flex-shrink-0" />
-                    <span className="text-slate-600">Unlimited generations</span>
+                    <Check className="w-5 h-5 text-gray-400 mr-3 flex-shrink-0" />
+                    <span className="text-gray-300">Unlimited generations</span>
                   </li>
                   <li className="flex items-center">
-                    <Check className="w-5 h-5 text-slate-600 mr-3 flex-shrink-0" />
-                    <span className="text-slate-600">Custom AI training</span>
+                    <Check className="w-5 h-5 text-gray-400 mr-3 flex-shrink-0" />
+                    <span className="text-gray-300">Custom AI training</span>
                   </li>
                   <li className="flex items-center">
-                    <Check className="w-5 h-5 text-slate-600 mr-3 flex-shrink-0" />
-                    <span className="text-slate-600">API access</span>
+                    <Check className="w-5 h-5 text-gray-400 mr-3 flex-shrink-0" />
+                    <span className="text-gray-300">API access</span>
                   </li>
                   <li className="flex items-center">
-                    <Check className="w-5 h-5 text-slate-600 mr-3 flex-shrink-0" />
-                    <span className="text-slate-600">Dedicated support</span>
+                    <Check className="w-5 h-5 text-gray-400 mr-3 flex-shrink-0" />
+                    <span className="text-gray-300">Dedicated support</span>
                   </li>
                   <li className="flex items-center">
-                    <Check className="w-5 h-5 text-slate-600 mr-3 flex-shrink-0" />
-                    <span className="text-slate-600">Team collaboration</span>
+                    <Check className="w-5 h-5 text-gray-400 mr-3 flex-shrink-0" />
+                    <span className="text-gray-300">Team collaboration</span>
                   </li>
                 </ul>
                 
                 <Button 
                   variant="outline"
-                  className="w-full py-3 rounded-xl border-2 hover:bg-slate-50 hover:border-slate-500 transition-all duration-300"
+                  className="w-full py-3 rounded-xl border-2 border-gray-600 hover:bg-gray-700 hover:border-gray-500 transition-all duration-300 text-white"
                 >
                   Contact Sales
                 </Button>
@@ -569,8 +586,8 @@ export default function Landing() {
 
           {/* FAQ or additional info */}
           <div className="text-center mt-12 sm:mt-16 fade-in">
-            <p className="text-slate-600 mb-4 sm:mb-6 text-sm sm:text-base">All plans include free updates and 24/7 technical support</p>
-            <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-8 text-xs sm:text-sm text-slate-500">
+            <p className="text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base">All plans include free updates and 24/7 technical support</p>
+            <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-8 text-xs sm:text-sm text-gray-400">
               <div className="flex items-center">
                 <Check className="w-4 h-4 text-green-500 mr-2" />
                 <span>Cancel anytime</span>
@@ -589,7 +606,7 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-20 relative overflow-hidden">
+      <footer className="bg-black text-white py-20 relative overflow-hidden">
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -607,30 +624,30 @@ export default function Landing() {
                 <span className="font-bold text-2xl text-gradient-primary">AI Creator Studio</span>
               </div>
               
-              <p className="text-slate-300 mb-6 sm:mb-8 max-w-lg text-base sm:text-lg leading-relaxed text-center md:text-left">
+              <p className="text-gray-300 mb-6 sm:mb-8 max-w-lg text-base sm:text-lg leading-relaxed text-center md:text-left">
                 Create stunning, professional social media images with AI. 
                 Tailored to your niche, optimized for your platform.
               </p>
               
               <div className="flex space-x-4 justify-center md:justify-start">
-                <div className="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors duration-300 cursor-pointer">
-                  <span className="text-lg">𝕏</span>
+                <div className="w-10 h-10 bg-gray-800/80 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-gray-700 transition-all duration-300 cursor-pointer hover:scale-110 hover:rotate-6">
+                  <Twitter className="w-5 h-5 text-gray-300 hover:text-blue-400 transition-colors" />
                 </div>
-                <div className="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors duration-300 cursor-pointer">
-                  <span className="text-lg">📘</span>
+                <div className="w-10 h-10 bg-gray-800/80 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-gray-700 transition-all duration-300 cursor-pointer hover:scale-110 hover:rotate-6">
+                  <Facebook className="w-5 h-5 text-gray-300 hover:text-blue-500 transition-colors" />
                 </div>
-                <div className="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors duration-300 cursor-pointer">
-                  <span className="text-lg">📷</span>
+                <div className="w-10 h-10 bg-gray-800/80 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-gray-700 transition-all duration-300 cursor-pointer hover:scale-110 hover:rotate-6">
+                  <Instagram className="w-5 h-5 text-gray-300 hover:text-pink-400 transition-colors" />
                 </div>
-                <div className="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors duration-300 cursor-pointer">
-                  <span className="text-lg">💼</span>
+                <div className="w-10 h-10 bg-gray-800/80 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-gray-700 transition-all duration-300 cursor-pointer hover:scale-110 hover:rotate-6">
+                  <Linkedin className="w-5 h-5 text-gray-300 hover:text-blue-600 transition-colors" />
                 </div>
               </div>
             </div>
 
             <div className="slide-in-up text-center md:text-left" style={{animationDelay: '0.2s'}}>
-              <h3 className="font-bold mb-6 text-lg">Product</h3>
-              <ul className="space-y-4 text-slate-300">
+              <h3 className="font-bold mb-6 text-lg text-white">Product</h3>
+              <ul className="space-y-4 text-gray-300">
                 <li><a href="#features" className="hover:text-white transition-colors duration-300 hover:translate-x-1 inline-block">Features</a></li>
                 <li><a href="#examples" className="hover:text-white transition-colors duration-300 hover:translate-x-1 inline-block">Examples</a></li>
                 <li><a href="#pricing" className="hover:text-white transition-colors duration-300 hover:translate-x-1 inline-block">Pricing</a></li>
@@ -639,8 +656,8 @@ export default function Landing() {
             </div>
 
             <div className="slide-in-up text-center md:text-left" style={{animationDelay: '0.4s'}}>
-              <h3 className="font-bold mb-6 text-lg">Support</h3>
-              <ul className="space-y-4 text-slate-300">
+              <h3 className="font-bold mb-6 text-lg text-white">Support</h3>
+              <ul className="space-y-4 text-gray-300">
                 <li><a href="#" className="hover:text-white transition-colors duration-300 hover:translate-x-1 inline-block">Help Center</a></li>
                 <li><a href="#" className="hover:text-white transition-colors duration-300 hover:translate-x-1 inline-block">Contact Us</a></li>
                 <li><a href="#" className="hover:text-white transition-colors duration-300 hover:translate-x-1 inline-block">Community</a></li>
@@ -649,8 +666,8 @@ export default function Landing() {
             </div>
           </div>
 
-          <div className="border-t border-slate-800 pt-8 text-center text-slate-400 fade-in">
-            <p className="text-base sm:text-lg">&copy; 2024 AI Creator Studio. All rights reserved. Made with ❤️ for creators</p>
+          <div className="border-t border-gray-800 pt-8 text-center text-gray-400 fade-in">
+            <p className="text-base sm:text-lg">&copy; 2024 AI Creator Studio. All rights reserved. Made with <span className="text-red-500 animate-pulse inline-block hover:animate-wiggle cursor-pointer">❤️</span> for creators</p>
           </div>
         </div>
       </footer>

@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, Copy, Heart, RotateCcw } from "lucide-react";
+import { Download, Copy, Heart, RotateCcw, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -199,7 +199,7 @@ export default function CurrentGeneration({
 
           <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/50">
             <h4 className="font-medium text-slate-900 mb-3 text-sm flex items-center gap-2">
-              <span>ℹ️</span>
+              <Info className="w-4 h-4 text-blue-500" />
               <span>Generation Details</span>
             </h4>
             <div className="text-slate-600 space-y-2 text-xs">

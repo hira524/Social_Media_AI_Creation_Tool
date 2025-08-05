@@ -77,22 +77,22 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Enhanced background elements */}
+    <div className="min-h-screen bg-black text-white flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Enhanced background elements for black theme */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-20 w-96 h-96 bg-primary/10 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-secondary/10 rounded-full mix-blend-multiply filter blur-3xl animate-float" style={{animationDelay: '3s'}}></div>
-        <div className="bg-grid-pattern opacity-20 absolute inset-0"></div>
+        <div className="absolute top-20 left-20 w-96 h-96 bg-primary/20 rounded-full mix-blend-screen filter blur-3xl animate-float"></div>
+        <div className="absolute bottom-20 right-20 w-80 h-80 bg-purple-500/20 rounded-full mix-blend-screen filter blur-3xl animate-float" style={{animationDelay: '3s'}}></div>
+        <div className="bg-grid-pattern opacity-10 absolute inset-0"></div>
         
         {/* Floating particles */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary/40 rounded-full animate-bounce-gentle"></div>
-        <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-secondary/40 rounded-full animate-bounce-gentle" style={{animationDelay: '1s'}}></div>
-        <div className="absolute top-1/2 left-3/4 w-3 h-3 bg-pink-400/40 rounded-full animate-bounce-gentle" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary/60 rounded-full animate-bounce-gentle"></div>
+        <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-purple-400/60 rounded-full animate-bounce-gentle" style={{animationDelay: '1s'}}></div>
+        <div className="absolute top-1/2 left-3/4 w-3 h-3 bg-pink-400/60 rounded-full animate-bounce-gentle" style={{animationDelay: '2s'}}></div>
       </div>
 
       <div className="relative w-full max-w-md">
         {/* Enhanced login card */}
-        <Card className="glass-card border-0 shadow-strong overflow-hidden animate-scale-in">
+        <Card className="glass-card bg-gray-900/80 border border-gray-700 shadow-strong overflow-hidden animate-scale-in">
           <CardHeader className="text-center pb-8 pt-10">
             <div className="flex justify-center mb-6">
               <div className="w-20 h-20 bg-gradient-to-br from-primary via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-xl animate-glow">
@@ -102,7 +102,7 @@ export default function Login() {
             <CardTitle className="text-3xl font-bold text-gradient-primary mb-3">
               Welcome Back
             </CardTitle>
-            <CardDescription className="text-lg text-slate-600">
+            <CardDescription className="text-lg text-gray-300">
               Sign in to continue creating amazing content
             </CardDescription>
           </CardHeader>
@@ -111,7 +111,7 @@ export default function Login() {
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-semibold text-slate-900 flex items-center">
+                  <Label htmlFor="email" className="text-sm font-semibold text-white flex items-center">
                     <Mail className="w-4 h-4 mr-2 text-primary" />
                     Email
                   </Label>
@@ -123,12 +123,12 @@ export default function Login() {
                     onChange={handleInputChange}
                     placeholder="Enter your email"
                     required
-                    className="h-12 rounded-xl border-2 border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300"
+                    className="h-12 rounded-xl border-2 border-gray-600 bg-gray-800 text-white focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-sm font-semibold text-slate-900 flex items-center">
+                  <Label htmlFor="password" className="text-sm font-semibold text-white flex items-center">
                     <Lock className="w-4 h-4 mr-2 text-primary" />
                     Password
                   </Label>
@@ -140,7 +140,7 @@ export default function Login() {
                     onChange={handleInputChange}
                     placeholder="Enter your password"
                     required
-                    className="h-12 rounded-xl border-2 border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300"
+                    className="h-12 rounded-xl border-2 border-gray-600 bg-gray-800 text-white focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300"
                   />
                 </div>
               </div>

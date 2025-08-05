@@ -11,6 +11,45 @@ import MongoStore from "connect-mongo";
 import { storage } from "./storage";
 import { signupSchema, loginSchema } from "@shared/validation";
 
+// Function to cleanup corrupted session data
+async function cleanupCorruptedSessions() {
+  try {
+    // Only run cleanup in production when using MongoDB
+    if (isDevelopment || !process.env.DATABASE_URL) {
+      return;
+    }
+
+    // Import MongoDB client
+    const { MongoClient } = await import('mongodb');
+    const client = new MongoClient(process.env.DATABASE_URL);
+    
+    await client.connect();
+    const db = client.db();
+    const sessionsCollection = db.collection('sessions');
+    
+    // Remove sessions with null or undefined sid
+    const deleteResult = await sessionsCollection.deleteMany({
+      $or: [
+        { sid: null },
+        { sid: { $exists: false } },
+        { sid: "" }
+      ]
+    });
+    
+    console.log(`Cleaned up ${deleteResult.deletedCount} corrupted sessions`);
+    
+    // Also clear all sessions to start fresh if there were any corrupted ones
+    if (deleteResult.deletedCount > 0) {
+      const clearResult = await sessionsCollection.deleteMany({});
+      console.log(`Cleared all ${clearResult.deletedCount} sessions for fresh start`);
+    }
+    
+    await client.close();
+  } catch (error) {
+    console.warn('Session cleanup failed:', error);
+  }
+}
+
 // Development mode flag
 const isDevelopment = process.env.NODE_ENV === "development";
 
@@ -32,7 +71,7 @@ export function getSession() {
   // For development, use a simple in-memory session store
   if (isDevelopment) {
     return session({
-      secret: process.env.SESSION_SECRET!,
+      secret: process.env.SESSION_SECRET || 'development-secret-key',
       resave: false,
       saveUninitialized: false, // Don't save uninitialized sessions
       cookie: {
@@ -45,25 +84,52 @@ export function getSession() {
     });
   }
 
-  // Production MongoDB session store
-  const sessionStore = MongoStore.create({
-    mongoUrl: process.env.DATABASE_URL,
-    ttl: Math.floor(sessionTtl / 1000), // TTL in seconds
-    collectionName: "sessions",
-    touchAfter: 24 * 3600 // lazy session update
-  });
-  
-  return session({
-    secret: process.env.SESSION_SECRET!,
-    store: sessionStore,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: !isDevelopment, // Allow non-secure cookies in development
-      maxAge: sessionTtl,
-    },
-  });
+  // Production MongoDB session store with better error handling
+  try {
+    const sessionStore = MongoStore.create({
+      mongoUrl: process.env.DATABASE_URL,
+      ttl: Math.floor(sessionTtl / 1000), // TTL in seconds
+      collectionName: "sessions",
+      touchAfter: 24 * 3600, // lazy session update
+      autoRemove: 'native', // Enable TTL-based removal
+      autoRemoveInterval: 10, // Remove expired sessions every 10 minutes
+      stringify: false, // Don't stringify session data
+    });
+
+    // Handle store errors
+    sessionStore.on('error', (error) => {
+      console.error('Session store error:', error);
+    });
+
+    return session({
+      secret: process.env.SESSION_SECRET || 'production-secret-key-change-me',
+      store: sessionStore,
+      resave: false,
+      saveUninitialized: false,
+      name: 'sessionId', // Custom session name
+      genid: () => uuidv4(), // Generate unique session IDs
+      cookie: {
+        httpOnly: true,
+        secure: !isDevelopment, // Allow non-secure cookies in development
+        maxAge: sessionTtl,
+        sameSite: 'lax',
+      },
+    });
+  } catch (error) {
+    console.error('Failed to create MongoDB session store, falling back to MemoryStore:', error);
+    // Fallback to memory store if MongoDB fails
+    return session({
+      secret: process.env.SESSION_SECRET || 'fallback-secret-key',
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: true,
+        secure: false,
+        maxAge: sessionTtl,
+        sameSite: 'lax',
+      },
+    });
+  }
 }
 
 function updateUserSession(
@@ -90,6 +156,14 @@ async function upsertUser(
 
 export async function setupAuth(app: Express) {
   app.set("trust proxy", 1);
+  
+  // Clean up any corrupted session data before setting up sessions
+  try {
+    await cleanupCorruptedSessions();
+  } catch (error) {
+    console.warn('Failed to cleanup corrupted sessions, continuing anyway:', error);
+  }
+  
   app.use(getSession());
   app.use(passport.initialize());
   app.use(passport.session());

@@ -95,7 +95,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-black text-white flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-72 h-72 bg-primary/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
@@ -115,7 +115,7 @@ export default function SignUp() {
           <p className="text-slate-600 text-lg">Create your account to start generating amazing images</p>
         </div>
 
-        <Card className="shadow-intense border-0 bg-white/80 backdrop-blur-xl rounded-3xl overflow-hidden slide-in-up" style={{animationDelay: '0.2s'}}>
+        <Card className="shadow-intense border border-gray-700 bg-gray-900/80 backdrop-blur-xl rounded-3xl overflow-hidden slide-in-up" style={{animationDelay: '0.2s'}}>
           <CardHeader className="text-center pb-6 bg-gradient-to-br from-white via-white to-indigo-50/30">
             <CardTitle className="text-3xl font-bold text-slate-900 mb-2">Create Account</CardTitle>
             <CardDescription className="text-slate-600 text-lg">

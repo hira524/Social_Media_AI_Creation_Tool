@@ -1,3 +1,4 @@
+import React from "react";
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -19,7 +20,7 @@ function Router() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 flex items-center justify-center">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <LoadingSpinner 
           size="lg" 
           message="Initializing your creative workspace..." 
@@ -56,6 +57,12 @@ function Router() {
 }
 
 function App() {
+  // Apply black theme globally
+  React.useEffect(() => {
+    document.documentElement.className = '';
+    document.body.className = 'bg-black text-white';
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

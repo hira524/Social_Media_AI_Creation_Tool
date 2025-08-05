@@ -47,7 +47,7 @@ export default function Dashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 flex items-center justify-center">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <LoadingSpinner 
           size="lg" 
           message="Loading your dashboard..." 
@@ -57,11 +57,11 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50/50 via-white to-slate-100/30 relative">
-      {/* Subtle background elements */}
+    <div className="min-h-screen bg-black text-white relative">
+      {/* Subtle background elements for black theme */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-gradient-to-r from-primary/[0.03] to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-gradient-to-l from-secondary/[0.03] to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-gradient-to-r from-primary/10 to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-gradient-to-l from-purple-500/10 to-transparent rounded-full blur-3xl"></div>
       </div>
       
       <Navigation />
@@ -69,10 +69,10 @@ export default function Dashboard() {
       {/* Sidebar Toggle Button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-20 left-6 z-50 bg-white/90 backdrop-blur-md border border-slate-200/50 shadow-sm rounded-xl p-2.5 hover:bg-white hover:shadow-md transition-all duration-200 lg:hidden"
+        className="fixed top-20 left-6 z-50 bg-gray-800/90 backdrop-blur-md border border-gray-700 shadow-sm rounded-xl p-2.5 hover:bg-gray-700 hover:shadow-md transition-all duration-200 lg:hidden"
         aria-label="Toggle sidebar"
       >
-        {sidebarOpen ? <X className="w-5 h-5 text-slate-600" /> : <Menu className="w-5 h-5 text-slate-600" />}
+        {sidebarOpen ? <X className="w-5 h-5 text-gray-300" /> : <Menu className="w-5 h-5 text-gray-300" />}
       </button>
       
       <div className="relative max-w-7xl mx-auto px-6 py-6">
@@ -82,21 +82,21 @@ export default function Dashboard() {
             {/* Desktop Sidebar Toggle */}
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="hidden lg:flex fixed top-20 left-6 z-50 bg-white/90 backdrop-blur-md border border-slate-200/50 shadow-sm rounded-xl p-2.5 hover:bg-white hover:shadow-md transition-all duration-200 items-center justify-center"
+              className="hidden lg:flex fixed top-20 left-6 z-50 bg-gray-800/90 backdrop-blur-md border border-gray-700 shadow-sm rounded-xl p-2.5 hover:bg-gray-700 hover:shadow-md transition-all duration-200 items-center justify-center"
               aria-label="Toggle sidebar"
             >
-              {sidebarOpen ? <X className="w-5 h-5 text-slate-600" /> : <Menu className="w-5 h-5 text-slate-600" />}
+              {sidebarOpen ? <X className="w-5 h-5 text-gray-300" /> : <Menu className="w-5 h-5 text-gray-300" />}
             </button>
             
             {/* Mobile Overlay */}
             {sidebarOpen && (
               <div 
-                className="lg:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+                className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
                 onClick={() => setSidebarOpen(false)}
               />
             )}
             
-            <nav className={`bg-white/70 backdrop-blur-xl border border-white/40 shadow-sm rounded-2xl p-4 sticky top-24 transition-all duration-300 z-50 ${
+            <nav className={`bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-sm rounded-2xl p-4 sticky top-24 transition-all duration-300 z-50 ${
               sidebarOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full lg:opacity-100 lg:translate-x-0'
             } ${!sidebarOpen ? 'lg:w-16 lg:p-3' : ''} ${sidebarOpen ? 'lg:relative' : ''} ${!sidebarOpen ? 'lg:relative' : 'lg:relative md:fixed md:left-6 md:top-24 md:w-72'}`}>
               <div className="space-y-1">
@@ -147,8 +147,8 @@ export default function Dashboard() {
                   aria-label="View recent generations"
                   className={`w-full flex items-center ${sidebarOpen ? 'gap-3 px-3 py-2.5' : 'justify-center p-2.5'} ${
                     activeView === 'history' 
-                      ? 'text-slate-900 bg-slate-100/80' 
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50/80'
+                      ? 'text-white bg-gray-700/80' 
+                      : 'text-gray-300 hover:text-white hover:bg-gray-800/80'
                   } rounded-xl font-medium transition-all duration-200 text-sm`}
                   title={!sidebarOpen ? "Recent Generations" : ""}
                 >
@@ -158,13 +158,13 @@ export default function Dashboard() {
               </div>
               
               {sidebarOpen && (
-                <div className="mt-6 p-4 bg-gradient-to-br from-slate-50 to-slate-100/50 rounded-xl border border-slate-200/50">
+                <div className="mt-6 p-4 bg-gradient-to-br from-gray-800 to-gray-700/50 rounded-xl border border-gray-600">
                   <div className="text-center">
                     <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center mx-auto mb-3">
                       <span className="text-lg">⭐</span>
                     </div>
-                    <h3 className="font-semibold text-slate-900 mb-1 text-sm">Upgrade to Pro</h3>
-                    <p className="text-xs text-slate-600 mb-3">Unlimited generations</p>
+                    <h3 className="font-semibold text-white mb-1 text-sm">Upgrade to Pro</h3>
+                    <p className="text-xs text-gray-300 mb-3">Unlimited generations</p>
                     <button className="w-full bg-gradient-to-r from-primary to-secondary text-white py-2 rounded-lg hover:shadow-md transition-all duration-200 text-xs font-medium flex items-center justify-center gap-1">
                       Upgrade Now
                       <ArrowRight className="w-3 h-3" />

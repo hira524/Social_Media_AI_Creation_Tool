@@ -46,28 +46,74 @@
   --shadow-elevation-highest: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 }
 
-.dark {
-  --background: hsl(222, 84%, 4.9%);
-  --foreground: hsl(210, 40%, 98%);
-  --muted: hsl(217, 32%, 17%);
-  --muted-foreground: hsl(215, 20%, 65%);
-  --popover: hsl(222, 84%, 4.9%);
-  --popover-foreground: hsl(210, 40%, 98%);
-  --card: hsl(222, 84%, 4.9%);
-  --card-foreground: hsl(210, 40%, 98%);
-  --border: hsl(217, 32%, 17%);
-  --input: hsl(217, 32%, 17%);
+/* Default black theme */
+:root {
+  /* Pure black theme with enhanced contrast */
+  --background: hsl(0, 0%, 0%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(0, 0%, 8%);
+  --muted-foreground: hsl(0, 0%, 70%);
+  --popover: hsl(0, 0%, 0%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(0, 0%, 3%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(0, 0%, 15%);
+  --input: hsl(0, 0%, 8%);
+  
+  /* Modern gradient color scheme with better visibility on black */
+  --primary: hsl(262, 83%, 65%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(0, 0%, 12%);
+  --secondary-foreground: hsl(0, 0%, 90%);
+  --accent: hsl(0, 0%, 8%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  
+  /* Status colors optimized for black theme */
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --warning: hsl(38, 92%, 50%);
+  --warning-foreground: hsl(0, 0%, 0%);
+  --success: hsl(142, 76%, 50%);
+  --success-foreground: hsl(0, 0%, 0%);
+  
+  /* Interactive elements */
+  --ring: hsl(262, 83%, 65%);
+  --radius: 0.75rem;
+  
+  /* Glass morphism effects for black theme */
+  --glass-bg: hsla(0, 0%, 10%, 0.8);
+  --glass-border: hsla(255, 255%, 255%, 0.1);
+  
+  /* Enhanced shadows for black theme */
+  --shadow-elevation-low: 0 1px 2px 0 rgb(255 255 255 / 0.05);
+  --shadow-elevation-medium: 0 4px 6px -1px rgb(255 255 255 / 0.08), 0 2px 4px -2px rgb(255 255 255 / 0.05);
+  --shadow-elevation-high: 0 10px 15px -3px rgb(255 255 255 / 0.1), 0 4px 6px -4px rgb(255 255 255 / 0.08);
+  --shadow-elevation-highest: 0 25px 50px -12px rgb(255 255 255 / 0.15);
+}
+
+.light {
+  /* Light theme as fallback */
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(222, 84%, 4.9%);
+  --muted: hsl(210, 40%, 98%);
+  --muted-foreground: hsl(215, 13%, 34%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(222, 84%, 4.9%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(222, 84%, 4.9%);
+  --border: hsl(214, 32%, 91%);
+  --input: hsl(214, 32%, 91%);
   --primary: hsl(262, 83%, 58%);
   --primary-foreground: hsl(210, 40%, 98%);
-  --secondary: hsl(217, 32%, 17%);
-  --secondary-foreground: hsl(210, 40%, 98%);
-  --accent: hsl(217, 32%, 17%);
-  --accent-foreground: hsl(210, 40%, 98%);
-  --destructive: hsl(0, 63%, 31%);
+  --secondary: hsl(220, 14%, 96%);
+  --secondary-foreground: hsl(220, 9%, 46%);
+  --accent: hsl(210, 40%, 98%);
+  --accent-foreground: hsl(222, 84%, 4.9%);
+  --destructive: hsl(0, 84%, 60%);
   --destructive-foreground: hsl(210, 40%, 98%);
   --ring: hsl(262, 83%, 58%);
-  --glass-bg: hsla(222, 84%, 4.9%, 0.25);
-  --glass-border: hsla(255, 255%, 255%, 0.08);
+  --glass-bg: hsla(0, 0%, 100%, 0.25);
+  --glass-border: hsla(255, 255%, 255%, 0.18);
 }
 
 @layer base {
@@ -87,12 +133,29 @@
 
   html {
     scroll-behavior: smooth;
+    /* Force black theme globally */
+    background-color: black;
+    color: white;
+  }
+
+  /* Global overrides for black theme */
+  .text-slate-600, .text-slate-700, .text-slate-800, .text-slate-900 {
+    color: rgb(209 213 219) !important; /* text-gray-300 */
+  }
+
+  .text-slate-500 {
+    color: rgb(156 163 175) !important; /* text-gray-400 */
+  }
+
+  .text-slate-400 {
+    color: rgb(107 114 128) !important; /* text-gray-500 */
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold;
     line-height: 1.2;
     letter-spacing: -0.025em;
+    color: white !important;
   }
 
   h1 { @apply text-4xl lg:text-6xl; }

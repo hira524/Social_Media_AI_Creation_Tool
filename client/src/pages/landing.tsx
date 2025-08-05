@@ -93,9 +93,9 @@ export default function Landing() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-xl border-b border-white/20 sticky top-0 z-50 shadow-soft">
+      <nav className="bg-black/90 backdrop-blur-xl border-b border-gray-800 sticky top-0 z-50 shadow-soft">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-18">
             <div className="flex items-center space-x-3 slide-in-left">
@@ -106,14 +106,14 @@ export default function Landing() {
             </div>
             
             <div className="hidden md:flex items-center space-x-8 slide-in-up">
-              <a href="#features" className="text-slate-600 hover:text-primary transition-all duration-300 font-medium hover:scale-105">Features</a>
-              <a href="#examples" className="text-slate-600 hover:text-primary transition-all duration-300 font-medium hover:scale-105">Examples</a>
-              <a href="#pricing" className="text-slate-600 hover:text-primary transition-all duration-300 font-medium hover:scale-105">Pricing</a>
+              <a href="#features" className="text-gray-300 hover:text-primary transition-all duration-300 font-medium hover:scale-105">Features</a>
+              <a href="#examples" className="text-gray-300 hover:text-primary transition-all duration-300 font-medium hover:scale-105">Examples</a>
+              <a href="#pricing" className="text-gray-300 hover:text-primary transition-all duration-300 font-medium hover:scale-105">Pricing</a>
             </div>
 
             {/* Mobile Navigation - visible on mobile */}
             <div className="md:hidden flex items-center space-x-3">
-              <Button variant="ghost" onClick={handleLogin} className="text-sm px-3 py-2 hover:bg-white/50 backdrop-blur-sm">
+              <Button variant="ghost" onClick={handleLogin} className="text-sm px-3 py-2 hover:bg-gray-800 backdrop-blur-sm text-white">
                 Sign In
               </Button>
               <Button onClick={handleGetStarted} className="btn-primary text-sm px-4 py-2 shadow-md hover:shadow-lg">
@@ -122,7 +122,7 @@ export default function Landing() {
             </div>
 
             <div className="hidden md:flex items-center space-x-4 slide-in-right">
-              <Button variant="ghost" onClick={handleLogin} className="hover:bg-white/50 backdrop-blur-sm transition-all duration-300">
+              <Button variant="ghost" onClick={handleLogin} className="hover:bg-gray-800 backdrop-blur-sm transition-all duration-300 text-white">
                 Sign In
               </Button>
               <Button onClick={handleGetStarted} className="btn-primary shadow-lg hover:shadow-primary/25">
@@ -136,18 +136,18 @@ export default function Landing() {
 
       {/* Hero Section - Enhanced with modern elements */}
       <section className="relative overflow-hidden pt-20 pb-32">
-        {/* Enhanced background decorations */}
+        {/* Enhanced background decorations for black theme */}
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
-          <div className="absolute top-40 right-10 w-72 h-72 bg-secondary/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{animationDelay: '2s'}}></div>
-          <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-400/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{animationDelay: '4s'}}></div>
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full mix-blend-screen filter blur-xl opacity-50 animate-float"></div>
+          <div className="absolute top-40 right-10 w-72 h-72 bg-purple-500/20 rounded-full mix-blend-screen filter blur-xl opacity-50 animate-float" style={{animationDelay: '2s'}}></div>
+          <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-400/20 rounded-full mix-blend-screen filter blur-xl opacity-50 animate-float" style={{animationDelay: '4s'}}></div>
           
           {/* Animated grid pattern */}
-          <div className="absolute inset-0 bg-grid-pattern opacity-30"></div>
+          <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
           
           {/* Floating particles */}
-          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary/40 rounded-full animate-bounce-gentle"></div>
-          <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-secondary/40 rounded-full animate-bounce-gentle" style={{animationDelay: '1s'}}></div>
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary/60 rounded-full animate-bounce-gentle"></div>
+          <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-purple-400/60 rounded-full animate-bounce-gentle" style={{animationDelay: '1s'}}></div>
           <div className="absolute top-1/2 left-3/4 w-3 h-3 bg-pink-400/40 rounded-full animate-bounce-gentle" style={{animationDelay: '3s'}}></div>
         </div>
 
@@ -160,19 +160,19 @@ export default function Landing() {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                   </span>
-                  <span className="text-sm font-medium text-slate-700">✨ New: Advanced AI Image Generation</span>
+                  <span className="text-sm font-medium text-gray-300">✨ New: Advanced AI Image Generation</span>
                 </div>
                 
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 leading-tight mb-8 mx-auto lg:mx-0 max-w-4xl lg:max-w-none">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight mb-8 mx-auto lg:mx-0 max-w-4xl lg:max-w-none">
                   Create Stunning{" "}
                   <span className="text-gradient-primary relative animate-gradient">
                     AI-Generated
-                    <div className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-primary/20 to-pink-500/20 rounded-full animate-shimmer"></div>
+                    <div className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-primary/30 to-pink-500/30 rounded-full animate-shimmer"></div>
                   </span>{" "}
                   Social Media Posts
                 </h1>
                 
-                <p className="text-lg sm:text-xl lg:text-2xl text-slate-600 leading-relaxed mb-10 max-w-2xl mx-auto lg:mx-0">
+                <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 leading-relaxed mb-10 max-w-2xl mx-auto lg:mx-0">
                   Generate professional social media images tailored to your niche with our intelligent AI. 
                   Perfect for Instagram, LinkedIn, and Twitter posts that engage and convert.
                 </p>
@@ -190,14 +190,14 @@ export default function Landing() {
                   <Button 
                     variant="outline" 
                     size="lg" 
-                    className="glass-button text-lg px-8 sm:px-10 py-4 sm:py-6 rounded-2xl border-2 border-white/30 hover:border-primary/30 transition-all duration-300 w-full sm:w-auto group"
+                    className="glass-button text-lg px-8 sm:px-10 py-4 sm:py-6 rounded-2xl border-2 border-gray-600 hover:border-primary/50 transition-all duration-300 w-full sm:w-auto group text-white"
                   >
                     <Play className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
                     Watch Demo
                   </Button>
                 </div>
 
-                <div className="mt-12 flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-8 text-sm text-slate-600">
+                <div className="mt-12 flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-8 text-sm text-gray-400">
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                     <Check className="w-5 h-5 text-green-500" />
@@ -263,27 +263,27 @@ export default function Landing() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-24 bg-white relative overflow-hidden">
+      <section id="features" className="py-24 bg-black relative overflow-hidden">
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236366f1' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }} />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 sm:mb-20 fade-in">
-            <div className="inline-flex items-center px-4 py-2 bg-primary/10 rounded-full mb-6">
+            <div className="inline-flex items-center px-4 py-2 bg-primary/20 rounded-full mb-6">
               <Brain className="w-4 h-4 text-primary mr-2" />
               <span className="text-sm font-medium text-primary">Powered by AI</span>
             </div>
             
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 mb-6 mx-auto max-w-5xl leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 mx-auto max-w-5xl leading-tight">
               Everything you need to create{" "}
               <span className="text-gradient-primary">amazing content</span>
             </h2>
             
-            <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
               Our AI understands your niche, style, and audience to generate perfectly tailored social media images
             </p>
           </div>
@@ -292,11 +292,11 @@ export default function Landing() {
             {features.map((feature, index) => (
               <Card 
                 key={index} 
-                className="group text-center p-8 bg-white/80 backdrop-blur-sm border border-white/20 rounded-2xl shadow-medium hover:shadow-intense hover:scale-105 transition-all duration-500 stagger-item relative overflow-hidden"
+                className="group text-center p-8 bg-gray-900/80 backdrop-blur-sm border border-gray-700 rounded-2xl shadow-medium hover:shadow-intense hover:scale-105 transition-all duration-500 stagger-item relative overflow-hidden"
                 style={{animationDelay: `${index * 0.1}s`}}
               >
                 {/* Gradient overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 
                 <CardContent className="p-0 relative z-10">
                   <div className="relative inline-block mb-6">
@@ -306,11 +306,11 @@ export default function Landing() {
                     <div className="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-2xl blur opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
                   </div>
                   
-                  <h3 className="text-xl font-bold text-slate-900 mb-4 group-hover:text-primary transition-colors duration-300">
+                  <h3 className="text-xl font-bold text-white mb-4 group-hover:text-primary transition-colors duration-300">
                     {feature.title}
                   </h3>
                   
-                  <p className="text-slate-600 leading-relaxed">
+                  <p className="text-gray-300 leading-relaxed">
                     {feature.description}
                   </p>
                 </CardContent>
@@ -321,24 +321,24 @@ export default function Landing() {
       </section>
 
       {/* Examples Gallery */}
-      <section id="examples" className="py-24 bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-50 relative overflow-hidden">
+      <section id="examples" className="py-24 bg-gray-900 relative overflow-hidden">
         {/* Floating background elements */}
-        <div className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-r from-blue-200/20 to-purple-200/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-pink-200/20 to-yellow-200/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full mix-blend-screen filter blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-pink-500/10 to-yellow-500/10 rounded-full mix-blend-screen filter blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 sm:mb-20 fade-in">
-            <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-white/20 shadow-soft mb-6">
+            <div className="inline-flex items-center px-4 py-2 bg-gray-800/80 backdrop-blur-sm rounded-full border border-gray-700 shadow-soft mb-6">
               <Palette className="w-4 h-4 text-primary mr-2" />
-              <span className="text-sm font-medium text-slate-700">Gallery Showcase</span>
+              <span className="text-sm font-medium text-gray-300">Gallery Showcase</span>
             </div>
             
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 mb-6 mx-auto max-w-5xl leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 mx-auto max-w-5xl leading-tight">
               See what our AI can create for{" "}
               <span className="text-gradient-secondary">your niche</span>
             </h2>
             
-            <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
               Real examples generated by our AI for different industries and styles
             </p>
           </div>
@@ -347,7 +347,7 @@ export default function Landing() {
             {examples.map((example, index) => (
               <Card 
                 key={index} 
-                className="group overflow-hidden rounded-2xl bg-white/80 backdrop-blur-sm border border-white/20 shadow-medium hover:shadow-intense hover:scale-105 transition-all duration-500 stagger-item"
+                className="group overflow-hidden rounded-2xl bg-gray-800/80 backdrop-blur-sm border border-gray-700 shadow-medium hover:shadow-intense hover:scale-105 transition-all duration-500 stagger-item"
                 style={{animationDelay: `${index * 0.1}s`}}
               >
                 <div className="relative overflow-hidden">

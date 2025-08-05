@@ -155,7 +155,7 @@ export default function Favorites() {
 
   if (isLoading) {
     return (
-      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 animate-fade-in-up">
+      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-pink-500 rounded-lg flex items-center justify-center">
             <Heart className="w-4 h-4 text-white fill-current" />
@@ -177,9 +177,9 @@ export default function Favorites() {
   }
 
   return (
-    <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 animate-fade-in-up hover:shadow-xl transition-all duration-300">
+    <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 hover:shadow-xl transition-all duration-300">
       <div className="mb-6">
-        <div className="flex items-center gap-3 mb-6 animate-slide-in-left">
+        <div className="flex items-center gap-3 mb-6">
           <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-pink-500 rounded-lg flex items-center justify-center">
             <Heart className="w-4 h-4 text-white fill-current" />
           </div>
@@ -190,7 +190,7 @@ export default function Favorites() {
         </div>
         
         {favoriteImages.length > 0 && (
-          <div className="flex flex-col sm:flex-row gap-3 animate-slide-in-right" style={{animationDelay: '0.2s'}}>
+          <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
@@ -229,8 +229,8 @@ export default function Favorites() {
       </div>
 
       {favoriteImages.length === 0 ? (
-        <div className="text-center py-12 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
-          <div className="w-16 h-16 bg-gray-800/60 rounded-xl flex items-center justify-center mx-auto mb-4 animate-bounce-gentle">
+        <div className="text-center py-12">
+          <div className="w-16 h-16 bg-gray-800/60 rounded-xl flex items-center justify-center mx-auto mb-4">
             <HeartOff className="w-8 h-8 text-gray-400" />
           </div>
           <h3 className="text-lg font-medium text-white mb-2">No favorites yet</h3>
@@ -239,8 +239,8 @@ export default function Favorites() {
           </p>
         </div>
       ) : filteredImages.length === 0 ? (
-        <div className="text-center py-12 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
-          <div className="w-16 h-16 bg-gray-800/60 rounded-xl flex items-center justify-center mx-auto mb-4 animate-bounce-gentle">
+        <div className="text-center py-12">
+          <div className="w-16 h-16 bg-gray-800/60 rounded-xl flex items-center justify-center mx-auto mb-4">
             <Search className="w-8 h-8 text-gray-400" />
           </div>
           <h3 className="text-lg font-medium text-white mb-2">No matches found</h3>
@@ -260,9 +260,9 @@ export default function Favorites() {
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredImages.map((image, index) => (
-            <div key={image.id} className="group relative glass-card bg-gray-800/70 backdrop-blur-sm rounded-xl border border-gray-600 overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-300 animate-scale-in" style={{animationDelay: `${0.5 + index * 0.1}s`}}>
+            <div key={image.id} className="group relative glass-card bg-gray-800/70 backdrop-blur-sm rounded-xl border border-gray-600 overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-300">
               <div className="relative overflow-hidden">
                 <img
                   src={image.imageUrl}
@@ -309,7 +309,7 @@ export default function Favorites() {
                 </div>
                 
                 {/* Enhanced Favorite indicator */}
-                <div className="absolute top-2 right-2 animate-pulse-gentle">
+                <div className="absolute top-2 right-2">
                   <div className="bg-red-500 rounded-full p-1.5 shadow-lg">
                     <Heart className="w-3 h-3 fill-current text-white" />
                   </div>
@@ -345,7 +345,7 @@ export default function Favorites() {
       )}
       
       {filteredImages.length > 0 && (
-        <div className="mt-6 text-center text-xs text-gray-400 animate-fade-in-up" style={{animationDelay: '0.8s'}}>
+        <div className="mt-6 text-center text-xs text-gray-400">
           Showing {filteredImages.length} of {favoriteImages.length} favorite images
         </div>
       )}

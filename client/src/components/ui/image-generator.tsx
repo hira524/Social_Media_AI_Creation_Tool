@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -39,7 +39,20 @@ export default function ImageGenerator({ onImageGenerated }: ImageGeneratorProps
   
   const { toast } = useToast();
   const { user } = useAuth();
-  const typedUser = user as User;
+  
+  // Memoize user to prevent unnecessary re-renders
+  const typedUser = useMemo(() => user as User, [user]);
+  
+  // Memoize user preferences to prevent re-calculation
+  const userPreferences = useMemo(() => {
+    if (!typedUser?.niche || !typedUser?.stylePreference) return null;
+    return {
+      niche: typedUser.niche,
+      stylePreference: typedUser.stylePreference,
+      hasCredits: typedUser.creditsRemaining && typedUser.creditsRemaining > 0
+    };
+  }, [typedUser?.niche, typedUser?.stylePreference, typedUser?.creditsRemaining]);
+  
   const queryClient = useQueryClient();
 
   const generateMutation = useMutation({
@@ -118,12 +131,13 @@ export default function ImageGenerator({ onImageGenerated }: ImageGeneratorProps
   };
 
   return (
+
     <div className="space-y-6">
       {/* Enhanced Generation Interface */}
-      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 animate-fade-in-up hover:shadow-xl transition-all duration-300">
+      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6">
         <div className="mb-6">
-          <div className="flex items-center gap-4 mb-4 animate-slide-in-left">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center shadow-lg animate-float">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center shadow-lg">
               <Sparkles className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -135,14 +149,14 @@ export default function ImageGenerator({ onImageGenerated }: ImageGeneratorProps
 
         <form onSubmit={handleGenerate} className="space-y-6">
           {/* Enhanced Prompt Input */}
-          <div className="space-y-3 animate-slide-in-right" style={{animationDelay: '0.2s'}}>
+          <div className="space-y-3">
             <Label className="text-sm font-medium text-white flex items-center gap-2">
               <div className="w-5 h-5 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center shadow-sm">
                 <Lightbulb className="w-3 h-3 text-white" />
               </div>
-              Describe your image
+              Describe your post
             </Label>
-            <div className="relative animate-scale-in" style={{animationDelay: '0.3s'}}>
+            <div className="relative">
               <Textarea
                 rows={4}
                 placeholder="A motivational fitness quote with a mountain background, modern typography, and vibrant colors..."
@@ -154,14 +168,14 @@ export default function ImageGenerator({ onImageGenerated }: ImageGeneratorProps
                 {prompt.length}/500
               </div>
             </div>
-            {typedUser?.niche && typedUser?.stylePreference && (
-              <div className="p-4 bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-xl border border-primary/30 transition-all duration-300 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+            {userPreferences && (
+              <div className="p-4 bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-xl border border-primary/30 transition-all duration-300">
                 <div className="text-xs text-gray-200 flex items-center gap-2">
                   <div className="w-4 h-4 bg-primary/30 rounded-full flex items-center justify-center">
                     <Lightbulb className="w-2 h-2 text-primary" />
                   </div>
                   <span className="font-medium">AI Enhancement:</span>
-                  <span>Optimized for {typedUser.niche} • {typedUser.stylePreference}</span>
+                  <span>Optimized for {userPreferences.niche} • {userPreferences.stylePreference}</span>
                 </div>
               </div>
             )}
@@ -171,8 +185,7 @@ export default function ImageGenerator({ onImageGenerated }: ImageGeneratorProps
           <Button 
             type="submit" 
             size="lg" 
-            className="w-full bg-gradient-to-r from-primary to-secondary text-white py-4 rounded-xl hover:shadow-xl hover:scale-105 transition-all duration-300 font-medium animate-fade-in-up" 
-            style={{animationDelay: '0.5s'}}
+            className="w-full bg-gradient-to-r from-primary to-secondary text-white py-4 rounded-xl hover:shadow-xl hover:scale-105 transition-all duration-300 font-medium" 
             disabled={generateMutation.isPending || !typedUser?.creditsRemaining}
           >
             {generateMutation.isPending ? (

@@ -93,7 +93,7 @@ export default function Settings() {
   return (
     <div className="space-y-6">
       {/* Enhanced Header */}
-      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 animate-fade-in-up">
+      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center shadow-lg">
             <SettingsIcon className="w-5 h-5 text-white" />
@@ -106,7 +106,7 @@ export default function Settings() {
       </div>
 
       {/* Enhanced Profile Settings */}
-      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 animate-fade-in-up hover:shadow-xl transition-all duration-300" style={{animationDelay: '0.1s'}}>
+      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 hover:shadow-xl transition-all duration-300">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
             <UserIcon className="w-4 h-4 text-white" />
@@ -115,7 +115,7 @@ export default function Settings() {
         </div>
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2 animate-slide-in-left" style={{animationDelay: '0.2s'}}>
+            <div className="space-y-2">
               <Label htmlFor="firstName" className="text-sm font-medium text-gray-300 flex items-center gap-2">
                 <UserIcon className="w-3 h-3 text-primary" />
                 First Name
@@ -128,7 +128,7 @@ export default function Settings() {
                 className="bg-gray-800 border-gray-600 text-white focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300"
               />
             </div>
-            <div className="space-y-2 animate-slide-in-right" style={{animationDelay: '0.3s'}}>
+            <div className="space-y-2">
               <Label htmlFor="lastName" className="text-sm font-medium text-gray-300 flex items-center gap-2">
                 <UserIcon className="w-3 h-3 text-primary" />
                 Last Name
@@ -143,7 +143,7 @@ export default function Settings() {
             </div>
           </div>
           
-          <div className="space-y-2 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+          <div className="space-y-2">
             <Label htmlFor="email" className="text-sm font-medium text-gray-300">Email Address</Label>
             <Input
               id="email"
@@ -156,7 +156,7 @@ export default function Settings() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2 animate-fade-in-up" style={{animationDelay: '0.5s'}}>
+            <div className="space-y-2">
               <Label htmlFor="niche" className="text-sm font-medium text-gray-300">Niche</Label>
               <Select value={niche} onValueChange={setNiche}>
                 <SelectTrigger className="bg-gray-800 border-gray-600 text-white focus:border-primary">
@@ -175,7 +175,7 @@ export default function Settings() {
               </Select>
             </div>
             
-            <div className="space-y-2 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
+            <div className="space-y-2">
               <Label htmlFor="contentType" className="text-sm font-medium text-gray-300">Content Type</Label>
               <Select value={contentType} onValueChange={setContentType}>
                 <SelectTrigger className="bg-gray-800 border-gray-600 text-white focus:border-primary">
@@ -191,7 +191,7 @@ export default function Settings() {
               </Select>
             </div>
             
-            <div className="space-y-2 animate-fade-in-up" style={{animationDelay: '0.7s'}}>
+            <div className="space-y-2">
               <Label htmlFor="stylePreference" className="text-sm font-medium text-gray-300">Style Preference</Label>
               <Select value={stylePreference} onValueChange={setStylePreference}>
                 <SelectTrigger className="bg-gray-800 border-gray-600 text-white focus:border-primary">
@@ -209,7 +209,7 @@ export default function Settings() {
             </div>
           </div>
 
-          <div className="pt-4 animate-fade-in-up" style={{animationDelay: '0.8s'}}>
+          <div className="pt-4">
             <Button 
               onClick={handleSaveChanges}
               disabled={saveProfileMutation.isPending}
@@ -232,7 +232,7 @@ export default function Settings() {
       </div>
 
       {/* Enhanced Account & Usage */}
-      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 animate-fade-in-up hover:shadow-xl transition-all duration-300" style={{animationDelay: '0.2s'}}>
+      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 hover:shadow-xl transition-all duration-300">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
             <CreditCard className="w-4 h-4 text-white" />
@@ -241,25 +241,25 @@ export default function Settings() {
         </div>
         <div className="space-y-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-4 bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-xl border border-primary/30 hover:scale-105 transition-all duration-300 animate-scale-in" style={{animationDelay: '0.3s'}}>
+            <div className="text-center p-4 bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-xl border border-primary/30 hover:scale-105 transition-all duration-300">
               <div className="text-2xl font-bold text-primary">{user?.creditsRemaining || 0}</div>
               <div className="text-xs text-gray-300">Credits Remaining</div>
             </div>
-            <div className="text-center p-4 bg-gray-800/80 rounded-xl border border-gray-600 hover:scale-105 transition-all duration-300 animate-scale-in" style={{animationDelay: '0.4s'}}>
+            <div className="text-center p-4 bg-gray-800/80 rounded-xl border border-gray-600 hover:scale-105 transition-all duration-300">
               <div className="text-2xl font-bold text-orange-400">{user?.creditsUsed || 0}</div>
               <div className="text-xs text-gray-400">Credits Used</div>
             </div>
-            <div className="text-center p-4 bg-gray-800/80 rounded-xl border border-gray-600 hover:scale-105 transition-all duration-300 animate-scale-in" style={{animationDelay: '0.5s'}}>
+            <div className="text-center p-4 bg-gray-800/80 rounded-xl border border-gray-600 hover:scale-105 transition-all duration-300">
               <div className="text-2xl font-bold text-white">{user?.totalGenerations || 0}</div>
               <div className="text-xs text-gray-400">Total Images</div>
             </div>
-            <div className="text-center p-4 bg-gray-800/80 rounded-xl border border-gray-600 hover:scale-105 transition-all duration-300 animate-scale-in" style={{animationDelay: '0.6s'}}>
+            <div className="text-center p-4 bg-gray-800/80 rounded-xl border border-gray-600 hover:scale-105 transition-all duration-300">
               <div className="text-2xl font-bold text-red-400">{user?.favoriteCount || 0}</div>
               <div className="text-xs text-gray-400">Favorites</div>
             </div>
           </div>
           
-          <div className="p-6 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-xl border border-primary/30 hover:shadow-lg transition-all duration-300 animate-fade-in-up" style={{animationDelay: '0.7s'}}>
+          <div className="p-6 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-xl border border-primary/30 hover:shadow-lg transition-all duration-300">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center shadow-lg">
                 <Crown className="w-6 h-6 text-white" />
@@ -277,7 +277,7 @@ export default function Settings() {
       </div>
 
       {/* Enhanced Notification Preferences */}
-      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 animate-fade-in-up hover:shadow-xl transition-all duration-300" style={{animationDelay: '0.8s'}}>
+      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 hover:shadow-xl transition-all duration-300">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center">
             <Bell className="w-4 h-4 text-white" />
@@ -285,7 +285,7 @@ export default function Settings() {
           <h3 className="text-lg font-semibold text-white">Notification Preferences</h3>
         </div>
         <div className="space-y-6">
-          <div className="flex items-center justify-between p-4 bg-gray-800/60 rounded-xl border border-gray-600 hover:bg-gray-800/80 transition-all duration-300 animate-slide-in" style={{animationDelay: '0.9s'}}>
+          <div className="flex items-center justify-between p-4 bg-gray-800/60 rounded-xl border border-gray-600 hover:bg-gray-800/80 transition-all duration-300">
             <div>
               <Label className="text-sm font-medium text-white">Email Notifications</Label>
               <p className="text-xs text-gray-300">Receive updates about your account and generations</p>
@@ -297,7 +297,7 @@ export default function Settings() {
             />
           </div>
           
-          <div className="flex items-center justify-between p-4 bg-gray-800/60 rounded-xl border border-gray-600 hover:bg-gray-800/80 transition-all duration-300 animate-slide-in" style={{animationDelay: '1.0s'}}>
+          <div className="flex items-center justify-between p-4 bg-gray-800/60 rounded-xl border border-gray-600 hover:bg-gray-800/80 transition-all duration-300">
             <div>
               <Label className="text-sm font-medium text-white">Browser Notifications</Label>
               <p className="text-xs text-gray-300">Get notified when your images are ready</p>
@@ -309,7 +309,7 @@ export default function Settings() {
             />
           </div>
           
-          <div className="flex items-center justify-between p-4 bg-gray-800/60 rounded-xl border border-gray-600 hover:bg-gray-800/80 transition-all duration-300 animate-slide-in" style={{animationDelay: '1.1s'}}>
+          <div className="flex items-center justify-between p-4 bg-gray-800/60 rounded-xl border border-gray-600 hover:bg-gray-800/80 transition-all duration-300">
             <div>
               <Label className="text-sm font-medium text-white">Marketing Emails</Label>
               <p className="text-xs text-gray-300">Receive tips, updates, and promotional offers</p>
@@ -324,7 +324,7 @@ export default function Settings() {
       </div>
 
       {/* Enhanced Danger Zone */}
-      <div className="glass-card bg-red-950/80 backdrop-blur-xl border border-red-800/60 shadow-strong rounded-2xl p-6 animate-fade-in-up hover:shadow-xl transition-all duration-300" style={{animationDelay: '1.2s'}}>
+      <div className="glass-card bg-red-950/80 backdrop-blur-xl border border-red-800/60 shadow-strong rounded-2xl p-6 hover:shadow-xl transition-all duration-300">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-8 h-8 bg-gradient-to-br from-red-600 to-red-800 rounded-lg flex items-center justify-center">
             <AlertTriangle className="w-4 h-4 text-white" />
@@ -332,7 +332,7 @@ export default function Settings() {
           <h3 className="text-lg font-semibold text-red-400">Danger Zone</h3>
         </div>
         <div className="space-y-4">
-          <div className="p-6 bg-red-900/40 rounded-xl border border-red-800/60 hover:bg-red-900/50 transition-all duration-300 animate-pulse-gentle" style={{animationDelay: '1.3s'}}>
+          <div className="p-6 bg-red-900/40 rounded-xl border border-red-800/60 hover:bg-red-900/50 transition-all duration-300">
             <h4 className="font-semibold text-red-400 mb-2 text-sm flex items-center gap-2">
               <Trash2 className="w-4 h-4" />
               Delete Account

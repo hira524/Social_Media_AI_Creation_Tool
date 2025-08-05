@@ -25,8 +25,8 @@ export default function FloatingActionButton({ onActionSelect }: FloatingActionB
   return (
     <div className="fixed bottom-6 right-6 z-50">
       {/* Action buttons */}
-      <div className={`flex flex-col-reverse space-y-reverse space-y-3 mb-4 transition-all duration-300 ${
-        isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-4'
+      <div className={`flex flex-col-reverse space-y-reverse space-y-2 mb-3 transition-all duration-200 ${
+        isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2'
       }`}>
         {actions.map((action, index) => {
           const Icon = action.icon;
@@ -34,11 +34,11 @@ export default function FloatingActionButton({ onActionSelect }: FloatingActionB
             <div
               key={action.id}
               className="relative group"
-              style={{ transitionDelay: isOpen ? `${index * 50}ms` : '0ms' }}
+              style={{ transitionDelay: isOpen ? `${index * 30}ms` : '0ms' }}
             >
               {/* Label */}
-              <div className="absolute right-16 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                <div className="glass-card px-3 py-2 rounded-lg whitespace-nowrap text-sm font-medium text-slate-700">
+              <div className="absolute right-14 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <div className="bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg whitespace-nowrap text-xs font-medium text-slate-700 shadow-sm border border-white/40">
                   {action.label}
                 </div>
               </div>
@@ -46,9 +46,9 @@ export default function FloatingActionButton({ onActionSelect }: FloatingActionB
               {/* Action button */}
               <Button
                 onClick={() => handleAction(action.id)}
-                className={`w-12 h-12 rounded-full bg-gradient-to-r ${action.color} text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 border-0`}
+                className={`w-10 h-10 rounded-full bg-gradient-to-r ${action.color} text-white shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 border-0`}
               >
-                <Icon className="w-5 h-5" />
+                <Icon className="w-4 h-4" />
               </Button>
             </div>
           );
@@ -58,11 +58,11 @@ export default function FloatingActionButton({ onActionSelect }: FloatingActionB
       {/* Main FAB */}
       <Button
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-16 h-16 rounded-full bg-gradient-to-r from-primary via-purple-600 to-pink-600 text-white shadow-xl hover:shadow-2xl transition-all duration-300 border-0 animate-glow ${
-          isOpen ? 'rotate-45 scale-110' : 'rotate-0 scale-100'
+        className={`w-14 h-14 rounded-full bg-gradient-to-r from-primary to-secondary text-white shadow-lg hover:shadow-xl transition-all duration-200 border-0 ${
+          isOpen ? 'rotate-45 scale-105' : 'rotate-0 scale-100'
         }`}
       >
-        <Plus className="w-8 h-8" />
+        <Plus className="w-6 h-6" />
       </Button>
     </div>
   );

@@ -155,56 +155,52 @@ export default function Favorites() {
 
   if (isLoading) {
     return (
-      <Card className="w-full">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Heart className="w-5 h-5 text-red-500 fill-current" />
-            <span>Favorite Images</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="animate-pulse">
-                <div className="w-full h-48 bg-slate-200 rounded-lg mb-3"></div>
-                <div className="h-4 bg-slate-200 rounded mb-2"></div>
-                <div className="h-3 bg-slate-200 rounded w-2/3 mb-2"></div>
-                <div className="h-3 bg-slate-200 rounded w-1/2"></div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Heart className="w-5 h-5 text-red-500 fill-current" />
+          <h2 className="text-xl font-semibold">Favorite Images</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="animate-pulse">
+              <div className="w-full h-40 bg-slate-200 rounded-xl mb-3"></div>
+              <div className="h-3 bg-slate-200 rounded mb-2"></div>
+              <div className="h-2 bg-slate-200 rounded w-2/3 mb-2"></div>
+              <div className="h-2 bg-slate-200 rounded w-1/2"></div>
+            </div>
+          ))}
+        </div>
+      </div>
     );
   }
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="flex items-center space-x-2">
+    <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl p-6">
+      <div className="mb-6">
+        <div className="flex items-center gap-2 mb-4">
           <Heart className="w-5 h-5 text-red-500 fill-current" />
-          <span>Favorite Images</span>
-          <Badge variant="secondary" className="ml-2">
+          <h2 className="text-xl font-semibold">Favorite Images</h2>
+          <Badge variant="secondary" className="ml-2 text-xs">
             {favoriteImages.length}
           </Badge>
-        </CardTitle>
+        </div>
         
         {favoriteImages.length > 0 && (
-          <div className="flex flex-col sm:flex-row gap-4 mt-4">
+          <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
               <Input
                 placeholder="Search favorite images..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 text-sm"
               />
             </div>
             
             <Select value={platformFilter} onValueChange={setPlatformFilter}>
-              <SelectTrigger className="w-full sm:w-48">
+              <SelectTrigger className="w-full sm:w-40 text-sm">
                 <Filter className="w-4 h-4 mr-2" />
-                <SelectValue placeholder="Filter by platform" />
+                <SelectValue placeholder="Platform" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Platforms</SelectItem>
@@ -215,144 +211,140 @@ export default function Favorites() {
             </Select>
             
             <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-full sm:w-48">
-                <SelectValue placeholder="Sort by" />
+              <SelectTrigger className="w-full sm:w-32 text-sm">
+                <SelectValue placeholder="Sort" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="newest">Newest First</SelectItem>
-                <SelectItem value="oldest">Oldest First</SelectItem>
+                <SelectItem value="newest">Newest</SelectItem>
+                <SelectItem value="oldest">Oldest</SelectItem>
                 <SelectItem value="platform">Platform</SelectItem>
               </SelectContent>
             </Select>
           </div>
         )}
-      </CardHeader>
+      </div>
 
-      <CardContent>
-        {favoriteImages.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <HeartOff className="w-8 h-8 text-slate-400" />
-            </div>
-            <h3 className="text-lg font-medium text-slate-900 mb-2">No favorites yet</h3>
-            <p className="text-slate-600 mb-4">
-              Start adding images to your favorites by clicking the heart icon on any generated image
-            </p>
-            <p className="text-sm text-slate-500">
-              ❤️ Favorites help you quickly access your best AI-generated images
-            </p>
+      {favoriteImages.length === 0 ? (
+        <div className="text-center py-8">
+          <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+            <HeartOff className="w-6 h-6 text-slate-400" />
           </div>
-        ) : filteredImages.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Search className="w-8 h-8 text-slate-400" />
-            </div>
-            <h3 className="text-lg font-medium text-slate-900 mb-2">No matches found</h3>
-            <p className="text-slate-600 mb-4">
-              No favorite images match your current filters
-            </p>
-            <Button 
-              variant="outline" 
-              onClick={() => {
-                setSearchTerm("");
-                setPlatformFilter("all");
-                setSortBy("newest");
-              }}
-            >
-              Clear Filters
-            </Button>
+          <h3 className="text-lg font-medium text-slate-900 mb-2">No favorites yet</h3>
+          <p className="text-slate-600 text-sm mb-4">
+            Start adding images to your favorites by clicking the heart icon
+          </p>
+        </div>
+      ) : filteredImages.length === 0 ? (
+        <div className="text-center py-8">
+          <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+            <Search className="w-6 h-6 text-slate-400" />
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredImages.map((image) => (
-              <div key={image.id} className="group relative bg-white rounded-lg border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-200 ring-2 ring-red-100">
-                <div className="relative overflow-hidden">
-                  <img
-                    src={image.imageUrl}
-                    alt={`Generated image for ${image.platform}`}
-                    className="w-full h-48 object-cover transition-transform group-hover:scale-105"
-                  />
-                  
-                  {/* Overlay with actions */}
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex items-center justify-center space-x-2 opacity-0 group-hover:opacity-100">
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      onClick={() => handleViewImage(image)}
-                    >
-                      <Eye className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      onClick={() => handleDownload(image)}
-                    >
-                      <Download className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      onClick={() => handleToggleFavorite(image)}
-                      disabled={favoriteMutation.isPending}
-                      className="bg-red-500 hover:bg-red-600 text-white"
-                    >
-                      <Heart className="w-4 h-4 fill-current" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => handleDeleteImage(image.id)}
-                      disabled={deleteMutation.isPending}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                  
-                  {/* Favorite indicator */}
-                  <div className="absolute top-2 right-2">
-                    <div className="bg-red-500 rounded-full p-1 shadow-lg">
-                      <Heart className="w-3 h-3 fill-current text-white" />
-                    </div>
-                  </div>
+          <h3 className="text-lg font-medium text-slate-900 mb-2">No matches found</h3>
+          <p className="text-slate-600 text-sm mb-4">
+            No favorite images match your current filters
+          </p>
+          <Button 
+            variant="outline" 
+            onClick={() => {
+              setSearchTerm("");
+              setPlatformFilter("all");
+              setSortBy("newest");
+            }}
+            className="text-sm"
+          >
+            Clear Filters
+          </Button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredImages.map((image) => (
+            <div key={image.id} className="group relative bg-white/70 rounded-xl border border-red-200/50 overflow-hidden hover:shadow-md transition-all duration-200">
+              <div className="relative overflow-hidden">
+                <img
+                  src={image.imageUrl}
+                  alt={`Generated image for ${image.platform}`}
+                  className="w-full h-40 object-cover transition-transform group-hover:scale-105"
+                />
+                
+                {/* Overlay with actions */}
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-200 flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100">
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => handleViewImage(image)}
+                    className="p-1.5"
+                  >
+                    <Eye className="w-3 h-3" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => handleDownload(image)}
+                    className="p-1.5"
+                  >
+                    <Download className="w-3 h-3" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => handleToggleFavorite(image)}
+                    disabled={favoriteMutation.isPending}
+                    className="bg-red-500 hover:bg-red-600 text-white p-1.5"
+                  >
+                    <Heart className="w-3 h-3 fill-current" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => handleDeleteImage(image.id)}
+                    disabled={deleteMutation.isPending}
+                    className="p-1.5"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </Button>
                 </div>
                 
-                <div className="p-4">
-                  <div className="mb-2">
-                    <h4 className="text-sm font-medium text-slate-900 line-clamp-2 mb-1">
-                      {image.prompt}
-                    </h4>
-                    <p className="text-xs text-slate-600 line-clamp-1">
-                      {image.enhancedPrompt}
-                    </p>
-                  </div>
-                  
-                  <div className="flex items-center justify-between mb-2">
-                    <Badge variant="secondary" className="text-xs capitalize">
-                      {image.platform}
-                    </Badge>
-                    <Badge variant="outline" className="text-xs">
-                      {image.style}
-                    </Badge>
-                  </div>
-                  
-                  <div className="flex items-center justify-between text-xs text-slate-500">
-                    <span>{image.dimensions}</span>
-                    <span>
-                      {image.createdAt ? new Date(image.createdAt).toLocaleDateString() : 'Unknown date'}
-                    </span>
+                {/* Favorite indicator */}
+                <div className="absolute top-2 right-2">
+                  <div className="bg-red-500 rounded-full p-1 shadow-sm">
+                    <Heart className="w-2.5 h-2.5 fill-current text-white" />
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
-        
-        {filteredImages.length > 0 && (
-          <div className="mt-6 text-center text-sm text-slate-600">
-            Showing {filteredImages.length} of {favoriteImages.length} favorite images
-          </div>
-        )}
-      </CardContent>
-    </Card>
+              
+              <div className="p-3">
+                <div className="mb-2">
+                  <h4 className="text-xs font-medium text-slate-900 line-clamp-2 mb-1">
+                    {image.prompt}
+                  </h4>
+                </div>
+                
+                <div className="flex items-center justify-between mb-2">
+                  <Badge variant="secondary" className="text-xs capitalize px-2 py-0.5">
+                    {image.platform}
+                  </Badge>
+                  <Badge variant="outline" className="text-xs px-2 py-0.5">
+                    {image.style}
+                  </Badge>
+                </div>
+                
+                <div className="flex items-center justify-between text-xs text-slate-500">
+                  <span>{image.dimensions}</span>
+                  <span>
+                    {image.createdAt ? new Date(image.createdAt).toLocaleDateString() : 'Unknown'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      
+      {filteredImages.length > 0 && (
+        <div className="mt-4 text-center text-xs text-slate-600">
+          Showing {filteredImages.length} of {favoriteImages.length} favorite images
+        </div>
+      )}
+    </div>
   );
 }

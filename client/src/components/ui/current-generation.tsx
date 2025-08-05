@@ -122,111 +122,108 @@ export default function CurrentGeneration({
   }
 
   return (
-    <Card className="bg-white/80 backdrop-blur-xl border border-white/20 shadow-medium rounded-2xl overflow-hidden animate-fade-in-up">
-      <CardContent className="p-8">
-        <div className="mb-8">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center">
-              <span className="text-white font-bold">✓</span>
-            </div>
-            <h2 className="text-2xl font-bold text-slate-900">Your Latest Generation</h2>
+    <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl p-6">
+      <div className="mb-6">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+            <span className="text-white font-bold text-sm">✓</span>
           </div>
-          <p className="text-slate-600 text-lg">
-            Generated for <span className="font-semibold text-primary">{generatedImage.platform}</span> • <span className="font-semibold text-secondary">{generatedImage.style}</span> style
-          </p>
+          <h2 className="text-xl font-semibold text-slate-900">Your Latest Generation</h2>
+        </div>
+        <p className="text-slate-600 text-sm">
+          Generated for <span className="font-medium text-primary">{generatedImage.platform}</span> • <span className="font-medium text-secondary">{generatedImage.style}</span> style
+        </p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        {/* Generated Image Preview */}
+        <div className="relative group">
+          <img
+            src={generatedImage.imageUrl}
+            alt="AI-generated social media post"
+            className="w-full rounded-xl shadow-sm group-hover:shadow-md transition-all duration-200"
+          />
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Generated Image Preview */}
-          <div className="relative group">
-            <img
-              src={generatedImage.imageUrl}
-              alt="AI-generated social media post"
-              className="w-full rounded-2xl shadow-medium group-hover:shadow-intense transition-all duration-300"
-            />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 rounded-2xl transition-all duration-300"></div>
+        {/* Image Actions */}
+        <div className="space-y-4">
+          <div>
+            <h3 className="font-medium text-slate-900 mb-3 text-sm flex items-center gap-2">
+              <Download className="w-4 h-4 text-primary" />
+              <span>Download Options</span>
+            </h3>
+            <div className="space-y-2">
+              <Button 
+                onClick={handleDownload} 
+                className="w-full bg-gradient-to-r from-primary to-secondary text-white py-2.5 rounded-xl text-sm font-medium"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                Download High Quality
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={handleCopyToClipboard} 
+                className="w-full py-2.5 rounded-xl bg-white/50 border border-slate-200 hover:bg-slate-50 text-sm"
+              >
+                <Copy className="w-4 h-4 mr-2" />
+                Copy to Clipboard
+              </Button>
+            </div>
           </div>
 
-          {/* Image Actions */}
-          <div className="space-y-6">
-            <div>
-              <h3 className="font-bold text-slate-900 mb-4 text-lg flex items-center space-x-2">
-                <Download className="w-5 h-5 text-primary" />
-                <span>Download Options</span>
-              </h3>
-              <div className="space-y-3">
-                <Button 
-                  onClick={handleDownload} 
-                  className="w-full btn-primary py-3 rounded-2xl shadow-lg hover:shadow-primary/25 transition-all duration-300"
-                >
-                  <Download className="w-5 h-5 mr-3" />
-                  Download High Quality
-                </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={handleCopyToClipboard} 
-                  className="w-full py-3 rounded-2xl bg-white/50 backdrop-blur-sm border-2 border-white/30 hover:bg-white/80 transition-all duration-300"
-                >
-                  <Copy className="w-5 h-5 mr-3" />
-                  Copy to Clipboard
-                </Button>
-              </div>
+          <div>
+            <h3 className="font-medium text-slate-900 mb-3 text-sm flex items-center gap-2">
+              <Heart className="w-4 h-4 text-primary" />
+              <span>Actions</span>
+            </h3>
+            <div className="space-y-2">
+              <Button 
+                variant="outline" 
+                onClick={handleToggleFavorite}
+                className="w-full py-2.5 rounded-xl bg-white/50 border border-slate-200 hover:bg-slate-50 text-sm"
+                disabled={favoriteMutation.isPending}
+              >
+                <Heart className={`w-4 h-4 mr-2 transition-colors ${generatedImage.isFavorite ? 'fill-current text-red-500' : 'text-slate-600'}`} />
+                {generatedImage.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={onGenerateNew}
+                className="w-full py-2.5 rounded-xl bg-white/50 border border-slate-200 hover:bg-slate-50 text-sm"
+              >
+                <RotateCcw className="w-4 h-4 mr-2" />
+                Generate New Image
+              </Button>
             </div>
+          </div>
 
-            <div>
-              <h3 className="font-bold text-slate-900 mb-4 text-lg flex items-center space-x-2">
-                <Heart className="w-5 h-5 text-primary" />
-                <span>Actions</span>
-              </h3>
-              <div className="space-y-3">
-                <Button 
-                  variant="outline" 
-                  onClick={handleToggleFavorite}
-                  className="w-full py-3 rounded-2xl bg-white/50 backdrop-blur-sm border-2 border-white/30 hover:bg-white/80 transition-all duration-300"
-                  disabled={favoriteMutation.isPending}
-                >
-                  <Heart className={`w-5 h-5 mr-3 transition-colors ${generatedImage.isFavorite ? 'fill-current text-red-500' : 'text-slate-600'}`} />
-                  {generatedImage.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
-                </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={onGenerateNew}
-                  className="w-full py-3 rounded-2xl bg-white/50 backdrop-blur-sm border-2 border-white/30 hover:bg-white/80 transition-all duration-300"
-                >
-                  <RotateCcw className="w-5 h-5 mr-3" />
-                  Generate New Image
-                </Button>
+          <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/50">
+            <h4 className="font-medium text-slate-900 mb-3 text-sm flex items-center gap-2">
+              <span>ℹ️</span>
+              <span>Generation Details</span>
+            </h4>
+            <div className="text-slate-600 space-y-2 text-xs">
+              <div className="flex items-center gap-2">
+                <span className="font-medium">Platform:</span>
+                <span className="font-medium text-primary">{generatedImage.platform}</span>
+                <span className="text-slate-500">({generatedImage.dimensions})</span>
               </div>
-            </div>
-
-            <div className="mt-8 p-6 bg-gradient-to-br from-slate-50 to-indigo-50/50 rounded-2xl border border-white/30">
-              <h4 className="font-bold text-slate-900 mb-4 text-lg flex items-center space-x-2">
-                <span>ℹ️</span>
-                <span>Generation Details</span>
-              </h4>
-              <div className="text-slate-600 space-y-2">
-                <div className="flex items-center space-x-2">
-                  <span className="font-medium">Platform:</span>
-                  <span className="font-semibold text-primary">{generatedImage.platform}</span>
-                  <span className="text-sm">({generatedImage.dimensions})</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className="font-medium">Style:</span>
-                  <span className="font-semibold text-secondary">{generatedImage.style}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className="font-medium">Generated:</span>
-                  <span>{new Date(generatedImage.createdAt).toLocaleString()}</span>
-                </div>
-                <div className="flex flex-col space-y-1">
-                  <span className="font-medium">Prompt:</span>
-                  <span className="text-sm bg-white/70 p-3 rounded-lg">{generatedImage.prompt}</span>
-                </div>
+              <div className="flex items-center gap-2">
+                <span className="font-medium">Style:</span>
+                <span className="font-medium text-secondary">{generatedImage.style}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-medium">Generated:</span>
+                <span>{new Date(generatedImage.createdAt).toLocaleString()}</span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="font-medium">Prompt:</span>
+                <span className="text-xs bg-white/70 p-2 rounded-lg leading-relaxed">{generatedImage.prompt}</span>
               </div>
             </div>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

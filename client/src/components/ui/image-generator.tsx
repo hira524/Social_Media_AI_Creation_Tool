@@ -115,96 +115,84 @@ export default function ImageGenerator({ onImageGenerated }: ImageGeneratorProps
   };
 
   return (
-    <div className="space-y-8">
-      {/* Enhanced Generation Interface */}
-      <Card className="glass-card border-0 shadow-strong rounded-3xl overflow-hidden hover-lift">
-        <CardContent className="p-8">
-          <div className="mb-8">
-            <div className="flex items-center space-x-4 mb-6">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary via-purple-600 to-pink-600 rounded-3xl flex items-center justify-center shadow-lg animate-glow">
-                <Sparkles className="w-8 h-8 text-white animate-spin" style={{animationDuration: '3s'}} />
-              </div>
-              <div>
-                <h1 className="text-4xl font-bold text-slate-900 text-gradient-primary">Create Your Social Media Image</h1>
-                <p className="text-slate-600 text-xl mt-2">Describe what you want to create and our AI will generate it for you</p>
-              </div>
+    <div className="space-y-6">
+      {/* Clean Generation Interface */}
+      <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl p-6">
+        <div className="mb-6">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center">
+              <Sparkles className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-semibold text-slate-900">Create Your Image</h1>
+              <p className="text-slate-600 text-sm mt-1">Describe what you want to create</p>
             </div>
           </div>
+        </div>
 
-          <form onSubmit={handleGenerate} className="space-y-8">
-            {/* Enhanced Prompt Input */}
-            <div className="space-y-4">
-              <Label className="text-xl font-bold text-slate-900 flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center">
-                  <Lightbulb className="w-5 h-5 text-white" />
-                </div>
-                <span>Describe your image</span>
-              </Label>
-              <div className="relative">
-                <Textarea
-                  rows={5}
-                  placeholder="A motivational fitness quote with a mountain background, modern typography, and vibrant colors..."
-                  value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                  className="input-modern resize-none text-lg p-6 rounded-2xl border-2 border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300"
-                />
-                <div className="absolute bottom-4 right-4 text-sm text-slate-400">
-                  {prompt.length}/500
+        <form onSubmit={handleGenerate} className="space-y-6">
+          {/* Clean Prompt Input */}
+          <div className="space-y-3">
+            <Label className="text-sm font-medium text-slate-900 flex items-center gap-2">
+              <div className="w-5 h-5 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center">
+                <Lightbulb className="w-3 h-3 text-white" />
+              </div>
+              Describe your image
+            </Label>
+            <div className="relative">
+              <Textarea
+                rows={4}
+                placeholder="A motivational fitness quote with a mountain background, modern typography, and vibrant colors..."
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                className="resize-none p-4 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 text-sm bg-white/50"
+              />
+              <div className="absolute bottom-3 right-3 text-xs text-slate-400">
+                {prompt.length}/500
+              </div>
+            </div>
+            {typedUser?.niche && typedUser?.stylePreference && (
+              <div className="p-3 bg-slate-50/80 rounded-xl border border-slate-200/50">
+                <div className="text-xs text-slate-700 flex items-center gap-2">
+                  <div className="w-4 h-4 bg-primary/20 rounded-full flex items-center justify-center">
+                    <Lightbulb className="w-2 h-2 text-primary" />
+                  </div>
+                  <span className="font-medium">AI Enhancement:</span>
+                  <span>Optimized for {typedUser.niche} • {typedUser.stylePreference}</span>
                 </div>
               </div>
-              {typedUser?.niche && typedUser?.stylePreference && (
-                <div className="mt-4 p-6 bg-gradient-to-r from-primary/10 via-purple-50 to-pink-50 rounded-2xl border border-primary/20 animate-fade-in">
-                  <div className="text-sm text-slate-700 flex items-center">
-                    <div className="w-6 h-6 bg-primary/20 rounded-full flex items-center justify-center mr-3">
-                      <Lightbulb className="w-3 h-3 text-primary" />
-                    </div>
-                    <span className="font-medium">AI Enhancement:</span>
-                    <span className="ml-2">We'll optimize your prompt based on your preferences ({typedUser.niche} • {typedUser.stylePreference})</span>
-                  </div>
-                </div>
-              )}
-            </div>
+            )}
+          </div>
 
-            {/* Generate Button */}
-            <Button 
-              type="submit" 
-              size="lg" 
-              className="w-full btn-primary text-xl py-6 h-16 rounded-2xl shadow-lg hover:shadow-primary/25 transform hover:scale-105 transition-all duration-300"
-              disabled={generateMutation.isPending || !typedUser?.creditsRemaining}
-            >
-              {generateMutation.isPending ? (
-                <div className="flex items-center justify-center">
-                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin mr-3"></div>
-                  <span>Generating Image...</span>
-                </div>
-              ) : (
-                <div className="flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 mr-3" />
-                  <span>Generate Image</span>
-                </div>
-              )}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+          {/* Generate Button */}
+          <Button 
+            type="submit" 
+            size="lg" 
+            className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 rounded-xl hover:shadow-md transition-all duration-200 font-medium"
+            disabled={generateMutation.isPending || !typedUser?.creditsRemaining}
+          >
+            {generateMutation.isPending ? (
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                <span>Generating...</span>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center gap-2">
+                <Sparkles className="w-4 h-4" />
+                <span>Generate Image</span>
+              </div>
+            )}
+          </Button>
+        </form>
+      </div>
 
-      {/* Loading State */}
+      {/* Clean Loading State */}
       {generateMutation.isPending && (
-        <Card className="bg-white/80 backdrop-blur-xl border border-white/20 shadow-medium rounded-2xl overflow-hidden">
-          <CardContent className="p-12 text-center">
-            <div className="relative mb-8">
-              <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto"></div>
-              <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-r-secondary rounded-full animate-spin animate-reverse mx-auto"></div>
-            </div>
-            <h3 className="text-2xl font-bold text-slate-900 mb-3">Creating your image...</h3>
-            <p className="text-slate-600 text-lg">This usually takes 10-30 seconds</p>
-            <div className="mt-6 flex items-center justify-center space-x-2">
-              <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-              <div className="w-2 h-2 bg-secondary rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
-              <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl p-8 text-center">
+          <div className="w-12 h-12 border-3 border-slate-200 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
+          <h3 className="text-lg font-medium text-slate-900 mb-2">Creating your image...</h3>
+          <p className="text-slate-600 text-sm">This usually takes 10-30 seconds</p>
+        </div>
       )}
     </div>
   );

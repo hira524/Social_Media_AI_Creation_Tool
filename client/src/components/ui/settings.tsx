@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { isUnauthorizedError } from "@/lib/authUtils";
@@ -16,7 +18,14 @@ import {
   AlertTriangle,
   Check,
   Trash2,
-  Crown
+  Crown,
+  Building,
+  Target,
+  Palette,
+  Globe,
+  Users,
+  Clock,
+  Hash
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import type { User } from "@shared/mongoSchema";
@@ -26,13 +35,35 @@ export default function Settings() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   
-  // Profile state
+  // Personal information
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  
+  // Content preferences
   const [niche, setNiche] = useState("");
   const [contentType, setContentType] = useState("");
   const [stylePreference, setStylePreference] = useState("");
+  
+  // Business information
+  const [businessType, setBusinessType] = useState("");
+  const [targetAudience, setTargetAudience] = useState("");
+  const [audienceAge, setAudienceAge] = useState("");
+  
+  // Content goals
+  const [primaryGoal, setPrimaryGoal] = useState("");
+  const [postingFrequency, setPostingFrequency] = useState("");
+  const [contentThemes, setContentThemes] = useState<string[]>([]);
+  
+  // Brand personality
+  const [brandPersonality, setBrandPersonality] = useState("");
+  const [colorPreferences, setColorPreferences] = useState<string[]>([]);
+  const [brandKeywords, setBrandKeywords] = useState("");
+  
+  // Platform strategy
+  const [primaryPlatforms, setPrimaryPlatforms] = useState<string[]>([]);
+  const [contentFormats, setContentFormats] = useState<string[]>([]);
+  const [specialRequirements, setSpecialRequirements] = useState("");
   
   // Notification preferences
   const [emailNotifications, setEmailNotifications] = useState(true);
@@ -42,18 +73,41 @@ export default function Settings() {
   // Sync with user data
   useEffect(() => {
     if (user) {
+      // Personal information
       setFirstName(user.firstName || "");
       setLastName(user.lastName || "");
       setEmail(user.email || "");
+      
+      // Content preferences
       setNiche(user.niche || "");
       setContentType(user.contentType || "");
       setStylePreference(user.stylePreference || "");
+      
+      // Business information
+      setBusinessType(user.businessType || "");
+      setTargetAudience(user.targetAudience || "");
+      setAudienceAge(user.audienceAge || "");
+      
+      // Content goals
+      setPrimaryGoal(user.primaryGoal || "");
+      setPostingFrequency(user.postingFrequency || "");
+      setContentThemes(user.contentThemes || []);
+      
+      // Brand personality
+      setBrandPersonality(user.brandPersonality || "");
+      setColorPreferences(user.colorPreferences || []);
+      setBrandKeywords(user.brandKeywords || "");
+      
+      // Platform strategy
+      setPrimaryPlatforms(user.primaryPlatforms || []);
+      setContentFormats(user.contentFormats || []);
+      setSpecialRequirements(user.specialRequirements || "");
     }
   }, [user]);
 
   const saveProfileMutation = useMutation({
     mutationFn: async (data: any) => {
-      await apiRequest("PUT", "/api/user/profile", data);
+      await apiRequest("PATCH", "/api/user/profile", data);
     },
     onSuccess: () => {
       toast({
@@ -81,12 +135,35 @@ export default function Settings() {
 
   const handleSaveChanges = () => {
     saveProfileMutation.mutate({
+      // Personal information
       firstName,
       lastName,
       email,
+      
+      // Content preferences
       niche,
       contentType,
       stylePreference,
+      
+      // Business information
+      businessType,
+      targetAudience,
+      audienceAge,
+      
+      // Content goals
+      primaryGoal,
+      postingFrequency,
+      contentThemes,
+      
+      // Brand personality
+      brandPersonality,
+      colorPreferences,
+      brandKeywords,
+      
+      // Platform strategy
+      primaryPlatforms,
+      contentFormats,
+      specialRequirements,
     });
   };
 
@@ -111,7 +188,7 @@ export default function Settings() {
           <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
             <UserIcon className="w-4 h-4 text-white" />
           </div>
-          <h3 className="text-lg font-semibold text-white">Profile Settings</h3>
+          <h3 className="text-lg font-semibold text-white">Personal Information</h3>
         </div>
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -154,7 +231,18 @@ export default function Settings() {
               className="bg-gray-800 border-gray-600 text-white focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300"
             />
           </div>
-          
+        </div>
+      </div>
+
+      {/* Content Preferences */}
+      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 hover:shadow-xl transition-all duration-300">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
+            <Palette className="w-4 h-4 text-white" />
+          </div>
+          <h3 className="text-lg font-semibold text-white">Content Preferences</h3>
+        </div>
+        <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label htmlFor="niche" className="text-sm font-medium text-gray-300">Niche</Label>
@@ -171,6 +259,10 @@ export default function Settings() {
                   <SelectItem value="travel">Travel & Adventure</SelectItem>
                   <SelectItem value="lifestyle">Lifestyle</SelectItem>
                   <SelectItem value="education">Education</SelectItem>
+                  <SelectItem value="entertainment">Entertainment</SelectItem>
+                  <SelectItem value="music">Music & Arts</SelectItem>
+                  <SelectItem value="automotive">Automotive</SelectItem>
+                  <SelectItem value="realestate">Real Estate</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -187,6 +279,7 @@ export default function Settings() {
                   <SelectItem value="educational">Educational Content</SelectItem>
                   <SelectItem value="announcements">Announcements</SelectItem>
                   <SelectItem value="behind-scenes">Behind the Scenes</SelectItem>
+                  <SelectItem value="user-generated">User-Generated Content</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -208,26 +301,342 @@ export default function Settings() {
               </Select>
             </div>
           </div>
+        </div>
+      </div>
 
-          <div className="pt-4">
-            <Button 
-              onClick={handleSaveChanges}
-              disabled={saveProfileMutation.isPending}
-              className="bg-gradient-to-r from-primary to-secondary text-white hover:shadow-lg hover:scale-105 transition-all duration-300 group"
-            >
-              {saveProfileMutation.isPending ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
-                  <span>Saving...</span>
-                </>
-              ) : (
-                <>
-                  <Check className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-                  <span>Save Changes</span>
-                </>
-              )}
-            </Button>
+      {/* Business Information */}
+      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 hover:shadow-xl transition-all duration-300">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+            <Building className="w-4 h-4 text-white" />
           </div>
+          <h3 className="text-lg font-semibold text-white">Business Information</h3>
+        </div>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="businessType" className="text-sm font-medium text-gray-300">Business Type</Label>
+              <Select value={businessType} onValueChange={setBusinessType}>
+                <SelectTrigger className="bg-gray-800 border-gray-600 text-white focus:border-primary">
+                  <SelectValue placeholder="Select business type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="startup">Startup</SelectItem>
+                  <SelectItem value="smallbusiness">Small Business</SelectItem>
+                  <SelectItem value="enterprise">Enterprise</SelectItem>
+                  <SelectItem value="agency">Agency</SelectItem>
+                  <SelectItem value="freelancer">Freelancer</SelectItem>
+                  <SelectItem value="nonprofit">Non-Profit</SelectItem>
+                  <SelectItem value="personal">Personal Brand</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="targetAudience" className="text-sm font-medium text-gray-300">Target Audience</Label>
+              <Input
+                id="targetAudience"
+                value={targetAudience}
+                onChange={(e) => setTargetAudience(e.target.value)}
+                placeholder="e.g., Young professionals, Fitness enthusiasts"
+                className="bg-gray-800 border-gray-600 text-white focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="audienceAge" className="text-sm font-medium text-gray-300">Audience Age Range</Label>
+              <Select value={audienceAge} onValueChange={setAudienceAge}>
+                <SelectTrigger className="bg-gray-800 border-gray-600 text-white focus:border-primary">
+                  <SelectValue placeholder="Select age range" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="18-24">18-24 years</SelectItem>
+                  <SelectItem value="25-34">25-34 years</SelectItem>
+                  <SelectItem value="35-44">35-44 years</SelectItem>
+                  <SelectItem value="45-54">45-54 years</SelectItem>
+                  <SelectItem value="55-64">55-64 years</SelectItem>
+                  <SelectItem value="65+">65+ years</SelectItem>
+                  <SelectItem value="all">All ages</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Content Goals */}
+      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 hover:shadow-xl transition-all duration-300">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+            <Target className="w-4 h-4 text-white" />
+          </div>
+          <h3 className="text-lg font-semibold text-white">Content Goals</h3>
+        </div>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="primaryGoal" className="text-sm font-medium text-gray-300">Primary Goal</Label>
+              <Select value={primaryGoal} onValueChange={setPrimaryGoal}>
+                <SelectTrigger className="bg-gray-800 border-gray-600 text-white focus:border-primary">
+                  <SelectValue placeholder="Select primary goal" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="brand-awareness">Brand Awareness</SelectItem>
+                  <SelectItem value="lead-generation">Lead Generation</SelectItem>
+                  <SelectItem value="sales">Drive Sales</SelectItem>
+                  <SelectItem value="engagement">Increase Engagement</SelectItem>
+                  <SelectItem value="education">Educate Audience</SelectItem>
+                  <SelectItem value="community">Build Community</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="postingFrequency" className="text-sm font-medium text-gray-300">Posting Frequency</Label>
+              <Select value={postingFrequency} onValueChange={setPostingFrequency}>
+                <SelectTrigger className="bg-gray-800 border-gray-600 text-white focus:border-primary">
+                  <SelectValue placeholder="How often do you post?" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="daily">Daily</SelectItem>
+                  <SelectItem value="few-times-week">Few times a week</SelectItem>
+                  <SelectItem value="weekly">Weekly</SelectItem>
+                  <SelectItem value="bi-weekly">Bi-weekly</SelectItem>
+                  <SelectItem value="monthly">Monthly</SelectItem>
+                  <SelectItem value="irregular">As needed</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-gray-300">Content Themes</Label>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {[
+                "Tips & Tutorials",
+                "Behind the Scenes", 
+                "Product Features",
+                "Industry News",
+                "Customer Stories",
+                "Team Culture",
+                "Events & Announcements",
+                "Seasonal Content",
+                "User-Generated Content"
+              ].map((theme) => (
+                <div key={theme} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={theme}
+                    checked={contentThemes.includes(theme)}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setContentThemes([...contentThemes, theme]);
+                      } else {
+                        setContentThemes(contentThemes.filter(t => t !== theme));
+                      }
+                    }}
+                    className="border-gray-600 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                  />
+                  <Label htmlFor={theme} className="text-sm text-gray-300 cursor-pointer">
+                    {theme}
+                  </Label>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Brand Personality */}
+      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 hover:shadow-xl transition-all duration-300">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center">
+            <Hash className="w-4 h-4 text-white" />
+          </div>
+          <h3 className="text-lg font-semibold text-white">Brand Personality</h3>
+        </div>
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="brandPersonality" className="text-sm font-medium text-gray-300">Brand Personality</Label>
+            <Select value={brandPersonality} onValueChange={setBrandPersonality}>
+              <SelectTrigger className="bg-gray-800 border-gray-600 text-white focus:border-primary">
+                <SelectValue placeholder="How would you describe your brand?" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="professional">Professional & Authoritative</SelectItem>
+                <SelectItem value="friendly">Friendly & Approachable</SelectItem>
+                <SelectItem value="innovative">Innovative & Forward-thinking</SelectItem>
+                <SelectItem value="playful">Playful & Fun</SelectItem>
+                <SelectItem value="sophisticated">Sophisticated & Elegant</SelectItem>
+                <SelectItem value="trustworthy">Trustworthy & Reliable</SelectItem>
+                <SelectItem value="energetic">Energetic & Dynamic</SelectItem>
+                <SelectItem value="caring">Caring & Compassionate</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-gray-300">Color Preferences</Label>
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+              {[
+                { name: "Blue", value: "blue", color: "bg-blue-500" },
+                { name: "Red", value: "red", color: "bg-red-500" },
+                { name: "Green", value: "green", color: "bg-green-500" },
+                { name: "Purple", value: "purple", color: "bg-purple-500" },
+                { name: "Orange", value: "orange", color: "bg-orange-500" },
+                { name: "Pink", value: "pink", color: "bg-pink-500" },
+                { name: "Yellow", value: "yellow", color: "bg-yellow-500" },
+                { name: "Gray", value: "gray", color: "bg-gray-500" },
+                { name: "Black", value: "black", color: "bg-black" },
+                { name: "White", value: "white", color: "bg-white" },
+                { name: "Gold", value: "gold", color: "bg-yellow-400" },
+                { name: "Silver", value: "silver", color: "bg-gray-400" }
+              ].map((color) => (
+                <div key={color.value} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={color.value}
+                    checked={colorPreferences.includes(color.value)}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setColorPreferences([...colorPreferences, color.value]);
+                      } else {
+                        setColorPreferences(colorPreferences.filter(c => c !== color.value));
+                      }
+                    }}
+                    className="border-gray-600 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                  />
+                  <div className={`w-4 h-4 rounded-full ${color.color} border border-gray-600`}></div>
+                  <Label htmlFor={color.value} className="text-sm text-gray-300 cursor-pointer">
+                    {color.name}
+                  </Label>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="brandKeywords" className="text-sm font-medium text-gray-300">Brand Keywords</Label>
+            <Textarea
+              id="brandKeywords"
+              value={brandKeywords}
+              onChange={(e) => setBrandKeywords(e.target.value)}
+              placeholder="Enter keywords that describe your brand (e.g., innovative, sustainable, premium, reliable)"
+              className="bg-gray-800 border-gray-600 text-white focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300 min-h-[100px]"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Platform Strategy */}
+      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6 hover:shadow-xl transition-all duration-300">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+            <Globe className="w-4 h-4 text-white" />
+          </div>
+          <h3 className="text-lg font-semibold text-white">Platform Strategy</h3>
+        </div>
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-gray-300">Primary Platforms</Label>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {[
+                "Instagram",
+                "Facebook", 
+                "Twitter/X",
+                "LinkedIn",
+                "TikTok",
+                "YouTube",
+                "Pinterest",
+                "Snapchat"
+              ].map((platform) => (
+                <div key={platform} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={platform}
+                    checked={primaryPlatforms.includes(platform)}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setPrimaryPlatforms([...primaryPlatforms, platform]);
+                      } else {
+                        setPrimaryPlatforms(primaryPlatforms.filter(p => p !== platform));
+                      }
+                    }}
+                    className="border-gray-600 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                  />
+                  <Label htmlFor={platform} className="text-sm text-gray-300 cursor-pointer">
+                    {platform}
+                  </Label>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-gray-300">Content Formats</Label>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {[
+                "Square Posts",
+                "Story Format", 
+                "Carousel Posts",
+                "Video Content",
+                "Infographics",
+                "Quote Cards",
+                "Product Showcases",
+                "Blog Graphics",
+                "Event Announcements"
+              ].map((format) => (
+                <div key={format} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={format}
+                    checked={contentFormats.includes(format)}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setContentFormats([...contentFormats, format]);
+                      } else {
+                        setContentFormats(contentFormats.filter(f => f !== format));
+                      }
+                    }}
+                    className="border-gray-600 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                  />
+                  <Label htmlFor={format} className="text-sm text-gray-300 cursor-pointer">
+                    {format}
+                  </Label>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="specialRequirements" className="text-sm font-medium text-gray-300">Special Requirements</Label>
+            <Textarea
+              id="specialRequirements"
+              value={specialRequirements}
+              onChange={(e) => setSpecialRequirements(e.target.value)}
+              placeholder="Any specific requirements, restrictions, or preferences for your content..."
+              className="bg-gray-800 border-gray-600 text-white focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300 min-h-[100px]"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Save Button */}
+      <div className="glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-6">
+        <div className="flex justify-end">
+          <Button 
+            onClick={handleSaveChanges}
+            disabled={saveProfileMutation.isPending}
+            className="bg-gradient-to-r from-primary to-secondary text-white hover:shadow-lg hover:scale-105 transition-all duration-300 group px-8 py-3"
+          >
+            {saveProfileMutation.isPending ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
+                <span>Saving Profile...</span>
+              </>
+            ) : (
+              <>
+                <Check className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+                <span>Save All Changes</span>
+              </>
+            )}
+          </Button>
         </div>
       </div>
 

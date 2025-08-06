@@ -80,6 +80,7 @@ export default function CurrentGeneration({
       toast({
         title: "Downloaded",
         description: "Image downloaded successfully.",
+        variant: "success" as const,
       });
     } catch (error) {
       toast({
@@ -98,6 +99,7 @@ export default function CurrentGeneration({
       toast({
         title: "Copied",
         description: "Image URL copied to clipboard.",
+        variant: "success" as const,
       });
     } catch (error) {
       toast({
@@ -128,9 +130,9 @@ export default function CurrentGeneration({
           <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
             <span className="text-white font-bold text-sm">✓</span>
           </div>
-          <h2 className="text-xl font-semibold text-slate-900">Your Latest Generation</h2>
+          <h2 className="text-xl font-semibold text-white">Your Latest Generation</h2>
         </div>
-        <p className="text-slate-600 text-sm">
+        <p className="text-white/70 text-sm">
           Generated for <span className="font-medium text-primary">{generatedImage.platform}</span> • <span className="font-medium text-secondary">{generatedImage.style}</span> style
         </p>
       </div>
@@ -141,14 +143,14 @@ export default function CurrentGeneration({
           <img
             src={generatedImage.imageUrl}
             alt="AI-generated social media post"
-            className="w-full rounded-xl shadow-sm group-hover:shadow-md transition-all duration-200"
+            className="w-full rounded-xl shadow-sm group-hover:shadow-md transition-all duration-200 border border-white/10"
           />
         </div>
 
         {/* Image Actions */}
         <div className="space-y-4">
           <div>
-            <h3 className="font-medium text-slate-900 mb-3 text-sm flex items-center gap-2">
+            <h3 className="font-medium text-white mb-3 text-sm flex items-center gap-2">
               <Download className="w-4 h-4 text-primary" />
               <span>Download Options</span>
             </h3>
@@ -197,28 +199,28 @@ export default function CurrentGeneration({
             </div>
           </div>
 
-          <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/50">
-            <h4 className="font-medium text-slate-900 mb-3 text-sm flex items-center gap-2">
-              <Info className="w-4 h-4 text-blue-500" />
+          <div className="p-4 bg-black/40 rounded-xl border border-white/20">
+            <h4 className="font-medium text-white mb-3 text-sm flex items-center gap-2">
+              <Info className="w-4 h-4 text-blue-400" />
               <span>Generation Details</span>
             </h4>
-            <div className="text-slate-600 space-y-2 text-xs">
+            <div className="text-white/70 space-y-2 text-xs">
               <div className="flex items-center gap-2">
-                <span className="font-medium">Platform:</span>
+                <span className="font-medium text-white">Platform:</span>
                 <span className="font-medium text-primary">{generatedImage.platform}</span>
-                <span className="text-slate-500">({generatedImage.dimensions})</span>
+                <span className="text-white/50">({generatedImage.dimensions})</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-medium">Style:</span>
+                <span className="font-medium text-white">Style:</span>
                 <span className="font-medium text-secondary">{generatedImage.style}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-medium">Generated:</span>
-                <span>{new Date(generatedImage.createdAt).toLocaleString()}</span>
+                <span className="font-medium text-white">Generated:</span>
+                <span className="text-white/70">{new Date(generatedImage.createdAt).toLocaleString()}</span>
               </div>
               <div className="flex flex-col gap-1">
-                <span className="font-medium">Prompt:</span>
-                <span className="text-xs bg-gray-800 text-white p-2 rounded-lg leading-relaxed">{generatedImage.prompt}</span>
+                <span className="font-medium text-white">Prompt:</span>
+                <span className="text-xs bg-gray-800 text-white p-2 rounded-lg leading-relaxed border border-white/10">{generatedImage.prompt}</span>
               </div>
             </div>
           </div>

@@ -28,8 +28,9 @@ export default function Navigation() {
       if (response.ok) {
         const result = await response.json();
         toast({
-          title: "Goodbye!",
+          title: "Logged Out",
           description: "You've been successfully logged out.",
+          variant: "success" as const,
         });
         
         // Refresh auth state and redirect

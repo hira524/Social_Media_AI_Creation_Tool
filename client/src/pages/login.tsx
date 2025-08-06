@@ -47,8 +47,9 @@ export default function Login() {
       
       if (response.ok) {
         toast({
-          title: "Welcome back!",
+          title: "Login Successful",
           description: "You've been successfully logged in.",
+          variant: "success" as const,
         });
         
         // Wait for refetch to complete before navigation

@@ -30,8 +30,9 @@ export default function Favorites() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/images"] });
       toast({
-        title: "Success",
+        title: "Favorite Updated",
         description: "Favorite status updated successfully.",
+        variant: "success" as const,
       });
     },
     onError: (error) => {
@@ -61,8 +62,9 @@ export default function Favorites() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/images"] });
       toast({
-        title: "Success",
+        title: "Image Deleted",
         description: "Image deleted successfully.",
+        variant: "success" as const,
       });
     },
     onError: (error) => {

@@ -30,8 +30,9 @@ export default function History() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/images"] });
       toast({
-        title: "Success",
+        title: "Image Deleted",
         description: "Image deleted successfully.",
+        variant: "success" as const,
       });
     },
     onError: (error) => {

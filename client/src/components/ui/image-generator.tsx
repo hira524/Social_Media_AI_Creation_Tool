@@ -16,6 +16,8 @@ import {
 
 interface GenerateRequest {
   prompt: string;
+  platform: "instagram" | "linkedin" | "twitter";
+  style?: string;
 }
 
 interface GeneratedImage {
@@ -65,8 +67,9 @@ export default function ImageGenerator({ onImageGenerated }: ImageGeneratorProps
         onImageGenerated(data);
       }
       toast({
-        title: "Image Generated!",
+        title: "Image Generated",
         description: "Your AI-generated image is ready for download.",
+        variant: "success" as const,
       });
       // Only invalidate auth-user if credits might have changed
       if (typedUser && typedUser.creditsRemaining !== undefined && typedUser.creditsRemaining <= 1) {
@@ -127,6 +130,8 @@ export default function ImageGenerator({ onImageGenerated }: ImageGeneratorProps
 
     generateMutation.mutate({
       prompt,
+      platform: "instagram", // Default to Instagram
+      style: typedUser?.stylePreference || undefined,
     });
   };
 

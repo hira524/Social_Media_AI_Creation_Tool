@@ -63,8 +63,9 @@ export default function SignUp() {
         const result = await response.json();
         
         toast({
-          title: "Welcome!",
+          title: "Account Created",
           description: "Account created successfully. Let's set up your profile.",
+          variant: "success" as const,
         });
         
         // Refresh authentication state before redirecting

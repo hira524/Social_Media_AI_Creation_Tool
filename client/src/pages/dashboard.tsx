@@ -2,9 +2,17 @@ import { useEffect, useState, lazy, Suspense } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/use-toast";
 import { useLocation } from "wouter";
-import { ArrowRight, Menu, X, Palette, Heart, Settings as SettingsIcon, Image, Crown } from "lucide-react";
+import { ArrowRight, Menu, X, Palette, Heart, Settings as SettingsIcon, Image, Crown, User, Building, Target, Hash } from "lucide-react";
 import Navigation from "../components/ui/navigation";
 import LoadingSpinner from "../components/ui/loading-spinner";
+import { Button } from "../components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "../lib/queryClient";
+import { isUnauthorizedError } from "../lib/authUtils";
+import type { IUser } from "@shared/mongoSchema";
 
 // Lazy load heavy components to reduce initial bundle size
 const ImageGenerator = lazy(() => import("../components/ui/image-generator"));
@@ -28,11 +36,74 @@ interface GeneratedImage {
 
 export default function Dashboard() {
   const { toast } = useToast();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
   const [, setLocation] = useLocation();
   const [activeView, setActiveView] = useState<'create' | 'history' | 'favorites' | 'settings'>('create');
   const [currentGeneration, setCurrentGeneration] = useState<GeneratedImage | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const queryClient = useQueryClient();
+  
+  // Personalization state
+  const [niche, setNiche] = useState("");
+  const [contentType, setContentType] = useState("");
+  const [stylePreference, setStylePreference] = useState("");
+  const [businessType, setBusinessType] = useState("");
+  const [targetAudience, setTargetAudience] = useState("");
+  const [primaryGoal, setPrimaryGoal] = useState("");
+  
+  // Sync personalization fields with user data
+  useEffect(() => {
+    if (user) {
+      const typedUser = user as IUser;
+      setNiche(typedUser.niche || "");
+      setContentType(typedUser.contentType || "");
+      setStylePreference(typedUser.stylePreference || "");
+      setBusinessType(typedUser.businessType || "");
+      setTargetAudience(typedUser.targetAudience || "");
+      setPrimaryGoal(typedUser.primaryGoal || "");
+    }
+  }, [user]);
+
+  // Personalization update mutation
+  const updatePersonalizationMutation = useMutation({
+    mutationFn: async (data: any) => {
+      await apiRequest("PATCH", "/api/user/profile", data);
+    },
+    onSuccess: () => {
+      toast({
+        title: "Personalization Updated",
+        description: "Your preferences have been saved successfully.",
+        variant: "success" as const,
+      });
+      queryClient.invalidateQueries({ queryKey: ['auth-user'] });
+    },
+    onError: (error) => {
+      if (isUnauthorizedError(error)) {
+        toast({
+          title: "Unauthorized",
+          description: "Please log in again.",
+          variant: "destructive",
+        });
+        return;
+      }
+      toast({
+        title: "Error",
+        description: "Failed to update preferences. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handlePersonalizationSave = () => {
+    updatePersonalizationMutation.mutate({
+      niche,
+      contentType,
+      stylePreference,
+      businessType,
+      targetAudience,
+      primaryGoal,
+    });
+  };
 
   // Use effect to handle authentication redirect - only run once on initial load
   useEffect(() => {
@@ -92,7 +163,7 @@ export default function Dashboard() {
       {/* Animated Sidebar Toggle Button */}
       <button
         onClick={handleSidebarToggle}
-        className="fixed top-20 left-6 z-50 bg-gray-800/90 backdrop-blur-md border border-gray-700 shadow-lg rounded-xl p-2.5 hover:bg-gray-700 hover:shadow-xl hover:scale-105 transition-all duration-300 lg:hidden animate-fade-in-up"
+        className="fixed top-20 left-6 z-40 bg-gray-800/90 backdrop-blur-md border border-gray-700 shadow-lg rounded-xl p-2.5 hover:bg-gray-700 hover:shadow-xl hover:scale-105 transition-all duration-300 lg:hidden animate-fade-in-up"
         style={{animationDelay: '0.2s'}}
         aria-label="Toggle sidebar"
       >
@@ -106,7 +177,7 @@ export default function Dashboard() {
             {/* Desktop Sidebar Toggle */}
             <button
               onClick={handleSidebarToggle}
-              className="hidden lg:flex fixed top-20 left-6 z-50 bg-gray-800/90 backdrop-blur-md border border-gray-700 shadow-sm rounded-xl p-2.5 hover:bg-gray-700 hover:shadow-md transition-all duration-200 items-center justify-center"
+              className="hidden lg:flex fixed top-20 left-6 z-40 bg-gray-800/90 backdrop-blur-md border border-gray-700 shadow-sm rounded-xl p-2.5 hover:bg-gray-700 hover:shadow-md transition-all duration-200 items-center justify-center"
               aria-label="Toggle sidebar"
             >
               {sidebarOpen ? <X className="w-5 h-5 text-gray-300" /> : <Menu className="w-5 h-5 text-gray-300" />}
@@ -120,7 +191,7 @@ export default function Dashboard() {
               />
             )}
             
-            <nav className={`glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-4 sticky top-24 transition-all duration-300 z-50 animate-slide-in-left ${
+            <nav className={`glass-card bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-strong rounded-2xl p-4 sticky top-24 transition-all duration-300 z-30 animate-slide-in-left ${
               sidebarOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full lg:opacity-100 lg:translate-x-0'
             } ${!sidebarOpen ? 'lg:w-16 lg:p-3' : ''} ${sidebarOpen ? 'lg:relative' : ''} ${!sidebarOpen ? 'lg:relative' : 'lg:relative md:fixed md:left-6 md:top-24 md:w-72'}`}
             style={{animationDelay: '0.3s'}}>
@@ -181,6 +252,133 @@ export default function Dashboard() {
                   {sidebarOpen && <span>Recent Generations</span>}
                 </button>
               </div>
+              
+              {/* Personalization Section */}
+              {sidebarOpen && (
+                <div className="mt-6 space-y-4 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+                  <div className="flex items-center gap-2 px-2">
+                    <User className="w-4 h-4 text-primary" />
+                    <h4 className="text-sm font-medium text-white">Quick Personalization</h4>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="space-y-1">
+                      <Label className="text-xs text-gray-300">Niche</Label>
+                      <Select value={niche} onValueChange={setNiche}>
+                        <SelectTrigger className="h-8 text-xs bg-gray-800/80 border-gray-600 text-white focus:border-primary">
+                          <SelectValue placeholder="Select niche" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-gray-800 border-gray-700">
+                          <SelectItem value="fitness" className="text-white hover:bg-gray-700">Fitness</SelectItem>
+                          <SelectItem value="food" className="text-white hover:bg-gray-700">Food</SelectItem>
+                          <SelectItem value="tech" className="text-white hover:bg-gray-700">Technology</SelectItem>
+                          <SelectItem value="fashion" className="text-white hover:bg-gray-700">Fashion</SelectItem>
+                          <SelectItem value="business" className="text-white hover:bg-gray-700">Business</SelectItem>
+                          <SelectItem value="travel" className="text-white hover:bg-gray-700">Travel</SelectItem>
+                          <SelectItem value="lifestyle" className="text-white hover:bg-gray-700">Lifestyle</SelectItem>
+                          <SelectItem value="education" className="text-white hover:bg-gray-700">Education</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="space-y-1">
+                      <Label className="text-xs text-gray-300">Content Type</Label>
+                      <Select value={contentType} onValueChange={setContentType}>
+                        <SelectTrigger className="h-8 text-xs bg-gray-800/80 border-gray-600 text-white focus:border-primary">
+                          <SelectValue placeholder="Select type" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-gray-800 border-gray-700">
+                          <SelectItem value="quotes" className="text-white hover:bg-gray-700">Quotes</SelectItem>
+                          <SelectItem value="promotions" className="text-white hover:bg-gray-700">Promotions</SelectItem>
+                          <SelectItem value="educational" className="text-white hover:bg-gray-700">Educational</SelectItem>
+                          <SelectItem value="announcements" className="text-white hover:bg-gray-700">Announcements</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="space-y-1">
+                      <Label className="text-xs text-gray-300">Style</Label>
+                      <Select value={stylePreference} onValueChange={setStylePreference}>
+                        <SelectTrigger className="h-8 text-xs bg-gray-800/80 border-gray-600 text-white focus:border-primary">
+                          <SelectValue placeholder="Select style" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-gray-800 border-gray-700">
+                          <SelectItem value="professional" className="text-white hover:bg-gray-700">Professional</SelectItem>
+                          <SelectItem value="fun" className="text-white hover:bg-gray-700">Fun & Playful</SelectItem>
+                          <SelectItem value="luxury" className="text-white hover:bg-gray-700">Luxury</SelectItem>
+                          <SelectItem value="minimalist" className="text-white hover:bg-gray-700">Minimalist</SelectItem>
+                          <SelectItem value="bold" className="text-white hover:bg-gray-700">Bold</SelectItem>
+                          <SelectItem value="vintage" className="text-white hover:bg-gray-700">Vintage</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="space-y-1">
+                        <Label className="text-xs text-gray-300">Business</Label>
+                        <Select value={businessType} onValueChange={setBusinessType}>
+                          <SelectTrigger className="h-8 text-xs bg-gray-800/80 border-gray-600 text-white focus:border-primary">
+                            <SelectValue placeholder="Type" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-gray-800 border-gray-700">
+                            <SelectItem value="startup" className="text-white hover:bg-gray-700">Startup</SelectItem>
+                            <SelectItem value="smallbusiness" className="text-white hover:bg-gray-700">Small Biz</SelectItem>
+                            <SelectItem value="enterprise" className="text-white hover:bg-gray-700">Enterprise</SelectItem>
+                            <SelectItem value="freelancer" className="text-white hover:bg-gray-700">Freelancer</SelectItem>
+                            <SelectItem value="personal" className="text-white hover:bg-gray-700">Personal</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div className="space-y-1">
+                        <Label className="text-xs text-gray-300">Goal</Label>
+                        <Select value={primaryGoal} onValueChange={setPrimaryGoal}>
+                          <SelectTrigger className="h-8 text-xs bg-gray-800/80 border-gray-600 text-white focus:border-primary">
+                            <SelectValue placeholder="Goal" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-gray-800 border-gray-700">
+                            <SelectItem value="brand-awareness" className="text-white hover:bg-gray-700">Awareness</SelectItem>
+                            <SelectItem value="lead-generation" className="text-white hover:bg-gray-700">Leads</SelectItem>
+                            <SelectItem value="sales" className="text-white hover:bg-gray-700">Sales</SelectItem>
+                            <SelectItem value="engagement" className="text-white hover:bg-gray-700">Engagement</SelectItem>
+                            <SelectItem value="education" className="text-white hover:bg-gray-700">Education</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-1">
+                      <Label className="text-xs text-gray-300">Target Audience</Label>
+                      <Select value={targetAudience} onValueChange={setTargetAudience}>
+                        <SelectTrigger className="h-8 text-xs bg-gray-800/80 border-gray-600 text-white focus:border-primary">
+                          <SelectValue placeholder="Select your audience" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-gray-800 border-gray-600">
+                          <SelectItem value="b2b" className="text-white hover:bg-gray-700">Businesses (B2B)</SelectItem>
+                          <SelectItem value="b2c" className="text-white hover:bg-gray-700">Consumers (B2C)</SelectItem>
+                          <SelectItem value="millennials" className="text-white hover:bg-gray-700">Millennials (27-42)</SelectItem>
+                          <SelectItem value="genz" className="text-white hover:bg-gray-700">Gen Z (18-26)</SelectItem>
+                          <SelectItem value="genx" className="text-white hover:bg-gray-700">Gen X (43-58)</SelectItem>
+                          <SelectItem value="professionals" className="text-white hover:bg-gray-700">Professionals</SelectItem>
+                          <SelectItem value="students" className="text-white hover:bg-gray-700">Students</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <Button 
+                      onClick={handlePersonalizationSave}
+                      disabled={updatePersonalizationMutation.isPending}
+                      className="w-full h-8 bg-gradient-to-r from-primary/80 to-secondary/80 text-white hover:shadow-lg hover:scale-105 transition-all duration-300 text-xs font-medium"
+                    >
+                      {updatePersonalizationMutation.isPending ? (
+                        <div className="w-3 h-3 border border-white/30 border-t-white rounded-full animate-spin"></div>
+                      ) : (
+                        "Save Preferences"
+                      )}
+                    </Button>
+                  </div>
+                </div>
+              )}
               
               {sidebarOpen && (
                 <div className="mt-6 p-4 bg-gradient-to-br from-gray-800 to-gray-700/50 rounded-xl border border-gray-600 shadow-lg animate-fade-in-up hover:shadow-xl transition-all duration-300 group" style={{animationDelay: '0.5s'}}>

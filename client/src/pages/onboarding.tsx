@@ -263,8 +263,9 @@ export default function Onboarding() {
     },
     onSuccess: async () => {
       toast({
-        title: "Setup Complete!",
+        title: "Setup Complete",
         description: "Your preferences have been saved. Let's start creating!",
+        variant: "success" as const,
       });
       // Immediately invalidate and refetch user data
       await queryClient.invalidateQueries({ queryKey: ['auth-user'] });

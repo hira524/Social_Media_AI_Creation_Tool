@@ -47,8 +47,9 @@ export default function Login() {
         const result = await response.json();
         
         toast({
-          title: "Welcome back!",
+          title: "Login Successful",
           description: "You've been successfully logged in.",
+          variant: "success" as const,
         });
         
         refetch();
